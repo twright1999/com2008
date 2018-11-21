@@ -1,0 +1,16 @@
+==========================================
+Module
+==========================================
+moduleID : String
+name : String
+credits : Int
+period : String
+obligatory : Bool
+degID : String
+—————————————————————————
+getModuleID() : String
+getName() : String
+getCredits : Int
+getPeriod : String
+getObligatory : Bool
+getDegID : String
