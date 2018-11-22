@@ -26,4 +26,11 @@ public class Module {
 		this.departments = departments;
 	}
 	
+	public String getModuleId() { return moduleId; }
+	public String getName() { return name; }
+	public int getCredits() { return credits; }
+	public Enum getPeriod() { return period; }
+	public Boolean getObligatory() { return obligatory; }
+	public String getDegId() { return degId; }
+	public Department[] getDepartments() { return departments; }
 }
