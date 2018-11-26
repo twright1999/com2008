@@ -17,10 +17,10 @@ public class Student extends Account {
 	private PeriodOfStudy periodOfStudy;
 	
 	
-	public Student(String userID, String name, String password,
-			String title, Degree degree, String tutor, PeriodOfStudy
+	public Student(String userID, String name, String password, char permission,
+			String title, Degree degree,String email, String tutor, PeriodOfStudy
 			periodOfstudy) {
-		super(userID, name, password);
+		super(userID, name, password, permission);
 		this.title = title;
 		this.degree = degree;
 		this.tutor = tutor;
@@ -31,17 +31,17 @@ public class Student extends Account {
 	/*
 	 * For getting Student instance fields. Called in <GUI Name>
 	 * @param userId userId for SELECT query in getStudentStatus
-	 * @return Student Instance
+	 * @return Student
 	 */
-	public Student viewStatus(String userID) {
+	public Student viewStatus() throws SQLException {
+		//String id = this.getUserID();
 		return DAC.getStudent(userID);
 	}
 	
-	
-	public String generateEmail(String sname) {
+	/*
+	public String generateEmail() {
 		String initials = name.substring(0,1) + name.substring(name.lastIndexOf(" "));
-		
-		
-	}
+		//Check if such name already exists in the database
+	}*/
 	
 }

@@ -40,6 +40,8 @@ public class OpenConnection {
 				System.out.println(" tutor: " + tutor);
 				String userID = res2.getString("userID");
 				System.out.println(" userID: " + userID);
+				//Account acc = new Account(accountID, name, password);
+				//System.out.println(acc.getName());
 			}
 			
 			stmt.close();
