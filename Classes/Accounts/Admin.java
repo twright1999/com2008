@@ -14,6 +14,7 @@ public class Admin extends Account {
 		Statement stmt = con.createStatement() ;
 		Statement s=con.createStatement();
 		s.executeUpdate("INSERT INTO `Account`(name,password) VALUE ('"+name+"','"+password+"')");
+		
 		con.close();
 		
 	}
@@ -21,6 +22,12 @@ public class Admin extends Account {
 	private void removeAccount(Account account) {
 		
 		
+		
+	}
+	
+	public static void main(String[] arg) throws SQLException {
+		Admin admin = new Admin("A01", "Rokas", "gg");
+		admin.addAcount("Pokas", "pp");
 		
 	}
 	
