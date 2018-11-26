@@ -30,8 +30,8 @@ public class OpenConnection {
 				System.out.print(" accID: " + accountID);
 				String password = res.getString("password");
 				System.out.println(" pass: " + password);
-				Account acc = new Account(accountID, name, password);
-				System.out.println(acc.getName());
+				//Account acc = new Account(accountID, name, password);
+				//System.out.println(acc.getName());
 			}
 			
 			stmt.close();

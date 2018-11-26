@@ -12,20 +12,27 @@ import java.sql.*;
 public final class QueryToObject {
 	
 	public static Student rowToStudent(ResultSet res) {
-		while(res.next()) {
-			String accountId = res.getString("userId");
-			String name = res.getString("name");
-			String password = res.getString("password");
-			String title = res.getString("title");
+		String userId, name, password, title, email, tutor;
+		char permission;
+		Degree degree; PeriodOfStudy periodOfStudy;
+			
+			res.next(); userId = res.getString("userId");
+			res.next();name = res.getString("name");
+			res.next();password = res.getString("password");
+			res.next();res.getString("permission").charAt(0);
+			res.next();title = res.getString("title");
 			/*How to get degree from Student?
 			 *  By linking Degree and Student tables?
 			 */
-			String email = res.getString("email");
-			String tutor = res.getString("tutor");
+			res.next();email = res.getString("email");
+			res.next();tutor = res.getString("tutor");
+			res.next();periodOfStudy = res.getString("period");
 			//Pull periodOfStudy from PeriodOfStudy table
-		}
-		Student student = new Student(accountId, name, password ,title, degree,
+			
+		
+		Student student = new Student(userId, name, password, permission, title, degree,
 				email, tutor, periodOfStudy);
+		
 		return student;
 	}
 	
