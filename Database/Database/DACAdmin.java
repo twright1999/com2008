@@ -134,14 +134,14 @@ public DACAdmin() throws SQLException {
 		
 	}
 	
-	public void addModule(String modID, String name, int credits, String period, String obligatory, String degCode) throws SQLException {
-		String query = "INSERT INTO Department (modID, name, credits, period, obligatory, degCode)"
+	public void addModule(String modID, String name, int credits, String taught, String obligatory, String degCode) throws SQLException {
+		String query = "INSERT INTO Department (modID, name, credits, taught, obligatory, degCode)"
 		        + " values (?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setString(1, modID);
 		pstm.setString(2, name);
 		pstm.setInt(3, credits );
-		pstm.setString(4, period);
+		pstm.setString(4, taught);
 		pstm.setString(5, obligatory);
 		pstm.setString(6, degCode);
 		pstm.executeUpdate();
