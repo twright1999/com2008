@@ -30,6 +30,13 @@ public final class Setup{
 					   "depID varchar (3) NOT NULL UNIQUE,"+
 					   "FOREIGN KEY (depID) references Department(depID) on delete cascade)");
 
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Module("+
+					   "modID varchar (7) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "name varchar (50) NOT NULL,"+
+					   "taught varchar (20) NOT NULL,"+
+					   "obligatory bit NOT NULL,"+
+					   "degID varchar (6) NOT NULL UNIQUE,"+
+					   "FOREIGN KEY (degID) references Degree(degID) on delete cascade)");
 			
 			stmt.close();
 		}
