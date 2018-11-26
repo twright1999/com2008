@@ -18,29 +18,21 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Account VALUES (1, 'Tom', '123', 'S')");
 //		    stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'twright6@sheffield.ac.uk', 'richard', '1')");
 			
-			ResultSet res = stmt.executeQuery("SELECT * FROM Account WHERE userID = 1");
-			while (res.next()) {
-				String name = res.getString("name");
-				System.out.print("RESULT NAME: " + name);
-				String accountID = res.getString("userID");
-				System.out.print(" accID: " + accountID);
-				String password = res.getString("password");
-				System.out.println(" pass: " + password);
-				String permission = res.getString("permission");
-				System.out.println(" permission: " + permission);
-			}
+//			ResultSet res = stmt.executeQuery("SELECT * FROM Account WHERE userID = 1");
+//			while (res.next()) {
+//				String name = res.getString("name");
+//				System.out.print("RESULT NAME: " + name);
+//				String accountID = res.getString("userID");
+//				System.out.print(" accID: " + accountID);
+//				String password = res.getString("password");
+//				System.out.println(" pass: " + password);
+//				String permission = res.getString("permission");
+//				System.out.println(" permission: " + permission);
+//			}
 			
-			ResultSet res2 = stmt.executeQuery("SELECT * FROM Student WHERE userID = 1");
-			while (res2.next()) {
-				String regNumber = res2.getString("regNumber");
-				System.out.print("RESULT regNumber: " + regNumber);
-				String email = res2.getString("email");
-				System.out.print(" email: " + email);
-				String tutor = res2.getString("tutor");
-				System.out.println(" tutor: " + tutor);
-				String userID = res2.getString("userID");
-				System.out.println(" userID: " + userID);
-			}
+//			stmt.executeUpdate("DROP TABLE IF EXISTS Account");
+			
+			
 			
 			stmt.close();
 		}
