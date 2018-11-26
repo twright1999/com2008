@@ -62,6 +62,14 @@ public final class Setup{
 					   "regNumber int (9) NOT NULL UNIQUE,"+
 					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
 			
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Grade("+
+					   "gradeID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "gradePercent float NOT NULL,"+
+					   "modID varchar (7) NOT NULL UNIQUE,"+
+					   "regNumber int (9) NOT NULL UNIQUE,"+
+					   "FOREIGN KEY (modID) references Module(modID) on delete cascade,"+
+					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
+			
 
 				
 			stmt.close();
