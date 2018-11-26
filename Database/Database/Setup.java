@@ -52,6 +52,16 @@ public final class Setup{
 					   "userID int (8) NOT NULL UNIQUE,"+
 					   "FOREIGN KEY (depID) references Department(depID) on delete cascade,"+
 					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
+			
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS PeriodOfStudy("+
+					   "periodID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "label char NOT NULL,"+
+					   "startDate date NOT NULL,"+
+					   "endDate date NOT NULL,"+
+					   "level char NOT NULL,"+
+					   "regNumber int (9) NOT NULL UNIQUE,"+
+					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
+			
 
 				
 			stmt.close();
