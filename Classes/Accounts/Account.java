@@ -6,7 +6,6 @@ public class Account {
   protected String name;
   protected String password;
   protected char permission; //A - Admin; R - registrar; T - Teacher; S - Student; Null - Account;
-
   public Account(String userID, String name, String password, char permission) {
 
     this.userID = userID;
@@ -16,19 +15,19 @@ public class Account {
 
   }
 
-  protected String getUserID() {
+  public String getUserID() {
     return userID;
   }
 
-  protected String getName() {
+  public String getName() {
     return name;
   }
 
-  protected String getPassword() {
+  public String getPassword() {
     return password;
   }
   
-  protected char getPermission() {
+  public char getPermission() {
 	  return permission;
   }
 

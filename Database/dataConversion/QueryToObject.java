@@ -1,5 +1,6 @@
 package dataConversion;
 import Accounts.*;
+import Database.DAC;
 import Utility.*;
 import java.sql.*;
 /**
@@ -10,50 +11,98 @@ import java.sql.*;
  * Should be static?
  */
 public final class QueryToObject {
+	/**
+	 * used to convert SQL row in Account table to Account object (if such exists)
+	 * @param res - sql result query.
+	 * @return account
+	 * @throws SQLException - displays a message in GUI that such account does not exist
+	 */
+	public static Account rowToAccount(ResultSet res) throws SQLException {
+		try {
+		res.next(); String userID = res.getString("userID");
+		res.next(); String name = res.getString("name");
+		res.next(); String password = res.getString("password");
+		res.next(); char permission = res.getString("permission").charAt(0);
+		Account acc = new Account (userID, name, password, permission);
+		return acc;
+		}
+		catch (SQLException ex) {
+			//output in GUI that such account does not exists given the query
+			System.out.println("Such account does not exsist");
+		}
+		finally {
+			return null;
+		}
+		
+	}
 	
 	public static Student rowToStudent(ResultSet res) {
-		String userId, name, password, title, email, tutor;
-		char permission;
-		Degree degree; PeriodOfStudy periodOfStudy;
-			
-			res.next(); userId = res.getString("userId");
-			res.next();name = res.getString("name");
-			res.next();password = res.getString("password");
-			res.next();res.getString("permission").charAt(0);
-			res.next();title = res.getString("title");
-			/*How to get degree from Student?
-			 *  By linking Degree and Student tables?
-			 */
-			res.next();email = res.getString("email");
-			res.next();tutor = res.getString("tutor");
-			res.next();periodOfStudy = res.getString("period");
-			//Pull periodOfStudy from PeriodOfStudy table
-			
-		
-		Student student = new Student(userId, name, password, permission, title, degree,
-				email, tutor, periodOfStudy);
-		
+		try {
+		//get values from the main account table
+		Account acc = rowToAccount(res);
+		//then add the missing student instance variables
+		res.next(); String title = res.getString("title");
+		res.next(); String email = res.getString("email");
+		res.next(); String tutor = res.getString("tutor");
+		//Goes to DAC, then to rowToDegree for row -> Degree conversion
+		Degree degree = DAC.getStudentDegree(acc.getUserID());
+        PeriodOfStudy periodOfStudy = DAC.getPeriodOfStudy(acc.getUserID());
+		//Pull periodOfStudy from PeriodOfStudy table
+        Student student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
+        		acc.getPermission(), title, degree, email, tutor, periodOfStudy);
 		return student;
+		}
+		catch (SQLException ex) {
+			//output in GUI that such account does not exists given the query
+			System.out.println("Such Student does not exsist");
+		}
+		finally {
+			return null;
+		}
 	}
 	
 	public static Degree rowToDegree(ResultSet res) {
-		while(res.next()) {
-			
-		}
-		Degree degree = new Degree(/*Parameters*/);
+		try {
+		res.next(); String degID = res.getString("degID");
+		res.next(); String name = res.getString("name");
+		res.next(); char level = res.getString("level").charAt(0);
+		res.next(); String depID = res.getString("depID");
+		Degree degree = new Degree(degID, name, level, depID);
 		return degree;
+		}
+		catch (SQLException ex) {
+			//output in GUI that such account does not exists given the query
+			System.out.println("Such Degree does not exsist");
+		}
+		finally {
+			return null;
+		}
 	}
 	
 	public static PeriodOfStudy rowToPeriod(ResultSet res) {
-		while(res.next()) {
-			char label = res.getString("label").charAt(0); //converting to char
-			char levelOfStudy = res.getString("level").charAt(0);
-			String startDate = res.getString("start-date"); //Isn't it type Date?
-			String endDate = res.getString("end-date"); 
-			PeriodOfStudy poS =
-					new PeriodOfStudy(label, levelOfStudy, startDate, endDate);
+		try {
+			while(res.next()) {
+				int periodID = res.getInt("periodID");
+				char label = res.getString("label").charAt(0);
+				Date startDate = res.getDate("startDate");
+				Date endDate = res.getDate("endDate");
+				char level = res.getString("level").charAt(0);
+				int regNumber = res.getInt("regNumber");
+				PeriodOfStudy poS = new PeriodOfStudy(periodID, label, startDate, endDate,
+						level, regNumber);
+				return poS;
+			}
 		}
+		catch (SQLException ex) {
+			//output in GUI that such account does not exists given the query
+			System.out.println("Such Period of Study does not exsist");
+		}
+		finally {
+			return null;
+		}
+	}
+	
+	public static void main(String[] arg) throws SQLException {
 		
-		return poS;
 	}
 }

@@ -1,23 +1,31 @@
 package Utility;
 
+import java.sql.Date;
+
 public class PeriodOfStudy {
+	private int periodID;
 	private char label;
-	private char levelOfStudy;
-	private String startDate;
-	private String endDate;
+	private Date startDate;
+	private Date endDate;
+	private char level;
+	private int regNumber;
 	
-	public PeriodOfStudy(char label, char levelOfStudy, String startDate,
-			String endDate) {
+	public PeriodOfStudy(int periodID, char label, Date startDate, Date endDate,
+			char level, int regNumber) {
+		this.periodID = periodID;
 		this.label = label;
-		this.levelOfStudy = levelOfStudy;
 		this.startDate = startDate;
 		this.endDate = endDate;
+		this.level = level;
+		this.regNumber = regNumber;
 	}
 	
 	//get methods
+	public int getPeriodID() { return periodID ; }
 	public char getLabel() { return label; }
-	public char getLevelOfStudy() { return levelOfStudy; }
-	public String startDate() { return startDate; }
-	public String endDate() { return endDate; }
+	public Date startDate() { return startDate; }
+	public Date endDate() { return endDate; }
+	public char level() { return level; }
+	public int regNumber() { return regNumber; }
 	
 }

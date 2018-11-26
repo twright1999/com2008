@@ -35,6 +35,7 @@ public class Student extends Account {
 	 */
 	public Student viewStatus() throws SQLException {
 		//String id = this.getUserID();
+		//DAC dac = new DAC();
 		return DAC.getStudent(userID);
 	}
 	
