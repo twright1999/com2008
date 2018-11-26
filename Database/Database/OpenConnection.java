@@ -45,6 +45,9 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (123456789, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Teacher VALUES (99999999, 'COM', 00000002)");
+//			stmt.executeUpdate("INSERT INTO PeriodOfStudy VALUES (00000001, 'A', '2017-09-25', '2020-06-06', 3, 123456789)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (00000001, 70.0, 'COM2008', 123456789)");
+			
 			
 			
 			
