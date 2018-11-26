@@ -38,8 +38,9 @@ public class Student extends Account {
 	}
 	
 	
-	public String generateEmail(String name) {
+	public String generateEmail(String sname) {
 		String initials = name.substring(0,1) + name.substring(name.lastIndexOf(" "));
+		
 		
 	}
 	
