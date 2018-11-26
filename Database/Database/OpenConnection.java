@@ -30,7 +30,7 @@ public class OpenConnection {
 //				System.out.println(" permission: " + permission);
 //			}
 			
-//			stmt.executeUpdate("DROP TABLE IF EXISTS Account");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Teacher");
 			
 			
 			
