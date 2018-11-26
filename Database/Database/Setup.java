@@ -38,6 +38,12 @@ public final class Setup{
 					   "degID varchar (6) NOT NULL UNIQUE,"+
 					   "FOREIGN KEY (degID) references Degree(degID) on delete cascade)");
 			
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Student_Module("+
+					   "regNumber int (9) NOT NULL UNIQUE,"+
+					   "modID varchar (7) NOT NULL UNIQUE,"+
+					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade,"+
+					   "FOREIGN KEY (modID) references Module(modID) on delete cascade)");
+				
 			stmt.close();
 		}
 		catch (SQLException ex) {
