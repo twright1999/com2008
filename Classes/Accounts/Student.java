@@ -37,22 +37,10 @@ public class Student extends Account {
 		return DAC.getStudent(userID);
 	}
 	
-	/*
-	public String generateEmail() throws SQLException {
-		try {
-			
-		}
-		String stName = this.getName();
-		//getting initial character of the forename and full surname
-		String initials = stName.substring(0,1) + stName.substring(stName.lastIndexOf(" "));
-		//Check if a student with exact same initials exist
-		Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
-		Statement stmt = con.createStatement() ;
-		Statement s=con.createStatement();
+	
+	public String generateEmail(String name) {
+		String initials = name.substring(0,1) + name.substring(name.lastIndexOf(" "));
 		
-		
-		con.close();
-		return em;
 	}
-	*/
+	
 }

@@ -2,9 +2,10 @@
 package Accounts;
 public class Account {
 
-  private String userID;
-  private String name;
-  private String password;
+  protected String userID;
+  protected String name;
+  protected String password;
+  protected char permission; //A - Admin; R - registrar; T - Teacher; S - Student; Null - Account;
 
   public Account(String userID, String name, String password) {
 
