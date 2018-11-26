@@ -30,7 +30,22 @@ public class OpenConnection {
 //				System.out.println(" permission: " + permission);
 //			}
 			
-			stmt.executeUpdate("DROP TABLE IF EXISTS Teacher");
+//			stmt.executeUpdate("DROP TABLE IF EXISTS Module");
+			
+			/* 
+			 * BASE VALUES TEST
+			 * Already been executed
+			 */
+			
+//			stmt.executeUpdate("INSERT INTO Account VALUES (00000001, 'Mr Bob Bobson', 'password', 'S')");
+//			stmt.executeUpdate("INSERT INTO Account VALUES (00000002, 'Mr Teacher', 'password', 'T')");
+//			stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'bob@sheffield.ac.uk', 'Mr Tue Toor', '00000001')");
+//			stmt.executeUpdate("INSERT INTO Department VALUES ('COM', 'Computer Science')");
+//			stmt.executeUpdate("INSERT INTO Degree VALUES ('COMU01', 'BSc Computer Science', '3', 'COM')");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, 'COMU01')");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (123456789, 'COM2008')");
+//			stmt.executeUpdate("INSERT INTO Teacher VALUES (99999999, 'COM', 00000002)");
+			
 			
 			
 			

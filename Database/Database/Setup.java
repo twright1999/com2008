@@ -10,7 +10,8 @@ public final class Setup{
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Account("+
 					   "userID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
 					   "name varchar (50) NOT NULL,"+
-					   "password text NOT NULL)");
+					   "password text NOT NULL,"+
+					   "permission char NOT NULL)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Student("+
 					   "regNumber int (9) NOT NULL PRIMARY KEY UNIQUE,"+
@@ -33,6 +34,7 @@ public final class Setup{
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Module("+
 					   "modID varchar (7) NOT NULL PRIMARY KEY UNIQUE,"+
 					   "name varchar (50) NOT NULL,"+
+					   "credits int NOT NULL,"+
 					   "taught varchar (20) NOT NULL,"+
 					   "obligatory bit NOT NULL,"+
 					   "degID varchar (6) NOT NULL UNIQUE,"+
@@ -43,6 +45,14 @@ public final class Setup{
 					   "modID varchar (7) NOT NULL UNIQUE,"+
 					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade,"+
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade)");
+			
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Teacher("+
+					   "teacherID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "depID varchar (3) NOT NULL UNIQUE,"+
+					   "userID int (8) NOT NULL UNIQUE,"+
+					   "FOREIGN KEY (depID) references Department(depID) on delete cascade,"+
+					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
+
 				
 			stmt.close();
 		}
