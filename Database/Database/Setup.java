@@ -8,7 +8,7 @@ public final class Setup{
 			stmt = con.createStatement();
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Account("+
-					   "userID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "userID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
 					   "name varchar (50) NOT NULL,"+
 					   "password text NOT NULL,"+
 					   "permission char NOT NULL)");
