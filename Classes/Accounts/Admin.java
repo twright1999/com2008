@@ -9,8 +9,8 @@ public class Admin extends Account {
 
 	}
 
-	private void addAcount(int accountUserID, String accountName, String accountPassword, char accountPermission) throws SQLException {
-		DACAdmin.addAccount(accountUserID, accountName, accountPassword, accountPermission);
+	private void addAcount(String accountName, String accountPassword, char accountPermission) throws SQLException {
+		DACAdmin.addAccount(accountName, accountPassword, accountPermission);
 		return;	
 	}
 
@@ -71,7 +71,7 @@ public class Admin extends Account {
 	}
 
 	public static void main(String[] arg) throws SQLException {
-
+		
 	}
 
 }
