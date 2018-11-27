@@ -38,12 +38,12 @@ private static void closeConnection() throws SQLException {
 	System.out.println("Conenction is closed");
 }
 
-	public static void addAccount(int userID, String name, String password, char permission) throws SQLException {
+	public static void addAccount(String name, String password, char permission) throws SQLException {
 		openConnection();
 		String query = "INSERT INTO Account (userID, name, password, permission)"
 		        + " values (?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
-		pstm.setInt(1, userID);
+		pstm.setInt(1, 0);
 		pstm.setString(2, name);
 		pstm.setString(3, password);
 		pstm.setString(4, String.valueOf(permission));
@@ -56,7 +56,7 @@ private static void closeConnection() throws SQLException {
 	public static void removeAccount(int userID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
-				"DELETE * FROM Account WHERE userID = ?");
+				"DELETE FROM Account WHERE userID = ?");
 		pstm.setInt(1, userID);
 		pstm.executeUpdate();
 		closeConnection();
@@ -66,17 +66,10 @@ private static void closeConnection() throws SQLException {
 	
 	public static void setPermission(int userID, char permission) throws SQLException {
 		openConnection();
-		String query = "UPDATE Account SET permission="+permission+" WHERE userID="+userID;
+		String query = "UPDATE Account SET permission = ? WHERE userID= ?";
 		PreparedStatement pstm = connection.prepareStatement(query);
-		pstm.executeUpdate();
-		closeConnection();
-		return;
-	}
-	
-	public static void setUserID(int oldUserID, int newUserID) throws SQLException {
-		openConnection();
-		String query = "UPDATE Account SET userID="+newUserID+" WHERE userID="+oldUserID;
-		PreparedStatement pstm = connection.prepareStatement(query);
+		pstm.setString(1, String.valueOf(permission));
+		pstm.setInt(2, userID);
 		pstm.executeUpdate();
 		closeConnection();
 		return;
@@ -84,8 +77,10 @@ private static void closeConnection() throws SQLException {
 	
 	public static void setPassword(int userID, String password) throws SQLException {
 		openConnection();
-		String query = "UPDATE Account SET password="+password+" WHERE userID="+userID;
+		String query = "UPDATE Account SET password = ? WHERE userID= ?";
 		PreparedStatement pstm = connection.prepareStatement(query);
+		pstm.setString(1, password);
+		pstm.setInt(2, userID);
 		pstm.executeUpdate();
 		closeConnection();
 		return;
@@ -93,8 +88,10 @@ private static void closeConnection() throws SQLException {
 	
 	public static void setUsername(int userID, String name) throws SQLException {
 		openConnection();
-		String query = "UPDATE Account SET name="+name+" WHERE userID="+userID;
+		String query = "UPDATE Account SET name = ? WHERE userID= ?";
 		PreparedStatement pstm = connection.prepareStatement(query);
+		pstm.setString(1, name);
+		pstm.setInt(2, userID);
 		pstm.executeUpdate();
 		closeConnection();
 		return;
@@ -124,14 +121,14 @@ private static void closeConnection() throws SQLException {
 		
 	}
 	
-	public static void addDegree(String degID, String name, String level, String depID) throws SQLException {
+	public static void addDegree(String degID, String name, char level, String depID) throws SQLException {
 		openConnection();
-		String query = "INSERT INTO Department (depID, name)"
-		        + " values (?, ?)";
+		String query = "INSERT INTO Degree (degID, name, level, depID)"
+		        + " values (?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setString(1, degID);
 		pstm.setString(2, name);
-		pstm.setString(3, level);
+		pstm.setString(3, String.valueOf(level));
 		pstm.setString(4, depID);
 		pstm.executeUpdate();
 		closeConnection();
@@ -180,7 +177,8 @@ private static void closeConnection() throws SQLException {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		
+		DACAdmin.addDegree("D3BAD", "this degree is bad", '2', "BUS");
+		DAC.getDegree("D3BAD");
 	}
 
 
