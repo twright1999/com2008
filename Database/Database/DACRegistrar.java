@@ -6,53 +6,64 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class DACRegistrar {
+public final class DACRegistrar {
 	
-	private Connection connection;
+	private static Connection connection;
 
-	public DACRegistrar() throws SQLException {
-		connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
+	private static void openConnection() throws SQLException {
+		
+		try {
+			System.out.println("try openning conenction");
+			//if (connection == null) {
+				connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
+				System.out.println("Connection value is assigned");
+			//}
+			//if connection is already opened, do nothing
+		}
+		catch (NullPointerException nex) {
+			System.out.println("connection is null");
+			closeConnection();
+		}
+		catch (SQLException ex) {
+			System.out.println("catch openConn: " + ex.toString());
+			closeConnection();
+		}
+		
 	}
 
-		private void openConnection() throws SQLException {
-			try(Connection connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86")) {
-				
-			}
-			catch (SQLException ex) {
-				closeConnection();
-			}
-		}
+	private static void closeConnection() throws SQLException {
+		connection.close();
+		System.out.println("Conenction is closed");
+	}
 
-		private void closeConnection() throws SQLException {
-			connection.close();
-		}
-
-		public void addStudent(String regNumber, String email, String tutor, String userID) throws SQLException {
+		public static void addStudent(String regNumber, String email, String tutor, int userID) throws SQLException {
+			openConnection();
 			String query = "INSERT INTO Student (regNumber, email, tutor, userID)"
 			        + " values (?, ?, ?, ?)";
 			PreparedStatement pstm = connection.prepareStatement(query);
 			pstm.setString(1, regNumber);
 			pstm.setString(2, email);
 			pstm.setString(3, tutor);
-			pstm.setString(4, userID);
+			pstm.setInt(4, userID);
 			pstm.executeUpdate();
 			closeConnection();
 			return;
 
 		}
 		
-		public void removeStudent(String userID) throws SQLException {
+		public static void removeStudent(int userID) throws SQLException {
 			openConnection();
 			PreparedStatement pstm = connection.prepareStatement(
-					"DELETE * FROM Account WHERE userID = ?");
-			pstm.setString(1, userID);
+					"DELETE * FROM Student WHERE userID = ?");
+			pstm.setInt(1, userID);
 			pstm.executeUpdate();
 			closeConnection();
 			return;
 
 		}
 		
-		public void addModule(String regNumber, String modID) throws SQLException {
+		public static void addModule(String regNumber, String modID) throws SQLException {
+			openConnection();
 			String query = "INSERT INTO Student_Module (regNumber, modID)"
 			        + " values (?, ?)";
 			PreparedStatement pstm = connection.prepareStatement(query);
@@ -61,7 +72,8 @@ public class DACRegistrar {
 			return;
 		}
 		
-		public void dropModule(String regNumber, String modID) throws SQLException {
+		public static void dropModule(String regNumber, String modID) throws SQLException {
+			openConnection();
 			PreparedStatement pstm = connection.prepareStatement(
 					"DELETE * FROM Student_Module WHERE regNumber = ? AND modID = ?");
 			pstm.setString(1, regNumber);
