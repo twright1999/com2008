@@ -18,28 +18,36 @@ public final class DAC {
 	
 	private static void openConnection() throws SQLException {
 		try {
-			connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
-			if (connection != null) System.out.println(connection.toString());
-		}
-		catch (SQLException ex) {
-			closeConnection();
+			System.out.println("try openning conenction");
+			if (connection == null) {
+				connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
+				System.out.println("Connection value is assigned");
+			}
+			//if connection is already opened, do nothing
 		}
 		catch (NullPointerException nex) {
 			System.out.println("connection is null");
+			//closeConnection();
+		}
+		catch (SQLException ex) {
+			System.out.println("catch SQL");
+			//closeConnection();
 		}
 		
 	}
 	
 	private static void closeConnection() throws SQLException {
 		connection.close();
+		System.out.println("Conenction is closed");
 	}
 	
-	public static Student getStudent(String userID) throws SQLException, NullPointerException {
-		
+	public static Student getStudent(int userID) throws SQLException, NullPointerException {
+		System.out.println("before openConnection");
 		openConnection();
+		System.out.println("after openConnection");
 		PreparedStatement pstm = connection.prepareStatement(
 				"SELECT * FROM Student WHERE userID = ? LIMIT 1");
-		pstm.setString(1, userID);
+		pstm.setInt(1, userID);
 		ResultSet res = pstm.executeQuery();
 		Student student = QueryToObject.rowToStudent(res);
 		closeConnection();
@@ -50,6 +58,7 @@ public final class DAC {
 	
 	public static Degree getDegree(String degID) throws SQLException {
 		openConnection();
+		System.out.println("after openConnection");
 		PreparedStatement pstmt = connection.prepareStatement(
 				"SELECT * FROM Degree WHERE degID = ? LIMIT 1");
 		pstmt.setString(1, degID);
@@ -59,7 +68,7 @@ public final class DAC {
 		return degree;
 	}
 	
-	public static Degree getStudentDegree(String userID) throws SQLException {
+	public static Degree getStudentDegree(int userID) throws SQLException {
 		openConnection();
 		//navigating from Student to Module: Student -> Student_Module -> Module
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -68,7 +77,7 @@ public final class DAC {
 				+      "(SELECT regNumber FROM Student WHERE userID = ? LIMIT 1)"
 				+   "LIMIT 1)"
 				+"LIMIT 1");
-		pstmt.setString(1, userID);
+		pstmt.setInt(1, userID);
 		ResultSet res = pstmt.executeQuery();
 		String degID = res.getString("degID");
 		closeConnection();
@@ -76,7 +85,7 @@ public final class DAC {
 		
 	}
 	
-	public static PeriodOfStudy getPeriodOfStudy(String periodID) throws SQLException {
+	public PeriodOfStudy getPeriodOfStudy(String periodID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
 				"SELECT * FROM PeriodOfStudy WHERE periodID = ? LIMIT 1");
@@ -87,14 +96,13 @@ public final class DAC {
 	}
 	
 	
-	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		//DAC test = new DAC();
-		Student aa = DAC.getStudent("1");
-		if (aa != null)
-		System.out.println("not null :) ");
-		//System.out.println("getDegree: " + DAC.getDegree("COMU01").getDegID() );
+		
+		Degree degree = DAC.getDegree("COMU01");
+		if (degree == null)
+		System.out.println("null degree");
+		else System.out.println("Degree ID isss: " + degree.getDegID());
 		
 	}
 }

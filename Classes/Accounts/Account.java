@@ -2,11 +2,11 @@
 package Accounts;
 public class Account {
 
-  protected String userID;
+  protected int userID;
   protected String name;
   protected String password;
   protected char permission; //A - Admin; R - registrar; T - Teacher; S - Student; Null - Account;
-  public Account(String userID, String name, String password, char permission) {
+  public Account(int userID, String name, String password, char permission) {
 
     this.userID = userID;
     this.name = name;
@@ -15,7 +15,7 @@ public class Account {
 
   }
 
-  public String getUserID() {
+  public int getUserID() {
     return userID;
   }
 

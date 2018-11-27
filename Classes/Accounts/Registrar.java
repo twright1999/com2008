@@ -2,7 +2,7 @@
 package Accounts;
 public class Registrar extends Account {
 
-	public Registrar(String userID, String name, String password) {
+	public Registrar(int userID, String name, String password) {
 		super(userID, name, password);
 	}
 	

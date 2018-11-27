@@ -10,6 +10,7 @@ import Utility.PeriodOfStudy;
 
 public class Student extends Account {
 	
+	private int regNumber;
 	private String title; //Mr, Ms...
 	private Degree degree;
 	private String email; //First letter of forname(s) ++ surname ++ 2 unique 2 digit integer (if the same name already exsits) ++ university address
@@ -17,7 +18,7 @@ public class Student extends Account {
 	private PeriodOfStudy periodOfStudy;
 	
 	
-	public Student(String userID, String name, String password, char permission,
+	public Student(int userID, String name, String password, char permission,
 			String title, Degree degree,String email, String tutor, PeriodOfStudy
 			periodOfstudy) {
 		super(userID, name, password, permission);
