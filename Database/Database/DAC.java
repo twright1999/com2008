@@ -19,19 +19,19 @@ public final class DAC {
 	private static void openConnection() throws SQLException {
 		try {
 			System.out.println("try openning conenction");
-			if (connection == null) {
+			//if (connection == null) {
 				connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
 				System.out.println("Connection value is assigned");
-			}
+			//}
 			//if connection is already opened, do nothing
 		}
 		catch (NullPointerException nex) {
 			System.out.println("connection is null");
-			//closeConnection();
+			closeConnection();
 		}
 		catch (SQLException ex) {
-			System.out.println("catch SQL");
-			//closeConnection();
+			System.out.println("catch openConn: " + ex.toString());
+			closeConnection();
 		}
 		
 	}
@@ -41,7 +41,19 @@ public final class DAC {
 		System.out.println("Conenction is closed");
 	}
 	
-	public static Student getStudent(int userID) throws SQLException, NullPointerException {
+	public static Account getAccount(int userID) throws SQLException {
+		openConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM Account WHERE userID = ? LIMIT 1");
+		pstmt.setInt(1, userID);
+		ResultSet res = pstmt.executeQuery();
+		Account account = QueryToObject.rowToAccount(res);
+		closeConnection();
+		return account;
+				
+	}
+	
+	public static Student getStudent(int userID) throws SQLException {
 		System.out.println("before openConnection");
 		openConnection();
 		System.out.println("after openConnection");
@@ -52,7 +64,6 @@ public final class DAC {
 		Student student = QueryToObject.rowToStudent(res);
 		closeConnection();
 		return student;
-		
 		
 	}
 	
@@ -101,8 +112,10 @@ public final class DAC {
 		
 		Degree degree = DAC.getDegree("COMU01");
 		if (degree == null)
-		System.out.println("null degree");
+			System.out.println("null degree");
 		else System.out.println("Degree ID isss: " + degree.getDegID());
+		Account acc = DAC.getAccount(00000001);
+		System.out.println(acc.getName());
 		
 	}
 }
