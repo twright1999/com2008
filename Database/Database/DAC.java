@@ -19,10 +19,10 @@ public final class DAC {
 	private static void openConnection() throws SQLException {
 		try {
 			System.out.println("try openning conenction");
-			//if (connection == null) {
+			if (connection == null) {
 				connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
 				System.out.println("Connection value is assigned");
-			//}
+			}
 			//if connection is already opened, do nothing
 		}
 		catch (NullPointerException nex) {
@@ -57,10 +57,16 @@ public final class DAC {
 		System.out.println("before openConnection");
 		openConnection();
 		System.out.println("after openConnection");
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM Account, Student  "
+				+ "WHERE Account.userID = ? AND Student.userID = ? LIMIT 1");
+		/*
 		PreparedStatement pstm = connection.prepareStatement(
-				"SELECT * FROM Student WHERE userID = ? LIMIT 1");
-		pstm.setInt(1, userID);
-		ResultSet res = pstm.executeQuery();
+				"SELECT * FROM Account WHERE userID = ? UNION "
+			     +"SELECT * FROM Student WHERE userID = ? LIMIT 1");*/
+		pstmt.setInt(1, userID);
+		pstmt.setInt(2, userID);
+		ResultSet res = pstmt.executeQuery();
 		Student student = QueryToObject.rowToStudent(res);
 		closeConnection();
 		return student;
@@ -96,11 +102,11 @@ public final class DAC {
 		
 	}
 	
-	public PeriodOfStudy getPeriodOfStudy(String periodID) throws SQLException {
+	public static PeriodOfStudy getStudentPeriodOfStudy(int regID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM PeriodOfStudy WHERE periodID = ? LIMIT 1");
-		pstmt.setString(1, periodID);
+				"SELECT * FROM PeriodOfStudy WHERE regID = ? LIMIT 1");
+		pstmt.setInt(1, regID);
 		ResultSet res = pstmt.executeQuery();
 		closeConnection();
 		return QueryToObject.rowToPeriod(res);
@@ -116,6 +122,6 @@ public final class DAC {
 		else System.out.println("Degree ID isss: " + degree.getDegID());
 		Account acc = DAC.getAccount(00000001);
 		System.out.println(acc.getName());
-		
+		Student student = DAC.getStudent(1);
 	}
 }

@@ -11,7 +11,6 @@ import Utility.PeriodOfStudy;
 public class Student extends Account {
 	
 	private int regNumber;
-	private String title; //Mr, Ms...
 	private Degree degree;
 	private String email; //First letter of forname(s) ++ surname ++ 2 unique 2 digit integer (if the same name already exsits) ++ university address
 	private String tutor;
@@ -19,10 +18,9 @@ public class Student extends Account {
 	
 	
 	public Student(int userID, String name, String password, char permission,
-			String title, Degree degree,String email, String tutor, PeriodOfStudy
+			Degree degree,String email, String tutor, PeriodOfStudy
 			periodOfstudy) {
 		super(userID, name, password, permission);
-		this.title = title;
 		this.degree = degree;
 		this.tutor = tutor;
 		this.periodOfStudy = periodOfStudy;
@@ -34,9 +32,7 @@ public class Student extends Account {
 	 * @param userId userId for SELECT query in getStudentStatus
 	 * @return Student
 	 */
-	public Student viewStatus() throws SQLException {
-		//String id = this.getUserID();
-		//DAC dac = new DAC();
+	public Student getStudent() throws SQLException {
 		return DAC.getStudent(userID);
 	}
 	

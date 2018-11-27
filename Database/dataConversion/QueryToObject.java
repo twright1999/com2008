@@ -21,16 +21,17 @@ public final class QueryToObject {
 		Account account;
 		try {
 			res.next();
-			int userID = res.getInt("userID");
+			int userID = res.getInt("userID"); 
 			String name = res.getString("name");
 			String password = res.getString("password");
 			char permission = res.getString("permission").charAt(0);
 			account = new Account (userID, name, password, permission);
+			System.out.println(">>account is created");
 			return account;
 		}
 		catch (SQLException ex) {
 			//output in GUI that such account does not exists given the query
-			System.out.println("Such Account does not exsist");
+			System.out.println("rowToAcc exception: " + ex.toString());
 		}
 		//returns null if such account does not exist.
 		return null;
@@ -40,22 +41,28 @@ public final class QueryToObject {
 	public static Student rowToStudent(ResultSet res) {
 		Student student;
 		try {
-		//get values from the main account table
-		Account acc = rowToAccount(res);
-		//then add the missing student instance variables
-		res.next(); String title = res.getString("title");
-		res.next(); String email = res.getString("email");
-		res.next(); String tutor = res.getString("tutor");
-		//Goes to DAC, then to rowToDegree for row -> Degree conversion
-		Degree degree = DAC.getStudentDegree(acc.getUserID());
-        PeriodOfStudy periodOfStudy = DAC.getPeriodOfStudy(acc.getUserID());
-		//Pull periodOfStudy from PeriodOfStudy table
-        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
-        		acc.getPermission(), title, degree, email, tutor, periodOfStudy);
-		return student;
+			//get values from the main account table
+			
+			Account acc = rowToAccount(res);
+			//then add the missing student instance variables
+			//res.next();
+			
+			int regNumber = res.getInt("regNumber");
+			System.out.println("<>Student regNumber: " + regNumber);
+			String email = res.getString("email");
+			String tutor = res.getString("tutor");
+			//Goes to DAC, then to rowToDegree for row -> Degree conversion
+			Degree degree = DAC.getStudentDegree(acc.getUserID());
+			//Pull periodOfStudy from PeriodOfStudy table
+	        PeriodOfStudy periodOfStudy = DAC.getStudentPeriodOfStudy(regNumber);
+	        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
+	        		acc.getPermission(), degree, email, tutor, periodOfStudy);
+	        System.out.println(">>student is created");
+			return student;
 		}
 		catch (SQLException ex) {
-			System.out.println("sql exception in rowToStudent");
+			System.out.println("rowToStudent exception: " + ex.toString());
+			//System.out.println("sql exception in rowToStudent");
 		}
 		//returns null if the student was not found 
 		return null;
@@ -98,7 +105,7 @@ public final class QueryToObject {
 		}
 		catch (SQLException ex) {
 			//output in GUI that such account does not exists given the query
-			System.out.println("SQLexception in rowToPeriod");
+			System.out.println("SQLexception in rowToPeriod: " + ex.toString());
 		}
 		
 		return null;

@@ -18,16 +18,20 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Account VALUES (1, 'Tom', '123', 'S')");
 //		    stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'twright6@sheffield.ac.uk', 'richard', '1')");
 			
-			ResultSet res = stmt.executeQuery("SELECT * FROM Account");
+			ResultSet res = stmt.executeQuery(
+					"SELECT * FROM Account WHERE userID = 1 LIMIT 1 UNION "
+				   +"SELECT * FROM Student WHERE userID = 1 LIMIT 1");
 			while (res.next()) {
 				String name = res.getString("name");
 				System.out.print("RESULT NAME: " + name);
-				String accountID = res.getString("userID");
-				System.out.print(" accID: " + accountID);
+				String userID = res.getString("userID");
+				System.out.print(" accID: " + userID);
 				String password = res.getString("password");
-				System.out.println(" pass: " + password);
+				System.out.print(" pass: " + password);
 				String permission = res.getString("permission");
 				System.out.println(" permission: " + permission);
+				int regNumber = res.getInt("regNumber");
+				System.out.println(" regNumber: " + regNumber);
 			}
 			
 			//stmt.executeUpdate("DROP TABLE IF EXISTS PeriodOfStudy");
