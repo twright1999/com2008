@@ -8,32 +8,42 @@ import java.sql.SQLException;
 import Accounts.*;
 import dataConversion.QueryToObject;
 
-public class DACAdmin {
+public final class DACAdmin {
 
-private Connection connection;
+private static Connection connection;
 
-public DACAdmin() throws SQLException {
-	connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
+private static void openConnection() throws SQLException {
+	
+	try {
+		System.out.println("try openning conenction");
+		//if (connection == null) {
+			connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
+			System.out.println("Connection value is assigned");
+		//}
+		//if connection is already opened, do nothing
+	}
+	catch (NullPointerException nex) {
+		System.out.println("connection is null");
+		closeConnection();
+	}
+	catch (SQLException ex) {
+		System.out.println("catch openConn: " + ex.toString());
+		closeConnection();
+	}
+	
 }
 
-	private void openConnection() throws SQLException {
-		try(Connection connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86")) {
-			
-		}
-		catch (SQLException ex) {
-			closeConnection();
-		}
-	}
+private static void closeConnection() throws SQLException {
+	connection.close();
+	System.out.println("Conenction is closed");
+}
 
-	private void closeConnection() throws SQLException {
-		connection.close();
-	}
-
-	public void addAccount(String userID, String name, String password, char permission) throws SQLException {
+	public static void addAccount(int userID, String name, String password, char permission) throws SQLException {
+		openConnection();
 		String query = "INSERT INTO Account (userID, name, password, permission)"
 		        + " values (?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
-		pstm.setString(1, userID);
+		pstm.setInt(1, userID);
 		pstm.setString(2, name);
 		pstm.setString(3, password);
 		pstm.setString(4, String.valueOf(permission));
@@ -43,18 +53,19 @@ public DACAdmin() throws SQLException {
 
 	}
 	
-	public void removeAccount(String userID) throws SQLException {
+	public static void removeAccount(int userID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
 				"DELETE * FROM Account WHERE userID = ?");
-		pstm.setString(1, userID);
+		pstm.setInt(1, userID);
 		pstm.executeUpdate();
 		closeConnection();
 		return;
 
 	}
 	
-	public void setPermission(String userID, char permission) throws SQLException {
+	public static void setPermission(int userID, char permission) throws SQLException {
+		openConnection();
 		String query = "UPDATE Account SET permission="+permission+" WHERE userID="+userID;
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.executeUpdate();
@@ -62,7 +73,8 @@ public DACAdmin() throws SQLException {
 		return;
 	}
 	
-	public void setUserID(String oldUserID, String newUserID) throws SQLException {
+	public static void setUserID(int oldUserID, int newUserID) throws SQLException {
+		openConnection();
 		String query = "UPDATE Account SET userID="+newUserID+" WHERE userID="+oldUserID;
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.executeUpdate();
@@ -70,7 +82,8 @@ public DACAdmin() throws SQLException {
 		return;
 	}
 	
-	public void setPassword(String userID, String password) throws SQLException {
+	public static void setPassword(int userID, String password) throws SQLException {
+		openConnection();
 		String query = "UPDATE Account SET password="+password+" WHERE userID="+userID;
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.executeUpdate();
@@ -78,7 +91,8 @@ public DACAdmin() throws SQLException {
 		return;
 	}
 	
-	public void setUsername(String userID, String name) throws SQLException {
+	public static void setUsername(int userID, String name) throws SQLException {
+		openConnection();
 		String query = "UPDATE Account SET name="+name+" WHERE userID="+userID;
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.executeUpdate();
@@ -86,7 +100,8 @@ public DACAdmin() throws SQLException {
 		return;
 	}
 	
-	public void addDepartment(String depID, String name) throws SQLException {
+	public static void addDepartment(String depID, String name) throws SQLException {
+		openConnection();
 		String query = "INSERT INTO Department (depID, name)"
 		        + " values (?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
@@ -98,7 +113,7 @@ public DACAdmin() throws SQLException {
 
 	}
 
-	public void removeDepartment(String depID) throws SQLException {
+	public static void removeDepartment(String depID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
 				"DELETE * FROM Department WHERE depID = ?");
@@ -109,7 +124,8 @@ public DACAdmin() throws SQLException {
 		
 	}
 	
-	public void addDegree(String degID, String name, String level, String depID) throws SQLException {
+	public static void addDegree(String degID, String name, String level, String depID) throws SQLException {
+		openConnection();
 		String query = "INSERT INTO Department (depID, name)"
 		        + " values (?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
@@ -123,7 +139,7 @@ public DACAdmin() throws SQLException {
 
 	}
 	
-	public void removeDegree(String degID) throws SQLException {
+	public static void removeDegree(String degID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
 				"DELETE * FROM Degree WHERE degID = ?");
@@ -134,7 +150,8 @@ public DACAdmin() throws SQLException {
 		
 	}
 	
-	public void addModule(String modID, String name, int credits, String taught, String obligatory, String degCode) throws SQLException {
+	public static void addModule(String modID, String name, int credits, String taught, String obligatory, String degCode) throws SQLException {
+		openConnection();
 		String query = "INSERT INTO Department (modID, name, credits, taught, obligatory, degCode)"
 		        + " values (?, ?, ?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
@@ -150,7 +167,7 @@ public DACAdmin() throws SQLException {
 
 	}
 	
-	public void removeModule(String modID) throws SQLException {
+	public static void removeModule(String modID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
 				"DELETE * FROM Module WHERE modID = ?");
@@ -164,8 +181,6 @@ public DACAdmin() throws SQLException {
 	//for testing
 	public static void main(String[] arg) throws SQLException {
 		
-		DACAdmin admin = new DACAdmin();
-		admin.addAccount("222", "John Smith", "123", 's');
 	}
 
 

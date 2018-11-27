@@ -1,72 +1,76 @@
 package Accounts;
-import java.sql.Connection;
-
 import Database.DACAdmin;
 
 import java.sql.*;
 public class Admin extends Account {
-	
-	private DACAdmin admin;
 
-	public Admin(String userID, String name, String password, char permission) {
+	public Admin(int userID, String name, String password, char permission) {
 		super(userID, name, password, permission);
 
 	}
 
-	private void addAcount(Account account) {
-		admin.addAccount;
+	private void addAcount(int accountUserID, String accountName, String accountPassword, char accountPermission) throws SQLException {
+		DACAdmin.addAccount(accountUserID, accountName, accountPassword, accountPermission);
 		return;	
 	}
 
-	private void removeAccount(String userID) {
-		DACAdmin.removeAccount(userID);
+	private void removeAccount(int accountUserID) throws SQLException {
+		DACAdmin.removeAccount(accountUserID);
 		return;
 	}
 	
 
-	private void setPrivilige(Account account) {
-		return DACAdmin.setPrivilige;
+	private void setPermission(int accountUserID, char accountPermission) throws SQLException {
+		DACAdmin.setPermission(accountUserID, accountPermission);
+		return;
 	}
 
-	private void setUserID(String userId) {
-		return DACAdmin.setUserID;
+	private void setUserID(int accountOldUserID, int accountNewUserID) throws SQLException {
+		DACAdmin.setUserID(accountOldUserID, accountNewUserID);
+		return;
 	}
 
-	private void setUserPassword(String pass) {
-		return DACAdmin.setUserPassword;
+	private void setPassword(int accountUserID, String newAccountPassword) throws SQLException {
+		DACAdmin.setPassword(accountUserID, newAccountPassword);
+		return;
 	}
 
-	private void setUserName(String name) {
-		return DACAdmin.setUserName;
+	private void setAccountName(int accountUserID, String newAccountName) throws SQLException {
+		DACAdmin.setUsername(accountUserID, newAccountName);
+		return;
 	}
 
-	private void addDepartment(Department department) {
-		return DACAdmin.addDepartment;
+	private void addDepartment(String depID, String depName) throws SQLException {
+		DACAdmin.addDepartment(depID, depName);
+		return;	
 	}
 
-	private void removeDepartment(Department department) {
-		return DACAdmin.removeDepartment;
+	private void removeDepartment(String depID) throws SQLException {
+		DACAdmin.removeDepartment(depID);
+		return;	
 	}
 
-	private void addDegree(Degree degree) {
-		return DACAdmin.addDegree;
+	private void addDegree(String degID, String depName, String level, String depID) throws SQLException {
+		DACAdmin.addDegree(depID, depName, level, depID);
+		return;	
 	}
 
-	private void removeDegree(Degree degree) {
-		return DACAdmin.removeDegree;
+	private void removeDegree(String degID) throws SQLException {
+		DACAdmin.removeDegree(degID);
+		return;
 	}
 
-	private void addModule(Module module) {
-		return DACAdmin.addModule;
+	private void addModule(String modID, String modName, int credits, String taught, String obligatory, String degCode) throws SQLException {
+		DACAdmin.addModule(modID, modName, credits, taught, obligatory, degCode);
+		return;
 	}
 
-	private void removeModule(Module module) {
-		return DACAdmin.removeModule;
+	private void removeModule(String modID) throws SQLException {
+		DACAdmin.removeModule(modID);
+		return;
 	}
 
 	public static void main(String[] arg) throws SQLException {
-		Admin admin = new Admin("A01", "Rokas", "gg");
-		admin.addAcount("Pokas", "pp");
 
 	}
 
