@@ -18,27 +18,28 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Account VALUES (1, 'Tom', '123', 'S')");
 //		    stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'twright6@sheffield.ac.uk', 'richard', '1')");
 			
-//			ResultSet res = stmt.executeQuery("SELECT * FROM Account WHERE userID = 1");
-//			while (res.next()) {
-//				String name = res.getString("name");
-//				System.out.print("RESULT NAME: " + name);
-//				String accountID = res.getString("userID");
-//				System.out.print(" accID: " + accountID);
-//				String password = res.getString("password");
-//				System.out.println(" pass: " + password);
-//				String permission = res.getString("permission");
-//				System.out.println(" permission: " + permission);
-//			}
+			ResultSet res = stmt.executeQuery("SELECT * FROM Account");
+			while (res.next()) {
+				String name = res.getString("name");
+				System.out.print("RESULT NAME: " + name);
+				String accountID = res.getString("userID");
+				System.out.print(" accID: " + accountID);
+				String password = res.getString("password");
+				System.out.println(" pass: " + password);
+				String permission = res.getString("permission");
+				System.out.println(" permission: " + permission);
+			}
 			
-//			stmt.executeUpdate("DROP TABLE IF EXISTS Module");
+			//stmt.executeUpdate("DROP TABLE IF EXISTS PeriodOfStudy");
+
 			
 			/* 
 			 * BASE VALUES TEST
 			 * Already been executed
 			 */
 			
-//			stmt.executeUpdate("INSERT INTO Account VALUES (00000001, 'Mr Bob Bobson', 'password', 'S')");
-//			stmt.executeUpdate("INSERT INTO Account VALUES (00000002, 'Mr Teacher', 'password', 'T')");
+//			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mr Bob Bobson', 'password', 'S')");
+//			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mr Teacher', 'password', 'T')");
 //			stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'bob@sheffield.ac.uk', 'Mr Tue Toor', '00000001')");
 //			stmt.executeUpdate("INSERT INTO Department VALUES ('COM', 'Computer Science')");
 //			stmt.executeUpdate("INSERT INTO Degree VALUES ('COMU01', 'BSc Computer Science', '3', 'COM')");
