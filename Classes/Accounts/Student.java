@@ -42,4 +42,10 @@ public class Student extends Account {
 		//Check if such name already exists in the database
 	}*/
 	
+	public String toString() {
+		String all = super.toString() + degree.toString() + 
+				" ; tutor: " + tutor + periodOfStudy.toString();
+		return all;
+	}
+	
 }

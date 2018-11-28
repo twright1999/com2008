@@ -30,5 +30,10 @@ public class Account {
   public char getPermission() {
 	  return permission;
   }
+  
+  public String toString() {
+	  String all = "UserID: " + userID + " ; name: " + name + " ; permission: " + permission + " ;";
+	  return all;
+  }
 
 }

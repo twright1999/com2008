@@ -38,25 +38,45 @@ public final class QueryToObject {
 		
 	}
 	
-	public static Student rowToStudent(ResultSet res) {
+	public static Student rowToStudent(ResultSet resStudent, ResultSet resDegree, ResultSet resPeriod) {
 		Student student;
 		try {
 			//get values from the main account table
-			
-			Account acc = rowToAccount(res);
+			System.out.println("rowToStudent before rowToAccount");
+			Account acc = rowToAccount(resStudent);
 			//then add the missing student instance variables
-			//res.next();
-			
-			int regNumber = res.getInt("regNumber");
+			//resStudent.next();
+			int userID = resStudent.getInt("userID"); 
+			String name = resStudent.getString("name");
+			String password = resStudent.getString("password");
+			char permission = resStudent.getString("permission").charAt(0);
+			Account account = new Account (userID, name, password, permission);
+			int regNumber = resStudent.getInt("regNumber");
 			System.out.println("<>Student regNumber: " + regNumber);
-			String email = res.getString("email");
-			String tutor = res.getString("tutor");
-			//Goes to DAC, then to rowToDegree for row -> Degree conversion
-			Degree degree = DAC.getStudentDegree(acc.getUserID());
-			//Pull periodOfStudy from PeriodOfStudy table
-	        PeriodOfStudy periodOfStudy = DAC.getStudentPeriodOfStudy(regNumber);
+			String email = resStudent.getString("email");
+			String tutor = resStudent.getString("tutor");
+			System.out.println("TUTOR: " + tutor);
+			//pulling degree values from result set and creating Degree instance
+			resDegree.next();
+			String degID = resDegree.getString("degID");
+			System.out.println(">>after degID: " + degID);
+			String nameD = resDegree.getString("name");
+			char level = resDegree.getString("level").charAt(0);
+			char depID = resDegree.getString("depID").charAt(0);
+			Degree degree = new Degree(degID, nameD, level, depID);
+			//pulling periodOfStudy values from res set and creating PeriodOfStudy instance
+			resPeriod.next();
+			int periodID = resPeriod.getInt("periodID");
+			char label = resPeriod.getString("label").charAt(0);
+			Date startDate = resPeriod.getDate("startDate");
+			Date endDate = resPeriod.getDate("endDate");
+			char levelP  = resPeriod.getString("level").charAt(0);
+			int regNumberP = resPeriod.getInt("regNumber");
+			
+			PeriodOfStudy period = new PeriodOfStudy(periodID, label, startDate, endDate, levelP, regNumberP);
+			
 	        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
-	        		acc.getPermission(), degree, email, tutor, periodOfStudy);
+	        		acc.getPermission(), degree, email, tutor, period);
 	        System.out.println(">>student is created");
 			return student;
 		}
@@ -71,16 +91,17 @@ public final class QueryToObject {
 	public static Degree rowToDegree(ResultSet res) throws SQLException  {
 		Degree degree;
 		try {
+			System.out.println(">>rowToDegree block");
 			res.next();
 			String degID = res.getString("degID");
 			String name = res.getString("name");
 			char level = res.getString("level").charAt(0);
-			String depID = res.getString("depID");
+			char depID = res.getString("depID").charAt(0);
 			degree = new Degree(degID, name, level, depID);
 			return degree;
 		}
 		catch (SQLException ex) {
-			System.out.println("SQLexception in rowToDegree");
+			System.out.println("rowToDegree exception: " + ex.toString());
 			degree = null;
 		}
 		//Returns null if Degree was not found

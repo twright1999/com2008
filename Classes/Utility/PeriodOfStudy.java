@@ -28,4 +28,12 @@ public class PeriodOfStudy {
 	public char level() { return level; }
 	public int regNumber() { return regNumber; }
 	
+	public String toString() {
+		String all = "periodID: " + periodID + " ; label: " + label
+				+ " ; stardDate: " + startDate.toString() 
+				+ " ; endDate: " + endDate.toString() + " ; level: " + level + " ; regNumber: " + regNumber + " ;";
+		return all;
+				
+	
+	}
 }
