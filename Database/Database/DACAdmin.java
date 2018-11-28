@@ -5,6 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.bouncycastle.jcajce.provider.digest.SHA3;
+import org.bouncycastle.util.encoders.Hex;
+
 import Accounts.*;
 import dataConversion.QueryToObject;
 
@@ -45,7 +48,7 @@ private static void closeConnection() throws SQLException {
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setInt(1, 0);
 		pstm.setString(2, name);
-		pstm.setString(3, password);
+		pstm.setString(3, hashPassword(password));
 		pstm.setString(4, String.valueOf(permission));
 		pstm.executeUpdate();
 		closeConnection();
@@ -173,12 +176,20 @@ private static void closeConnection() throws SQLException {
 		closeConnection();
 		return;
 	}
+
+	public static String hashPassword(String p) {
+	    String password = p;
+	    
+	    SHA3.DigestSHA3 digestSHA3 = new SHA3.Digest512();
+	    byte[] digest = digestSHA3.digest(password.getBytes());
+
+	    return Hex.toHexString(digest);
+	}
 	
 	
 	//for testing
-	public static void main(String[] arg) throws SQLException {
-		DACAdmin.addDegree("D3BAD", "this degree is bad", '2', "BUS");
-		DAC.getDegree("D3BAD");
+	public static void main(String[] arg) {
+		System.out.print(hashPassword("password"));
 	}
 
 
