@@ -44,32 +44,33 @@ public class OpenConnection {
 
 
 					
-//			ResultSet res = stmt.executeQuery("SELECT * FROM Account");
-//			while (res.next()) {
-//				String name = res.getString("name");
-//				System.out.print("RESULT name: " + name);
-//				String userID = res.getString("userID");
-//				System.out.print(" userID: " + userID);
-//				String password = res.getString("password");
-//				System.out.print(" pass: " + password);
-//				String permission = res.getString("permission");
-//				System.out.println(" permission: " + permission);
-//			}
-////			
-//			ResultSet res2 = stmt.executeQuery("SELECT * FROM Student");
-//			while (res2.next()) {
-//				int regNumber = res2.getInt("regNumber");
-//				System.out.print("RESULT regNumber: " + regNumber);
-//				String email = res2.getString("email");
-//				System.out.print(" email: " + email);
-//				String tutor = res2.getString("tutor");
-//				System.out.print(" tutor: " + tutor);
-//				int userID = res2.getInt("userID");
-//				System.out.print(" userID: " + userID);
-//			}
+			ResultSet res = stmt.executeQuery("SELECT * FROM Account");
+			while (res.next()) {
+				String name = res.getString("name");
+				System.out.print("RESULT name: " + name);
+				String userID = res.getString("userID");
+				System.out.print(" userID: " + userID);
+				String password = res.getString("password");
+				System.out.print(" pass: " + password);
+				String permission = res.getString("permission");
+				System.out.println(" permission: " + permission);
+			}
+		
+			ResultSet res2 = stmt.executeQuery("SELECT * FROM Student");
+			while (res2.next()) {
+				int regNumber = res2.getInt("regNumber");
+				System.out.print("RESULT regNumber: " + regNumber);
+				String email = res2.getString("email");
+				System.out.print(" email: " + email);
+				String tutor = res2.getString("tutor");
+				System.out.print(" tutor: " + tutor);
+				int userID = res2.getInt("userID");
+				System.out.print(" userID: " + userID);
+			}
 			
 			
-//			stmt.executeUpdate("DROP TABLE IF EXISTS Grade");
+//			stmt.executeUpdate("DROP TABLE IF EXISTS Student_Module");
+			
 	
 //			stmt.executeUpdate("DELETE FROM Account");
 //			stmt.executeUpdate("DELETE FROM Student");
@@ -91,8 +92,8 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Student VALUES (987654321, 'twright@sheffield.ac.uk', 'Mr Tue Toor', '13')");
 //			stmt.executeUpdate("INSERT INTO Department VALUES ('COM', 'Computer Science')");
 //			stmt.executeUpdate("INSERT INTO Degree VALUES ('COMU01', 'BSc Computer Science', '3', 'COM')");
-//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, 'COMU01')");
-//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2108', 'Functional Programming', '20', 'Autumn', True, 'COMU01')");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, '2', 'COMU01')");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2108', 'Functional Programming', '20', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
 //			stmt.executeUpdate("INSERT INTO Teacher VALUES (0, 'COM', 14)");

@@ -37,6 +37,7 @@ public final class Setup{
 					   "credits int NOT NULL,"+
 					   "taught varchar (20) NOT NULL,"+
 					   "obligatory bit NOT NULL,"+
+					   "level char NOT NULL,"+
 					   "degID varchar (6) NOT NULL,"+
 					   "FOREIGN KEY (degID) references Degree(degID) on delete cascade)");
 			
