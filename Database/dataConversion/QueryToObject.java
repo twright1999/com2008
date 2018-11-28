@@ -46,7 +46,7 @@ public final class QueryToObject {
 			System.out.println("rowToStudent before rowToAccount");
 			//Account acc = rowToAccount(resStudent);
 			//then add the missing student instance variables
-			//resStudent.next();
+			resStudent.next();
 			int userID = resStudent.getInt("userID"); 
 			String name = resStudent.getString("name");
 			String password = resStudent.getString("password");
@@ -76,7 +76,7 @@ public final class QueryToObject {
 			PeriodOfStudy period = new PeriodOfStudy(periodID, label, startDate, endDate, levelP, regNumberP);
 			
 	        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
-	        		acc.getPermission(),regNumber, degree, email, tutor, period);
+	        		acc.getPermission(),regNumber, degree, tutor, period, email);
 	        System.out.println(">>student is created");
 			return student;
 		}
@@ -132,10 +132,8 @@ public final class QueryToObject {
 		
 	}
 	
-	public static Grade[] rowsToGrades(ResultSet res) throws SQLException {
-		if (res.last()){
-			Grade[] grades= new Grade[res.getRow()];
-			res.first();
+	public static Grade[] rowsToGrades(ResultSet res, int count) throws SQLException {
+		Grade[] grades= new Grade[count];
 			try {
 				int index = 0;
 				while(res.next()) {
@@ -146,6 +144,7 @@ public final class QueryToObject {
 					Grade grade = new Grade(gradeID, gradeP, modID, regNumber);
 					grades[index] = grade;
 					index++;
+					System.out.println("while'ing");
 				}
 				return grades;
 			}
@@ -153,7 +152,7 @@ public final class QueryToObject {
 				catch(SQLException ex) {
 					System.out.println("rowsToGrades: " + ex.toString() );
 				}
-		}
+		
 		return null;
 	}
 	

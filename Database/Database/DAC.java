@@ -54,7 +54,6 @@ public class DAC {
 				
 	}
 	
-	
 	public static Student getStudent(int userID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt1 = connection.prepareStatement(
@@ -86,8 +85,16 @@ public class DAC {
 		PreparedStatement pstmt = connection.prepareStatement(
 				"SELECT * FROM Grade WHERE regNumber = ?");
 		pstmt.setInt(1, regNumber);
-		ResultSet res = pstmt.executeQuery();
-		Grade[] grades = QueryToObject.rowsToGrades(res);
+		ResultSet resGrades = pstmt.executeQuery();
+		//counting how many grades there are to know the array size of grades
+		pstmt = connection.prepareStatement("SELECT COUNT(*) FROM Grade WHERE regNumber = ?");
+		pstmt.setInt(1, regNumber);
+		ResultSet resCount = pstmt.executeQuery();
+		resCount.next();
+		int count = resCount.getInt(resCount.getRow());
+		System.out.println("Count: " + count) ;
+		System.out.println("before rowsToGrades");
+		Grade[] grades = QueryToObject.rowsToGrades(resGrades, count);
 		closeConnection();
 		return grades;
 	}
@@ -120,9 +127,6 @@ public class DAC {
 		return degree;
 	}
 	
-	
-	
-	
 	public static PeriodOfStudy getStudentPeriodOfStudy(int regID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -136,7 +140,7 @@ public class DAC {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		
+		/*
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
@@ -145,5 +149,10 @@ public class DAC {
 		
 		Student student = DAC.getStudent(13);
 		System.out.println(student.toString());
+		*/
+		Grade[] grades = DAC.getStudentGrades(987654321);
+		System.out.println(">>after DAC");
+		System.out.println(grades[0].toString());
+		System.out.println(grades[1].toString());
 	}
 }
