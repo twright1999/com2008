@@ -83,6 +83,13 @@ public class DAC {
 	
 	public static Grade[] getStudentGrades(int regNumber) throws SQLException {
 		openConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM Grade WHERE regNumber = ?");
+		pstmt.setInt(1, regNumber);
+		ResultSet res = pstmt.executeQuery();
+		Grade[] grades = QueryToObject.rowsToGrades(res);
+		closeConnection();
+		return grades;
 	}
 	
 	public static Degree getStudentDegree(int userID) throws SQLException {
@@ -133,10 +140,10 @@ public class DAC {
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
-		Account acc = DAC.getAccount(00000001);
+		Account acc = DAC.getAccount(13);
 		System.out.println(acc.toString());
 		
-		Student student = DAC.getStudent(123456789);
+		Student student = DAC.getStudent(13);
 		System.out.println(student.toString());
 	}
 }

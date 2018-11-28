@@ -44,14 +44,14 @@ public final class QueryToObject {
 		try {
 			//get values from the main account table
 			System.out.println("rowToStudent before rowToAccount");
-			Account acc = rowToAccount(resStudent);
+			//Account acc = rowToAccount(resStudent);
 			//then add the missing student instance variables
 			//resStudent.next();
 			int userID = resStudent.getInt("userID"); 
 			String name = resStudent.getString("name");
 			String password = resStudent.getString("password");
 			char permission = resStudent.getString("permission").charAt(0);
-			Account account = new Account (userID, name, password, permission);
+			Account acc = new Account (userID, name, password, permission);
 			int regNumber = resStudent.getInt("regNumber");
 			String email = resStudent.getString("email");
 			String tutor = resStudent.getString("tutor");
@@ -76,7 +76,7 @@ public final class QueryToObject {
 			PeriodOfStudy period = new PeriodOfStudy(periodID, label, startDate, endDate, levelP, regNumberP);
 			
 	        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
-	        		acc.getPermission(), degree, email, tutor, period);
+	        		acc.getPermission(),regNumber, degree, email, tutor, period);
 	        System.out.println(">>student is created");
 			return student;
 		}
@@ -130,6 +130,31 @@ public final class QueryToObject {
 		
 		return null;
 		
+	}
+	
+	public static Grade[] rowsToGrades(ResultSet res) throws SQLException {
+		if (res.last()){
+			Grade[] grades= new Grade[res.getRow()];
+			res.first();
+			try {
+				int index = 0;
+				while(res.next()) {
+					int gradeID = res.getInt("gradeID");
+					float gradeP = res.getFloat("gradePercent");
+					String modID = res.getString("modID");
+					int regNumber = res.getInt("regNumber");
+					Grade grade = new Grade(gradeID, gradeP, modID, regNumber);
+					grades[index] = grade;
+					index++;
+				}
+				return grades;
+			}
+				
+				catch(SQLException ex) {
+					System.out.println("rowsToGrades: " + ex.toString() );
+				}
+		}
+		return null;
 	}
 	
 	public static void main(String[] arg) throws SQLException {

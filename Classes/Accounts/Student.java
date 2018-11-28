@@ -18,13 +18,27 @@ public class Student extends Account {
 	
 	
 	public Student(int userID, String name, String password, char permission,
-			Degree degree,String email, String tutor, PeriodOfStudy
+			int regNumber, Degree degree, String tutor, PeriodOfStudy
 			periodOfstudy) {
 		super(userID, name, password, permission);
+		this.regNumber = regNumber;
 		this.degree = degree;
 		this.tutor = tutor;
 		this.periodOfStudy = periodOfStudy;
 		//this.email = generateEmail();
+	}
+	/*there is an email field, because this constructor is used when Student is already
+	 * created and inserted in database. 
+	 */
+	public Student(int userID, String name, String password, char permission,
+			int regNumber, Degree degree, String tutor, PeriodOfStudy periodOfStudy,
+			String email) {
+		super(userID, name, password, permission);
+		this.regNumber = regNumber;
+		this.degree = degree;
+		this.tutor = tutor;
+		this.periodOfStudy = periodOfStudy;
+		this.email = email;
 	}
 	
 	/*
