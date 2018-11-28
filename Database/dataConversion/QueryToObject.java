@@ -32,6 +32,7 @@ public final class QueryToObject {
 		catch (SQLException ex) {
 			//output in GUI that such account does not exists given the query
 			System.out.println("rowToAcc exception: " + ex.toString());
+			System.out.println("Such account does not exsit");
 		}
 		//returns null if such account does not exist.
 		return null;
@@ -52,18 +53,17 @@ public final class QueryToObject {
 			char permission = resStudent.getString("permission").charAt(0);
 			Account account = new Account (userID, name, password, permission);
 			int regNumber = resStudent.getInt("regNumber");
-			System.out.println("<>Student regNumber: " + regNumber);
 			String email = resStudent.getString("email");
 			String tutor = resStudent.getString("tutor");
-			System.out.println("TUTOR: " + tutor);
+			
 			//pulling degree values from result set and creating Degree instance
 			resDegree.next();
 			String degID = resDegree.getString("degID");
-			System.out.println(">>after degID: " + degID);
 			String nameD = resDegree.getString("name");
 			char level = resDegree.getString("level").charAt(0);
 			char depID = resDegree.getString("depID").charAt(0);
 			Degree degree = new Degree(degID, nameD, level, depID);
+			
 			//pulling periodOfStudy values from res set and creating PeriodOfStudy instance
 			resPeriod.next();
 			int periodID = resPeriod.getInt("periodID");
@@ -82,7 +82,7 @@ public final class QueryToObject {
 		}
 		catch (SQLException ex) {
 			System.out.println("rowToStudent exception: " + ex.toString());
-			//System.out.println("sql exception in rowToStudent");
+			System.out.println("Such student does not exsist");
 		}
 		//returns null if the student was not found 
 		return null;
@@ -91,7 +91,6 @@ public final class QueryToObject {
 	public static Degree rowToDegree(ResultSet res) throws SQLException  {
 		Degree degree;
 		try {
-			System.out.println(">>rowToDegree block");
 			res.next();
 			String degID = res.getString("degID");
 			String name = res.getString("name");
