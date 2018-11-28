@@ -13,22 +13,22 @@ public class Registrar extends Account {
 	
 	// need database stuff working first 
 	
-	private void addStudent(String regNumber, String email, String tutor, int studentUserID) throws SQLException {
+	private void addStudent(int regNumber, String email, String tutor, int studentUserID) throws SQLException {
 		DACRegistrar.addStudent(regNumber, email, tutor, studentUserID);
 		return;	
 	}
 	
-	private void removeStudent(int studentUserID) throws SQLException {
-		DACRegistrar.removeStudent(studentUserID);
+	private void removeStudent(int regNumber) throws SQLException {
+		DACRegistrar.removeStudent(regNumber);
 		return;	
 	}
 	
-	private void addModule(String regNumber, String modID) throws SQLException {
+	private void addModule(int regNumber, String modID) throws SQLException {
 		DACRegistrar.addModule(regNumber, modID);
 		return;	
 	}
 	
-	private void dropModule(String regNumber, String modID) throws SQLException {
+	private void dropModule(int regNumber, String modID) throws SQLException {
 		DACRegistrar.dropModule(regNumber, modID);
 	}
 	

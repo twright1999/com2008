@@ -36,12 +36,11 @@ public final class DACRegistrar {
 		System.out.println("Conenction is closed");
 	}
 
-		public static void addStudent(String regNumber, String email, String tutor, int userID) throws SQLException {
+		public static void addStudent(int regNumber, String email, String tutor, int userID) throws SQLException {
 			openConnection();
-			String query = "INSERT INTO Student (regNumber, email, tutor, userID)"
-			        + " values (?, ?, ?, ?)";
+			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, userID = (SELECT userID FROM Account WHERE userID = ?)";
 			PreparedStatement pstm = connection.prepareStatement(query);
-			pstm.setString(1, regNumber);
+			pstm.setInt(1, regNumber);
 			pstm.setString(2, email);
 			pstm.setString(3, tutor);
 			pstm.setInt(4, userID);
@@ -54,7 +53,7 @@ public final class DACRegistrar {
 		public static void removeStudent(int userID) throws SQLException {
 			openConnection();
 			PreparedStatement pstm = connection.prepareStatement(
-					"DELETE * FROM Student WHERE userID = ?");
+					"DELETE FROM Student WHERE userID = ?");
 			pstm.setInt(1, userID);
 			pstm.executeUpdate();
 			closeConnection();
@@ -62,25 +61,32 @@ public final class DACRegistrar {
 
 		}
 		
-		public static void addModule(String regNumber, String modID) throws SQLException {
+		public static void addModule(int regNumber, String modID) throws SQLException {
 			openConnection();
-			String query = "INSERT INTO Student_Module (regNumber, modID)"
-			        + " values (?, ?)";
+			String query = "INSERT INTO Student_Module SET regNumber = (SELECT regNumber FROM Student WHERE regNumber = ?), modID = (SELECT modID FROM Module WHERE modID = ?)";
 			PreparedStatement pstm = connection.prepareStatement(query);
+			pstm.setInt(1, regNumber);
+			pstm.setString(2, modID);
 			pstm.executeUpdate();
 			closeConnection();
 			return;
 		}
 		
-		public static void dropModule(String regNumber, String modID) throws SQLException {
+		public static void dropModule(int regNumber, String modID) throws SQLException {
 			openConnection();
 			PreparedStatement pstm = connection.prepareStatement(
-					"DELETE * FROM Student_Module WHERE regNumber = ? AND modID = ?");
-			pstm.setString(1, regNumber);
+					"DELETE FROM Student_Module WHERE regNumber = ? AND modID = ?");
+			pstm.setInt(1, regNumber);
 			pstm.setString(2, modID);
 			pstm.executeUpdate();
 			closeConnection();
 			return;
+			
+		}
+		
+		//for testing
+		public static void main(String[] arg) throws SQLException {
+			DACRegistrar.dropModule(69420, "BAD69");
 			
 		}
 		
