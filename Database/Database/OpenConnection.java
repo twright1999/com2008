@@ -17,6 +17,7 @@ public class OpenConnection {
 			
 //			stmt.executeUpdate("INSERT INTO Account VALUES (1, 'Tom', '123', 'S')");
 //		    stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'twright6@sheffield.ac.uk', 'richard', '1')");
+
 			/*
 			ResultSet res = stmt.executeQuery(
 					"SELECT * FROM Account WHERE userID = 1 LIMIT 1 UNION "
@@ -41,22 +42,63 @@ public class OpenConnection {
 			System.out.println("nameDDD: " + nameD);*/
 			//stmt.executeUpdate("DROP TABLE IF EXISTS PeriodOfStudy");
 
+
+					
+//			ResultSet res = stmt.executeQuery("SELECT * FROM Account");
+//			while (res.next()) {
+//				String name = res.getString("name");
+//				System.out.print("RESULT name: " + name);
+//				String userID = res.getString("userID");
+//				System.out.print(" userID: " + userID);
+//				String password = res.getString("password");
+//				System.out.print(" pass: " + password);
+//				String permission = res.getString("permission");
+//				System.out.println(" permission: " + permission);
+//			}
+////			
+//			ResultSet res2 = stmt.executeQuery("SELECT * FROM Student");
+//			while (res2.next()) {
+//				int regNumber = res2.getInt("regNumber");
+//				System.out.print("RESULT regNumber: " + regNumber);
+//				String email = res2.getString("email");
+//				System.out.print(" email: " + email);
+//				String tutor = res2.getString("tutor");
+//				System.out.print(" tutor: " + tutor);
+//				int userID = res2.getInt("userID");
+//				System.out.print(" userID: " + userID);
+//			}
+			
+			
+//			stmt.executeUpdate("DROP TABLE IF EXISTS Grade");
+	
+//			stmt.executeUpdate("DELETE FROM Account");
+//			stmt.executeUpdate("DELETE FROM Student");
+//			stmt.executeUpdate("DELETE FROM Teacher");
+//			stmt.executeUpdate("DELETE FROM Grade");
+//			stmt.executeUpdate("DELETE FROM PeriodOfStudy");
+//			stmt.executeUpdate("DELETE FROM Student_Module");
+//			stmt.executeUpdate("DELETE FROM Module");
+//			stmt.executeUpdate("DELETE FROM Department");
+//			stmt.executeUpdate("DELETE FROM Degree");
 			
 			/* 
 			 * BASE VALUES TEST
 			 * Already been executed
 			 */
 			
-//			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mr Bob Bobson', 'password', 'S')");
-//			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mr Teacher', 'password', 'T')");
-//			stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'bob@sheffield.ac.uk', 'Mr Tue Toor', '00000001')");
+//			stmt.executeUpdate("INSERT INTO Account VALUES (0, 'Mr Thomas Wright', 'password', 'S')");
+//			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mrs Teacher', 'password', 'T')");
+//			stmt.executeUpdate("INSERT INTO Student VALUES (987654321, 'twright@sheffield.ac.uk', 'Mr Tue Toor', '13')");
 //			stmt.executeUpdate("INSERT INTO Department VALUES ('COM', 'Computer Science')");
 //			stmt.executeUpdate("INSERT INTO Degree VALUES ('COMU01', 'BSc Computer Science', '3', 'COM')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, 'COMU01')");
-//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (123456789, 'COM2008')");
-//			stmt.executeUpdate("INSERT INTO Teacher VALUES (99999999, 'COM', 00000002)");
-//			stmt.executeUpdate("INSERT INTO PeriodOfStudy VALUES (00000001, 'A', '2017-09-25', '2020-06-06', 3, 123456789)");
-//			stmt.executeUpdate("INSERT INTO Grade VALUES (00000001, 70.0, 'COM2008', 123456789)");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2108', 'Functional Programming', '20', 'Autumn', True, 'COMU01')");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
+//			stmt.executeUpdate("INSERT INTO Teacher VALUES (0, 'COM', 14)");
+//			stmt.executeUpdate("INSERT INTO PeriodOfStudy VALUES (0, 'A', '2017-09-25', '2020-06-06', 3, 987654321)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 70.0, 'COM2008', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 69.0, 'COM2108', 987654321)");
 			
 			
 			
@@ -65,6 +107,7 @@ public class OpenConnection {
 			stmt.close();
 		}
 		catch (SQLException ex) {
+			System.out.println("-------Exception-------");
 			System.out.println(ex.toString());
 			stmt.close();
 			ex.printStackTrace();

@@ -37,24 +37,24 @@ public final class Setup{
 					   "credits int NOT NULL,"+
 					   "taught varchar (20) NOT NULL,"+
 					   "obligatory bit NOT NULL,"+
-					   "degID varchar (6) NOT NULL UNIQUE,"+
+					   "degID varchar (6) NOT NULL,"+
 					   "FOREIGN KEY (degID) references Degree(degID) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Student_Module("+
-					   "regNumber int (9) NOT NULL UNIQUE,"+
-					   "modID varchar (7) NOT NULL UNIQUE,"+
+					   "regNumber int (9) NOT NULL,"+
+					   "modID varchar (7) NOT NULL,"+
 					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade,"+
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Teacher("+
-					   "teacherID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "teacherID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
 					   "depID varchar (3) NOT NULL UNIQUE,"+
 					   "userID int (8) NOT NULL UNIQUE,"+
 					   "FOREIGN KEY (depID) references Department(depID) on delete cascade,"+
 					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS PeriodOfStudy("+
-					   "periodID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "periodID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
 					   "label char NOT NULL,"+
 					   "startDate date NOT NULL,"+
 					   "endDate date NOT NULL,"+
@@ -63,10 +63,10 @@ public final class Setup{
 					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Grade("+
-					   "gradeID int (8) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "gradeID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
 					   "gradePercent float NOT NULL,"+
-					   "modID varchar (7) NOT NULL UNIQUE,"+
-					   "regNumber int (9) NOT NULL UNIQUE,"+
+					   "modID varchar (7) NOT NULL,"+
+					   "regNumber int (9) NOT NULL,"+
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade,"+
 					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
 			
