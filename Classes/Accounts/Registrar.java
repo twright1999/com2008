@@ -32,4 +32,13 @@ public class Registrar extends Account {
 		DACRegistrar.dropModule(regNumber, modID);
 	}
 	
+	private void checkRegistered(int userID) throws SQLException {
+		DACRegistrar.checkRegistered(userID);
+	}
+	
+	private void checkCredits(int regNumber, int periodID) throws SQLException {
+		DACRegistrar.checkCredits(regNumber, periodID);
+	}
+	
+	
 }

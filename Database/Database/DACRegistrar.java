@@ -4,7 +4,9 @@ import Utility.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public final class DACRegistrar {
 	
@@ -82,6 +84,49 @@ public final class DACRegistrar {
 			closeConnection();
 			return;
 			
+		}
+		
+		public static Boolean checkRegistered(int userID) throws SQLException {
+			openConnection();
+			PreparedStatement pstm = connection.prepareStatement(
+					"SELECT regNumber FROM Student WHERE userID = ?");
+			pstm.setInt(1, userID);
+			pstm.executeUpdate();
+			ResultSet res = pstm.executeQuery();
+			Boolean x = !res.wasNull();
+			closeConnection();
+			return x;
+			
+		}
+		
+		public static boolean checkCredits(int regNumber, int periodID) throws SQLException {
+			openConnection();
+			Statement stmt = connection.createStatement();
+			
+			ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = " + periodID);
+			
+			periodQuery.next();
+			String level = periodQuery.getString("level");
+			
+			ResultSet moduleQuery = stmt.executeQuery("SELECT Module.credits, Module.degID FROM Module INNER JOIN Student_Module "+
+					"ON Module.modID = Student_Module.modID WHERE Module.level = " + level + " && regNumber = " + regNumber);
+			
+			float creditsTotal = 0;
+			String degID = "    ";
+			while (moduleQuery.next()) {
+				creditsTotal += moduleQuery.getFloat("credits");
+				degID = moduleQuery.getString("degID");
+			}
+			
+			closeConnection();
+			System.out.println(degID.charAt(3));
+			System.out.println(creditsTotal);
+			if (degID.charAt(3) == 'U' && creditsTotal == 120.0 || degID.charAt(3) == 'P' && creditsTotal == 180.0) {
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		
 		//for testing
