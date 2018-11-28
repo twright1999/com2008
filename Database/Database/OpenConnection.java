@@ -65,8 +65,15 @@ public class OpenConnection {
 				String tutor = res2.getString("tutor");
 				System.out.print(" tutor: " + tutor);
 				int userID = res2.getInt("userID");
-				System.out.print(" userID: " + userID);
+				System.out.println(" userID: " + userID);
 			}
+			
+			ResultSet res3 = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE regNumber = 987654321");
+			while (res3.next()) {
+				int id  = res3.getInt("periodID");
+				System.out.print("RESULT id: " + id);
+			}
+			
 			
 			
 //			stmt.executeUpdate("DROP TABLE IF EXISTS Student_Module");
@@ -97,7 +104,7 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
 //			stmt.executeUpdate("INSERT INTO Teacher VALUES (0, 'COM', 14)");
-//			stmt.executeUpdate("INSERT INTO PeriodOfStudy VALUES (0, 'A', '2017-09-25', '2020-06-06', 3, 987654321)");
+//			stmt.executeUpdate("INSERT INTO PeriodOfStudy VALUES (0, 'A', '2018-09-25', '2019-09-25', 2, 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 70.0, 'COM2008', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 69.0, 'COM2108', 987654321)");
 			
