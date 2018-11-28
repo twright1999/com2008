@@ -116,7 +116,7 @@ private static void closeConnection() throws SQLException {
 	public static void removeDepartment(String depID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
-				"DELETE * FROM Department WHERE depID = ?");
+				"DELETE FROM Department WHERE depID = ?");
 		pstm.setString(1, depID);
 		pstm.executeUpdate();
 		closeConnection();
@@ -126,8 +126,7 @@ private static void closeConnection() throws SQLException {
 	
 	public static void addDegree(String degID, String name, char level, String depID) throws SQLException {
 		openConnection();
-		String query = "INSERT INTO Degree (degID, name, level, depID)"
-		        + " values (?, ?, ?, ?)";
+		String query = "INSERT INTO Degree SET degID = ?, name = ?, level= ?, depID =(SELECT depID FROM Department WHERE depID = ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setString(1, degID);
 		pstm.setString(2, name);
@@ -142,7 +141,7 @@ private static void closeConnection() throws SQLException {
 	public static void removeDegree(String degID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
-				"DELETE * FROM Degree WHERE degID = ?");
+				"DELETE FROM Degree WHERE degID = ?");
 		pstm.setString(1, degID);
 		pstm.executeUpdate();
 		closeConnection();
@@ -150,17 +149,17 @@ private static void closeConnection() throws SQLException {
 		
 	}
 	
-	public static void addModule(String modID, String name, int credits, String taught, String obligatory, String degCode) throws SQLException {
+	public static void addModule(String modID, String name, int credits, String taught, int obligatory, char level, String degID) throws SQLException {
 		openConnection();
-		String query = "INSERT INTO Department (modID, name, credits, taught, obligatory, degCode)"
-		        + " values (?, ?, ?, ?, ?, ?)";
+		String query = "INSERT INTO Module SET modID = ?, name = ?, credits= ?, taught = ?, obligatory = ?, level = ?, degID =(SELECT degID FROM Degree WHERE degID = ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setString(1, modID);
 		pstm.setString(2, name);
 		pstm.setInt(3, credits );
 		pstm.setString(4, taught);
-		pstm.setString(5, obligatory);
-		pstm.setString(6, degCode);
+		pstm.setInt(5, obligatory);
+		pstm.setString(6, String.valueOf(level));
+		pstm.setString(7, degID);
 		pstm.executeUpdate();
 		closeConnection();
 		return;
@@ -170,7 +169,7 @@ private static void closeConnection() throws SQLException {
 	public static void removeModule(String modID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
-				"DELETE * FROM Module WHERE modID = ?");
+				"DELETE FROM Module WHERE modID = ?");
 		pstm.setString(1, modID);
 		pstm.executeUpdate();
 		closeConnection();
@@ -188,8 +187,8 @@ private static void closeConnection() throws SQLException {
 	
 	
 	//for testing
-	public static void main(String[] arg) {
-		System.out.print(hashPassword("password"));
+	public static void main(String[] arg) throws SQLException {
+		DACAdmin.removeModule("BAD6969");
 	}
 
 
