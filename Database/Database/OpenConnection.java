@@ -17,10 +17,11 @@ public class OpenConnection {
 			
 //			stmt.executeUpdate("INSERT INTO Account VALUES (1, 'Tom', '123', 'S')");
 //		    stmt.executeUpdate("INSERT INTO Student VALUES (123456789, 'twright6@sheffield.ac.uk', 'richard', '1')");
-			
+			/*
 			ResultSet res = stmt.executeQuery(
 					"SELECT * FROM Account WHERE userID = 1 LIMIT 1 UNION "
-				   +"SELECT * FROM Student WHERE userID = 1 LIMIT 1");
+				   +"SELECT * FROM Student WHERE userID = 1 LIMIT 1");*/
+			/*
 			while (res.next()) {
 				String name = res.getString("name");
 				System.out.print("RESULT NAME: " + name);
@@ -32,8 +33,12 @@ public class OpenConnection {
 				System.out.println(" permission: " + permission);
 				int regNumber = res.getInt("regNumber");
 				System.out.println(" regNumber: " + regNumber);
-			}
-			
+			}*/
+			/*
+			ResultSet resD = stmt.executeQuery("SELECT * FROM Degree WHERE depID = 'COM'");
+			resD.next();
+			String nameD = resD.getString("name");
+			System.out.println("nameDDD: " + nameD);*/
 			//stmt.executeUpdate("DROP TABLE IF EXISTS PeriodOfStudy");
 
 			
@@ -60,7 +65,7 @@ public class OpenConnection {
 			stmt.close();
 		}
 		catch (SQLException ex) {
-			System.out.println("-------Exception-------");
+			System.out.println(ex.toString());
 			stmt.close();
 			ex.printStackTrace();
 		}

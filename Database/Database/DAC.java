@@ -9,7 +9,7 @@ import java.sql.*;
  * @author Rokas
  * Main DataAccessController
  */
-public final class DAC {
+public class DAC {
 	private static Connection connection;
 	/*
 	public DAC() throws SQLException {
@@ -54,9 +54,9 @@ public final class DAC {
 				
 	}
 	
+	
 	public static Student getStudent(int userID) throws SQLException {
 		openConnection();
-		System.out.println("getStudent: After openConnection");
 		PreparedStatement pstmt1 = connection.prepareStatement(
 				"SELECT * FROM Account, Student  "
 				+ "WHERE Account.userID = ? AND Student.userID = ? LIMIT 1");
@@ -81,22 +81,13 @@ public final class DAC {
 		
 	}
 	
-	public static Degree getDegree(String degID) throws SQLException {
+	public static Grade[] getStudentGrades(int regNumber) throws SQLException {
 		openConnection();
-		System.out.println("after openConnection");
-		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM Degree WHERE degID = ? LIMIT 1");
-		pstmt.setString(1, degID);
-		ResultSet res = pstmt.executeQuery();
-		Degree degree = QueryToObject.rowToDegree(res);
-		closeConnection();
-		return degree;
 	}
 	
 	public static Degree getStudentDegree(int userID) throws SQLException {
 		openConnection();
 		//navigating from Student to Module: Student -> Student_Module -> Module
-		System.out.println(">>Befroe pstmt in getStudent Degree");
 		PreparedStatement pstmt = connection.prepareStatement(
 				"SELECT degID FROM Module WHERE modID = "
 				+ "(SELECT modID FROM Student_Module WHERE regNumber = "
@@ -110,6 +101,20 @@ public final class DAC {
 		return getDegree(degID);
 		
 	}
+	
+	public static Degree getDegree(String degID) throws SQLException {
+		openConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM Degree WHERE degID = ? LIMIT 1");
+		pstmt.setString(1, degID);
+		ResultSet res = pstmt.executeQuery();
+		Degree degree = QueryToObject.rowToDegree(res);
+		closeConnection();
+		return degree;
+	}
+	
+	
+	
 	
 	public static PeriodOfStudy getStudentPeriodOfStudy(int regID) throws SQLException {
 		openConnection();
@@ -126,11 +131,10 @@ public final class DAC {
 	public static void main(String[] arg) throws SQLException {
 		
 		Degree degree = DAC.getDegree("COMU01");
-		if (degree == null)
-			System.out.println("null degree");
-		else System.out.println("Degree ID isss: " + degree.getDegID());
+		System.out.println(degree.toString());
+		
 		Account acc = DAC.getAccount(00000001);
-		System.out.println(acc.getName());
+		System.out.println(acc.toString());
 		
 		Student student = DAC.getStudent(123456789);
 		System.out.println(student.toString());
