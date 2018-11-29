@@ -156,6 +156,40 @@ public final class QueryToObject {
 		return null;
 	}
 	
+	/*
+	 * there is no Degree and PeriodOfStudy in this type of Student
+	 */
+	public static Student[] rowsToStudents(ResultSet res, int count) throws SQLException {
+		Student[] students= new Student[count];
+		try {
+			int index = 0;
+			while(res.next()) {
+				int userID = res.getInt("userID"); 
+				String name = res.getString("name");
+				String password = res.getString("password");
+				char permission = res.getString("permission").charAt(0);
+				Account acc = new Account (userID, name, password, permission);
+				String email = res.getString("email");
+				int regNumber = res.getInt("regNumber");
+				
+				String tutor = res.getString("tutor");
+				
+				Student student = new Student(acc.getUserID(), acc.getName(),
+						acc.getPassword(), acc.getPermission(), regNumber, tutor,email);
+				students[index] = student;
+				index++;
+				System.out.println("while'ing");
+			}
+			return students;
+		}
+			
+			catch(SQLException ex) {
+				System.out.println("rowsToStudents: " + ex.toString() );
+			}
+	
+	return null;
+	}
+	
 	public static void main(String[] arg) throws SQLException {
 		
 	}

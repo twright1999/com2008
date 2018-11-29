@@ -44,6 +44,16 @@ public class Student extends Account {
 		this.periodOfStudy = periodOfStudy;
 		this.email = email;
 	}
+	/*
+	 * Constructor used to print all the Students. 
+	 */
+	public Student(int userID, String name, String password, char permission,
+			int regNumber, String tutor, String email) {
+		super(userID, name, password, permission);
+		this.regNumber = regNumber;
+		this.tutor = tutor;
+		this.email = email;
+	}
 	
 	/*
 	 * For getting Student instance fields. Called in <GUI Name>

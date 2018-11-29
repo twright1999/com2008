@@ -80,6 +80,42 @@ public class DAC {
 		
 	}
 	
+	public static Student[] getAllStudents() throws SQLException {
+		try {
+		openConnection();
+		Statement stmt = connection.createStatement();
+		//checking if the number of accounts is the same as students (should always be true)
+		ResultSet resCountS = stmt.executeQuery("SELECT COUNT(*) FROM Student");
+		stmt = connection.createStatement();
+		ResultSet resCountA = stmt.executeQuery("SELECT COUNT(*) FROM Account WHERE permission = 'S'");
+		resCountS.next();
+		int countS = resCountS.getInt(resCountS.getRow());
+		resCountA.next(); 
+		int countA = resCountA.getInt(resCountA.getRow());
+		
+		if (countA == countS && countA != 0) {
+			ResultSet resStudents = stmt.executeQuery(
+					"SELECT *FROM Student NATURAL JOIN Account WHERE permission = 'S'");
+			/*
+			ResultSet resStudents = stmt.executeQuery(
+					"SELECT * FROM Account WHERE permission = 'S' "
+					+ "UNION SELECT * FROM Student");*/
+			Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
+			closeConnection();
+			return students;
+		}
+		else {
+			closeConnection();
+			return null;
+		}
+	}
+		catch(SQLException ex) {
+			closeConnection();
+			System.out.println(ex.toString());
+		}
+		return null;
+	}
+	
 	public static Grade[] getStudentGrades(int regNumber) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -192,6 +228,9 @@ public class DAC {
 		
 		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(987654321);
 		System.out.println(period.getStartDate());
+		
+		Student[] students = DAC.getAllStudents();
+		System.out.println(students[0].getName());
 		
 	}
 }
