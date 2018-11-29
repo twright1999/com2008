@@ -97,7 +97,6 @@ public class DACTeacher extends DAC {
 		String degreeName = degreeQuery.getString("name");
 		
 		closeConnection();
-		System.out.println(Arrays.toString(grades));
 		
 		double bachelors = (grades[1] + grades[2])/2;
 		double masters = (grades[1] + grades[2] + grades[3])/3;
@@ -124,9 +123,42 @@ public class DACTeacher extends DAC {
 		return "degree not found";
 	}
 	
+	public static String getStudentStatus(int regNumber) throws SQLException {
+		openConnection();
+		Statement stmt = connection.createStatement();
+		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.gradePercent, Module.level, Module.name FROM Grade " + 
+				"INNER JOIN Module ON Grade.modID = Module.modID " +
+				"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
+				"WHERE Student_Module.regNumber = " + regNumber);
+		
+		String outputString = "";
+		
+		double[] grades = {0,0,0,0};
+		int[] gradeCounts = {0,0,0,0};
+		
+		int level = 0;
+		while (gradeQuery.next()) {
+			outputString += gradeQuery.getString("name") + ": ";
+			outputString += Double.toString(gradeQuery.getDouble("gradePercent")) + "%\n";
+			
+			level = Integer.parseInt(gradeQuery.getString("level"));
+			grades[level-1] += gradeQuery.getDouble("gradePercent");
+			gradeCounts[level-1] += 1;
+		}
+		
+		for (int i = 0; i <= 3; i++) {
+			if (grades[i] != 0) outputString += "Level " + Integer.toString(i+1) + ": " + Double.toString(grades[i] / gradeCounts[i]) + "%\n";
+		}
+		
+		outputString += "Degree: " + calcDegree(regNumber);	
+		
+		closeConnection();
+		return outputString;	
+	}
+	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		System.out.println(calcDegree(987654321));
+		System.out.println(getStudentStatus(987654321));
 	}
 			
 }
