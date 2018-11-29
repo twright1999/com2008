@@ -74,15 +74,14 @@ public class OpenConnection {
 //				System.out.print("RESULT id: " + id);
 //			}
 			
-			ResultSet res4 = stmt.executeQuery("SELECT * FROM Degree");
-			while (res4.next()) {
-				String id  = res4.getString("degID");
-				System.out.print("RESULT id: " + id);
-			}
+//			ResultSet res4 = stmt.executeQuery("SELECT * FROM Degree");
+//			while (res4.next()) {
+//				String id  = res4.getString("degID");
+//				System.out.print("RESULT id: " + id);
+//			}
 			
 			
 			
-//			stmt.executeUpdate("DROP TABLE IF EXISTS Student_Module");
 
 			
 	
@@ -103,17 +102,14 @@ public class OpenConnection {
 			
 //			stmt.executeUpdate("INSERT INTO Account VALUES (0, 'Mr Thomas Wright', 'password', 'S')");
 //			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mrs Teacher', 'password', 'T')");
-//			stmt.executeUpdate("INSERT INTO Student VALUES (987654321, 'twright@sheffield.ac.uk', 'Mr Tue Toor', 'COMU01', '13')");
 //			stmt.executeUpdate("INSERT INTO Department VALUES ('COM', 'Computer Science')");
 //			stmt.executeUpdate("INSERT INTO Degree VALUES ('COMU01', 'BSc Computer Science', '3', 'COM')");
+//			stmt.executeUpdate("INSERT INTO Student VALUES (987654321, 'twright@sheffield.ac.uk', 'Mr Tue Toor', 'COMU01', '16')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2108', 'Functional Programming', '20', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
-//			stmt.executeUpdate("INSERT INTO Teacher VALUES (0, 'COM', 14)");
-//			stmt.executeUpdate("INSERT INTO PeriodOfStudy VALUES (0, 'A', '2018-09-25', '2019-09-25', 2, 987654321)");
-//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 70.0, 'COM2008', 987654321)");
-//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 69.0, 'COM2108', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Teacher VALUES (0O'COM2108', 987654321)");
 			
 			
 			
