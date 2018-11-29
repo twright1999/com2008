@@ -188,7 +188,7 @@ private static void closeConnection() throws SQLException {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		DACAdmin.removeModule("BAD6969");
+		DACAdmin.addModule("BAD69", "BADMODULE2", 10, "AUTUMN", 1, '1', "BAD696");
 	}
 
 
