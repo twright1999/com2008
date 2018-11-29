@@ -80,10 +80,19 @@ public class OpenConnection {
 //				System.out.print("RESULT id: " + id);
 //			}
 			
+//			ResultSet res5 = stmt.executeQuery("SELECT * FROM Grade");
+//			while (res5.next()) {
+//				int gradeID  = res5.getInt("gradeID");
+//				System.out.print("RESULT gradeID: " + gradeID);
+//				Double percent = res5.getDouble("gradePercent");
+//				System.out.print(" gradePercent: " + percent);
+//				String modID  = res5.getString("modID");
+//				System.out.print(" modID: " + modID);
+//				String regNumber  = res5.getString("regNumber");
+//				System.out.println(" regNumber: " + regNumber);
+//			}
 			
-			
-
-			
+				
 	
 //			stmt.executeUpdate("DELETE FROM Account");
 //			stmt.executeUpdate("DELETE FROM Student");
@@ -107,9 +116,14 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Student VALUES (987654321, 'twright@sheffield.ac.uk', 'Mr Tue Toor', 'COMU01', '16')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2108', 'Functional Programming', '20', 'Autumn', True, '2', 'COMU01')");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM1002', 'Java Programming', '20', 'Year', True, '1', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
-//			stmt.executeUpdate("INSERT INTO Teacher VALUES (0O'COM2108', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM1002')");
+//			stmt.executeUpdate("INSERT INTO Teacher VALUES (0,'COM2108', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 70.0, 'COM2008', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 69.0, 'COM2108', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 82.0, 'COM1002', 987654321)");
 			
 			
 			

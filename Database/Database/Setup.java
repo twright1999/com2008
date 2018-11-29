@@ -72,9 +72,7 @@ public final class Setup{
 					   "regNumber int (9) NOT NULL,"+
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade,"+
 					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
-			
 
-				
 			stmt.close();
 		}
 		catch (SQLException ex) {
