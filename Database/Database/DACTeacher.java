@@ -1,4 +1,5 @@
 package Database;
+import java.util.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -65,13 +66,67 @@ public class DACTeacher extends DAC {
 				return false;
 		}
 	
-	public static void nextPeriod() {
+	public static String calcDegree(int regNumber) throws SQLException {
+		openConnection();
+		Statement stmt = connection.createStatement();
+		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.gradePercent, Module.level FROM Grade " + 
+				"INNER JOIN Module ON Grade.modID = Module.modID " +
+				"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
+				"WHERE Student_Module.regNumber = " + regNumber);
 		
+		double[] grades = {0,0,0,0};
+		int[] gradeCounts = {0,0,0,0};
+		
+		int level = 0;
+		while (gradeQuery.next()) {
+			level = Integer.parseInt(gradeQuery.getString("level"));
+			
+			grades[level-1] += gradeQuery.getDouble("gradePercent");
+			gradeCounts[level-1] += 1;
+		}
+		
+		for (int i = 0; i <= 3; i++) {
+			if (grades[i] != 0) grades[i] /= gradeCounts[i];
+		}
+		
+		ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.name FROM Degree " +
+				"INNER JOIN Student ON Student.degID = Degree.degID " +
+				"WHERE regNumber = " + regNumber);
+		
+		degreeQuery.next();
+		String degreeName = degreeQuery.getString("name");
+		
+		closeConnection();
+		System.out.println(Arrays.toString(grades));
+		
+		double bachelors = (grades[1] + grades[2])/2;
+		double masters = (grades[1] + grades[2] + grades[3])/3;
+				
+		if (degreeName.contains("MSc")) {
+			if (grades[0] < 49.5) return "fail";
+			else if (grades[0] >= 49.5 && grades[0] < 59.5) return "pass";
+			else if (grades[0] >= 59.5 && grades[0] < 69.5) return "merit";
+			else if (grades[0] >= 69.5) return "disinction";
+		} else if (degreeName.contains("BSc") || degreeName.contains("BEng")) {
+			if (bachelors < 39.5) return "fail";
+			else if (bachelors >= 39.5 && bachelors < 44.5) return "pass (non-honours)";
+			else if (bachelors >= 44.5 && bachelors < 49.5) return "third class";
+			else if (bachelors >= 49.5 && bachelors < 59.5) return "lower second";
+			else if (bachelors >= 59.5 && bachelors < 69.5) return "upper second";
+			else if (bachelors >= 69.5) return "first class";
+		} else if (degreeName.contains("MComp") || degreeName.contains("MEng")) {
+			if (masters < 49.5) return "fail";
+			else if (masters >= 49.5 && masters < 59.5) return "lower second";
+			else if (masters >= 59.5 && masters < 69.5) return "upper second";
+			else if (masters >= 69.5) return "first class";
+		} 
+			
+		return "degree not found";
 	}
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		System.out.println(calcPeriod(987654321,4));
+		System.out.println(calcDegree(987654321));
 	}
 			
 }
