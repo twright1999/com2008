@@ -63,36 +63,6 @@ public final class DACTeacher {
 
 		}
 		
-//		public static boolean calcPeriod(int regNumber, int periodID) throws SQLException {
-//			openConnection();
-//			Statement stmt = connection.createStatement();
-//			
-//			ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = " + periodID);
-//			
-//			periodQuery.next();
-//			String level = periodQuery.getString("level");
-//			
-//			ResultSet moduleQuery = stmt.executeQuery("SELECT Module.credits, Module.degID FROM Module INNER JOIN Student_Module "+
-//					"ON Module.modID = Student_Module.modID WHERE Module.level = " + level + " && regNumber = " + regNumber);
-//			
-//			float creditsTotal = 0;
-//			String degID = "    ";
-//			while (moduleQuery.next()) {
-//				creditsTotal += moduleQuery.getFloat("credits");
-//				degID = moduleQuery.getString("degID");
-//			}
-//			
-//			closeConnection();
-//			System.out.println(degID.charAt(3));
-//			System.out.println(creditsTotal);
-//			if (degID.charAt(3) == 'U' && creditsTotal == 120.0 || degID.charAt(3) == 'P' && creditsTotal == 180.0) {
-//				return true;
-//			}
-//			else {
-//				return false;
-//			}
-//		}
-		
 		public static boolean calcPeriod(int regNumber, int periodID) throws SQLException {
 			openConnection();
 			Statement stmt = connection.createStatement();
