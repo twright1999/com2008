@@ -1,45 +1,10 @@
 package Database;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import org.bouncycastle.jcajce.provider.digest.SHA3;
 import org.bouncycastle.util.encoders.Hex;
 
-import Accounts.*;
-import dataConversion.QueryToObject;
-
-public final class DACAdmin {
-
-private static Connection connection;
-
-private static void openConnection() throws SQLException {
-	
-	try {
-		System.out.println("try openning conenction");
-		//if (connection == null) {
-			connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
-			System.out.println("Connection value is assigned");
-		//}
-		//if connection is already opened, do nothing
-	}
-	catch (NullPointerException nex) {
-		System.out.println("connection is null");
-		closeConnection();
-	}
-	catch (SQLException ex) {
-		System.out.println("catch openConn: " + ex.toString());
-		closeConnection();
-	}
-	
-}
-
-private static void closeConnection() throws SQLException {
-	connection.close();
-	System.out.println("Conenction is closed");
-}
+public class DACAdmin extends DAC {
 
 	public static void addAccount(String name, String password, char permission) throws SQLException {
 		openConnection();
@@ -188,6 +153,7 @@ private static void closeConnection() throws SQLException {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
+		DACAdmin.removeModule("BAD69");
 		DACAdmin.addModule("BAD69", "BADMODULE2", 10, "AUTUMN", 1, '1', "BAD696");
 	}
 

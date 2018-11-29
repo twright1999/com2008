@@ -10,13 +10,9 @@ import java.sql.*;
  * Main DataAccessController
  */
 public class DAC {
-	private static Connection connection;
-	/*
-	public DAC() throws SQLException {
-		connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
-	}*/
-	
-	private static void openConnection() throws SQLException {
+	protected static Connection connection;
+
+	protected static void openConnection() throws SQLException {
 		
 		try {
 			System.out.print("try openning conenction: ");
@@ -37,7 +33,7 @@ public class DAC {
 		
 	}
 	
-	private static void closeConnection() throws SQLException {
+	protected static void closeConnection() throws SQLException {
 		connection.close();
 		System.out.println("Conenction is closed");
 	}

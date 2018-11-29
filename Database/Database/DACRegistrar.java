@@ -1,43 +1,11 @@
 package Database;
-import Accounts.*;
-import Utility.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public final class DACRegistrar {
+public class DACRegistrar extends DAC {
 	
-	private static Connection connection;
-
-	private static void openConnection() throws SQLException {
-		
-		try {
-			System.out.println("try openning conenction");
-			//if (connection == null) {
-				connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
-				System.out.println("Connection value is assigned");
-			//}
-			//if connection is already opened, do nothing
-		}
-		catch (NullPointerException nex) {
-			System.out.println("connection is null");
-			closeConnection();
-		}
-		catch (SQLException ex) {
-			System.out.println("catch openConn: " + ex.toString());
-			closeConnection();
-		}
-		
-	}
-
-	private static void closeConnection() throws SQLException {
-		connection.close();
-		System.out.println("Conenction is closed");
-	}
-
 		public static void addStudent(int regNumber, String email, String tutor, int userID) throws SQLException {
 			openConnection();
 			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, userID = (SELECT userID FROM Account WHERE userID = ?)";
@@ -62,7 +30,7 @@ public final class DACRegistrar {
 			return;
 
 		}
-		
+
 		public static void addModule(int regNumber, String modID) throws SQLException {
 			openConnection();
 			String query = "INSERT INTO Student_Module SET regNumber = (SELECT regNumber FROM Student WHERE regNumber = ?), modID = (SELECT modID FROM Module WHERE modID = ?)";
