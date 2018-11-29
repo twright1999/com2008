@@ -44,39 +44,46 @@ public class OpenConnection {
 
 
 					
-			ResultSet res = stmt.executeQuery("SELECT * FROM Account");
-			while (res.next()) {
-				String name = res.getString("name");
-				System.out.print("RESULT name: " + name);
-				String userID = res.getString("userID");
-				System.out.print(" userID: " + userID);
-				String password = res.getString("password");
-				System.out.print(" pass: " + password);
-				String permission = res.getString("permission");
-				System.out.println(" permission: " + permission);
-			}
-		
-			ResultSet res2 = stmt.executeQuery("SELECT * FROM Student");
-			while (res2.next()) {
-				int regNumber = res2.getInt("regNumber");
-				System.out.print("RESULT regNumber: " + regNumber);
-				String email = res2.getString("email");
-				System.out.print(" email: " + email);
-				String tutor = res2.getString("tutor");
-				System.out.print(" tutor: " + tutor);
-				int userID = res2.getInt("userID");
-				System.out.println(" userID: " + userID);
-			}
+//			ResultSet res = stmt.executeQuery("SELECT * FROM Account");
+//			while (res.next()) {
+//				String name = res.getString("name");
+//				System.out.print("RESULT name: " + name);
+//				String userID = res.getString("userID");
+//				System.out.print(" userID: " + userID);
+//				String password = res.getString("password");
+//				System.out.print(" pass: " + password);
+//				String permission = res.getString("permission");
+//				System.out.println(" permission: " + permission);
+//			}
+//		
+//			ResultSet res2 = stmt.executeQuery("SELECT * FROM Student");
+//			while (res2.next()) {
+//				int regNumber = res2.getInt("regNumber");
+//				System.out.print("RESULT regNumber: " + regNumber);
+//				String email = res2.getString("email");
+//				System.out.print(" email: " + email);
+//				String tutor = res2.getString("tutor");
+//				System.out.print(" tutor: " + tutor);
+//				int userID = res2.getInt("userID");
+//				System.out.println(" userID: " + userID);
+//			}
 			
-			ResultSet res3 = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE regNumber = 987654321");
-			while (res3.next()) {
-				int id  = res3.getInt("periodID");
+//			ResultSet res3 = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE regNumber = 987654321");
+//			while (res3.next()) {
+//				int id  = res3.getInt("periodID");
+//				System.out.print("RESULT id: " + id);
+//			}
+			
+			ResultSet res4 = stmt.executeQuery("SELECT * FROM Degree");
+			while (res4.next()) {
+				String id  = res4.getString("degID");
 				System.out.print("RESULT id: " + id);
 			}
 			
 			
 			
 //			stmt.executeUpdate("DROP TABLE IF EXISTS Student_Module");
+
 			
 	
 //			stmt.executeUpdate("DELETE FROM Account");
@@ -96,7 +103,7 @@ public class OpenConnection {
 			
 //			stmt.executeUpdate("INSERT INTO Account VALUES (0, 'Mr Thomas Wright', 'password', 'S')");
 //			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mrs Teacher', 'password', 'T')");
-//			stmt.executeUpdate("INSERT INTO Student VALUES (987654321, 'twright@sheffield.ac.uk', 'Mr Tue Toor', '13')");
+//			stmt.executeUpdate("INSERT INTO Student VALUES (987654321, 'twright@sheffield.ac.uk', 'Mr Tue Toor', 'COMU01', '13')");
 //			stmt.executeUpdate("INSERT INTO Department VALUES ('COM', 'Computer Science')");
 //			stmt.executeUpdate("INSERT INTO Degree VALUES ('COMU01', 'BSc Computer Science', '3', 'COM')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, '2', 'COMU01')");

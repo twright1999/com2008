@@ -17,7 +17,9 @@ public final class Setup{
 					   "regNumber int (9) NOT NULL PRIMARY KEY UNIQUE,"+
 					   "email varchar (50) NOT NULL,"+
 					   "tutor varchar (50) NOT NULL,"+
+					   "degID varchar (6) NOT NULL,"+
 					   "userID int (8) NOT NULL UNIQUE,"+
+					   "FOREIGN KEY (degID) references Degree(degID) on delete cascade,"+
 					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Department("+
