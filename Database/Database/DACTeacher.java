@@ -1,86 +1,52 @@
 package Database;
-import Accounts.*;
-import Utility.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 import java.sql.SQLException;
 
-public final class DACTeacher {
+public class DACTeacher extends DAC {
 	
-	private static Connection connection;
-
-	private static void openConnection() throws SQLException {
-		
-		try {
-			System.out.println("try openning conenction");
-			//if (connection == null) {
-				connection = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86");
-				System.out.println("Connection value is assigned");
-			//}
-			//if connection is already opened, do nothing
-		}
-		catch (NullPointerException nex) {
-			System.out.println("connection is null");
-			closeConnection();
-		}
-		catch (SQLException ex) {
-			System.out.println("catch openConn: " + ex.toString());
-			closeConnection();
-		}
-		
+	public static void addGrade(float gradePercent, String modID, int regNumber) throws SQLException {
+		openConnection();
+		String query = "INSERT INTO Grade (gradeID, gradePercent, modID, regNumber)" 
+			+ " values (?, ?, ?, ?)";
+		PreparedStatement pstm = connection.prepareStatement(query);
+		pstm.setInt(1, 0);
+		pstm.setFloat(2, gradePercent);
+		pstm.setString(3, modID);
+		pstm.setInt(4, regNumber);
+		pstm.executeUpdate();	
+		closeConnection();
 	}
+	
+	public static void removeGrade(int gradeID) throws SQLException {
+		openConnection();
+		PreparedStatement pstm = connection.prepareStatement(
+				"DELETE * FROM Grade WHERE gradeID = ?");
+		pstm.setInt(1, gradeID);
+		pstm.executeUpdate();
+		closeConnection();
 
-	private static void closeConnection() throws SQLException {
-		connection.close();
-		System.out.println("Conenction is closed");
 	}
-
-		public static void addGrade(float gradePercent, String modID, int regNumber) throws SQLException {
-			openConnection();
-			String query = "INSERT INTO Grade (gradeID, gradePercent, modID, regNumber)" 
-					+ " values (?, ?, ?, ?)";
-			PreparedStatement pstm = connection.prepareStatement(query);
-			pstm.setInt(1, 0);
-			pstm.setFloat(2, gradePercent);
-			pstm.setString(3, modID);
-			pstm.setInt(4, regNumber);
-			pstm.executeUpdate();	
-			closeConnection();
-		}
+	
+	public static boolean calcPeriod(int regNumber, int periodID) throws SQLException {
+		openConnection();
+		Statement stmt = connection.createStatement();
 		
-		public static void removeGrade(int gradeID) throws SQLException {
-			openConnection();
-			PreparedStatement pstm = connection.prepareStatement(
-					"DELETE * FROM Grade WHERE gradeID = ?");
-			pstm.setInt(1, gradeID);
-			pstm.executeUpdate();
-			closeConnection();
-
-		}
+		ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = " + periodID);
 		
-		public static boolean calcPeriod(int regNumber, int periodID) throws SQLException {
-			openConnection();
-			Statement stmt = connection.createStatement();
-			
-			ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = " + periodID);
-			
-			periodQuery.next();
-			String level = periodQuery.getString("level");
-			
-			ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.gradePercent, Module.level FROM Grade " + 
-					"INNER JOIN Module ON Grade.modID = Module.modID " +
-					"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
-					"WHERE Module.level = " + level + " && Student_Module.regNumber = " + regNumber);			
-			
-			float totalPercent = 0;
-			int totalGrades = 0;
-			while (gradeQuery.next()) {
-				totalPercent += gradeQuery.getFloat("gradePercent");
+		periodQuery.next();
+		String level = periodQuery.getString("level");
+		
+		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.gradePercent, Module.level FROM Grade " + 
+				"INNER JOIN Module ON Grade.modID = Module.modID " +
+				"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
+				"WHERE Module.level = " + level + " && Student_Module.regNumber = " + regNumber);			
+		
+		float totalPercent = 0;
+		int totalGrades = 0;
+		while (gradeQuery.next()) {
+			totalPercent += gradeQuery.getFloat("gradePercent");
 				totalGrades += 1;
 			}
 			
@@ -91,11 +57,10 @@ public final class DACTeacher {
 			else
 				return false;
 		}
-		
-		public static void main(String[] arg) throws SQLException {
-			System.out.println(calcPeriod(987654321,4));
-		}
+	
+	//for testing
+	public static void main(String[] arg) throws SQLException {
+		System.out.println(calcPeriod(987654321,4));
+	}
 			
-		
-
 }
