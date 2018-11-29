@@ -117,13 +117,16 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2008', 'Systems Design and Security', '20', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2108', 'Functional Programming', '20', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM1002', 'Java Programming', '20', 'Year', True, '1', 'COMU01')");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM3001', 'Year 3 Stuff WOW', '20', 'Autumn', True, '3', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM1002')");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM3001')");
 //			stmt.executeUpdate("INSERT INTO Teacher VALUES (0,'COM2108', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 70.0, 'COM2008', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 69.0, 'COM2108', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 82.0, 'COM1002', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 100.0, 'COM3001', 987654321)");
 			
 			
 			
