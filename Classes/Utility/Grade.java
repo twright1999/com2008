@@ -21,8 +21,8 @@ public class Grade {
 	
 	//toString method
 	public String toString() {
-		String all = "gradeID: " + gradeID + " ; grade: " + grade
-				+ " ; modID: " + modID + " ; regNumber: " + regNumber + " ;";
+		String all = "gradeID: " + gradeID + " grade: " + grade
+				+ " modID: " + modID + " regNumber: " + regNumber + " ";
 		return all;
 	}
 	

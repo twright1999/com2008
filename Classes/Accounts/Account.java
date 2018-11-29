@@ -32,7 +32,7 @@ public class Account {
   }
   
   public String toString() {
-	  String all = "UserID: " + userID + " ; name: " + name + " ; permission: " + permission + " ;";
+	  String all = "UserID: " + userID + " name: " + name + " permission: " + permission + " ";
 	  return all;
   }
 

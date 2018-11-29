@@ -61,7 +61,7 @@ public final class QueryToObject {
 			String degID = resDegree.getString("degID");
 			String nameD = resDegree.getString("name");
 			char level = resDegree.getString("level").charAt(0);
-			char depID = resDegree.getString("depID").charAt(0);
+			String depID = resDegree.getString("depID");
 			Degree degree = new Degree(degID, nameD, level, depID);
 			
 			//pulling periodOfStudy values from res set and creating PeriodOfStudy instance
@@ -95,7 +95,7 @@ public final class QueryToObject {
 			String degID = res.getString("degID");
 			String name = res.getString("name");
 			char level = res.getString("level").charAt(0);
-			char depID = res.getString("depID").charAt(0);
+			String depID = res.getString("depID");
 			degree = new Degree(degID, name, level, depID);
 			return degree;
 		}

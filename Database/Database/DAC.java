@@ -127,20 +127,55 @@ public class DAC {
 		return degree;
 	}
 	
-	public static PeriodOfStudy getStudentPeriodOfStudy(int regID) throws SQLException {
+	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM PeriodOfStudy WHERE regID = ? LIMIT 1");
-		pstmt.setInt(1, regID);
+				"SELECT * FROM PeriodOfStudy WHERE regNumber = ? LIMIT 1");
+		pstmt.setInt(1, regNumber);
 		ResultSet res = pstmt.executeQuery();
+		PeriodOfStudy period = QueryToObject.rowToPeriod(res);
 		closeConnection();
-		return QueryToObject.rowToPeriod(res);
+		return period;
 	}
 	
-	
+	public static String generateEmail(String name) throws SQLException {
+		//check if such name already exsits
+		openConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT email FROM Student WHERE userID = "
+				+ "(SELECT userID FROM Account WHERE name = ? LIMIT 1)"
+				+ " ORDER BY email DESC LIMIT 1");
+		pstmt.setString(1 , "name");
+		ResultSet res = pstmt.executeQuery();
+		
+		//check if there are any duplicate names
+		//++1 to the last email
+		if (res.next()) {
+			String email = res.getString("email");
+			int lc = email.lastIndexOf('@');
+			int length = email.length();
+			//incremented email index
+			int incremented = 1 + Integer.valueOf(email.substring(lc-1,lc));
+			email = email.substring(0, lc-1) + incremented + email.substring(lc+1, length ) ;
+			closeConnection();
+			return email;
+		}
+		//or generate new email
+		else {
+			String uniEmail = "@WrightUni.Tom.uk";
+			int firstSpace = name.indexOf(" ");
+			String nameLetter = name.substring(firstSpace+1, firstSpace+2);
+			int lastSpace = name.lastIndexOf(" ");
+			String surname = name.substring(lastSpace+1);
+			String email = nameLetter + surname + "1" + uniEmail;
+			closeConnection();
+			return email;
+		}
+		
+	}
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		/*
+		
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
@@ -149,10 +184,14 @@ public class DAC {
 		
 		Student student = DAC.getStudent(13);
 		System.out.println(student.toString());
-		*/
+		
 		Grade[] grades = DAC.getStudentGrades(987654321);
 		System.out.println(">>after DAC");
 		System.out.println(grades[0].toString());
 		System.out.println(grades[1].toString());
+		
+		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(987654321);
+		System.out.println(period.getStartDate());
+		
 	}
 }

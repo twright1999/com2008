@@ -20,6 +20,9 @@ public class Department {
 	public String getName() { return name ; }
 	public Degree[] getDegree() { return degrees; }
 	
-	
+	public String toString() {
+		String all = "depID: " + depId + " dep name: " + name + " degrees: " + degrees.toString() + " " ;
+		return all;
+	}
 	
 }
