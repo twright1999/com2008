@@ -14,6 +14,8 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DegreeUI extends JFrame {
 
@@ -57,13 +59,15 @@ public class DegreeUI extends JFrame {
 
 		JButton btnSearch = new JButton("Search");
 		btnSearch.setBounds(218, 29, 87, 28);
-		btnSearch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-			}
-		});
 
 		JButton btnAdd = new JButton("Add");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DegreeAdd degAdd = new DegreeAdd();
+				degAdd.setVisible(true);
+				dispose();
+			}
+		});
 		btnAdd.setBounds(323, 29, 87, 28);
 
 		table = new JTable();

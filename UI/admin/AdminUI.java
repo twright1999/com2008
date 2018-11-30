@@ -45,7 +45,9 @@ public class AdminUI extends JFrame {
 		btnUser = new JButton("User");
 		btnUser.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/**/
+				User user = new User();
+				user.setVisible(true);
+				dispose();
 			}
 		});
 		btnUser.setBounds(64, 62, 104, 28);
@@ -53,7 +55,9 @@ public class AdminUI extends JFrame {
 		btnModule = new JButton("Module");
 		btnModule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/**/
+				ModuleUI mod = new ModuleUI();
+				mod.setVisible(true);
+				dispose();
 			}
 		});
 		btnModule.setBounds(64, 157, 104, 28);
@@ -61,7 +65,9 @@ public class AdminUI extends JFrame {
 		btnDegree = new JButton("Degree");
 		btnDegree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/**/
+				DegreeUI degree = new DegreeUI();
+				degree.setVisible(true);
+				dispose();
 			}
 		});
 		btnDegree.setBounds(278, 157, 104, 28);
@@ -69,7 +75,9 @@ public class AdminUI extends JFrame {
 		btnDepartment = new JButton("Department");
 		btnDepartment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/**/
+				DepartmentUI dep = new DepartmentUI();
+				dep.setVisible(true);
+				dispose();
 			}
 		});
 		btnDepartment.setBounds(278, 62, 104, 28);

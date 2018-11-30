@@ -14,11 +14,16 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class User extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	private JTextField textField;
+	private JButton btnSearch;
+	private JButton btnAdd;
 
 	/**
 	 * Launch the application.
@@ -50,19 +55,21 @@ public class User extends JFrame {
 		lblSearch.setBounds(35, 35, 51, 16);
 		lblSearch.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JTextField textField = new JTextField();
+		textField = new JTextField();
 		textField.setBounds(98, 29, 102, 28);
 		textField.setColumns(10);
 
-		JButton btnSearch = new JButton("Search");
+		btnSearch = new JButton("Search");
 		btnSearch.setBounds(218, 29, 87, 28);
-		btnSearch.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
+
+		btnAdd = new JButton("Add");
+		btnAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				UserAdd userAdd = new UserAdd();
+				userAdd.setVisible(true);
+				dispose();
 			}
 		});
-
-		JButton btnAdd = new JButton("Add");
 		btnAdd.setBounds(323, 29, 87, 28);
 
 		table = new JTable();

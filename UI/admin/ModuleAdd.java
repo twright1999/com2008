@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ModuleAdd extends JFrame {
 
@@ -102,6 +104,13 @@ public class ModuleAdd extends JFrame {
 		contentPane.add(durationSelect);
 
 		JButton btnAddModule = new JButton("Add Module");
+		btnAddModule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModuleUI mod = new ModuleUI();
+				mod.setVisible(true);
+				dispose();
+			}
+		});
 		btnAddModule.setBounds(280, 138, 108, 28);
 		contentPane.add(btnAddModule);
 

@@ -11,6 +11,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import java.awt.Window.Type;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class UserAdd extends JFrame {
 
@@ -105,6 +108,13 @@ public class UserAdd extends JFrame {
 		contentPane.add(roleSelect);
 
 		JButton btnAddUser = new JButton("Add User");
+		btnAddUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				User user = new User();
+				user.setVisible(true);
+				dispose();
+			}
+		});
 		btnAddUser.setBounds(298, 132, 87, 28);
 		contentPane.add(btnAddUser);
 	}

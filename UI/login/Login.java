@@ -1,27 +1,29 @@
 package login;
 
-import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JSplitPane;
-import javax.swing.BoxLayout;
-import java.awt.Color;
 import java.awt.SystemColor;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import javax.swing.border.EtchedBorder;
-import javax.swing.JButton;
-import javax.swing.UIManager;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.EtchedBorder;
+
+import admin.AdminUI;
+import registrar.RegistrarUI;
+import security.RBAC;
+import student.StudentUI;
+import teacher.TeacherUI;
 
 public class Login extends JFrame {
 
@@ -32,6 +34,7 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField textField;
 	private JPasswordField passwordField;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -77,13 +80,13 @@ public class Login extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JLabel lblUsername = new JLabel("Username:");
-		lblUsername.setBounds(57, 13, 98, 29);
-		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
-		panel.add(lblUsername);
+		JLabel lblUserID = new JLabel("User ID:");
+		lblUserID.setBounds(57, 13, 98, 29);
+		lblUserID.setHorizontalAlignment(SwingConstants.CENTER);
+		panel.add(lblUserID);
 
 		textField = new JTextField();
-		lblUsername.setLabelFor(textField);
+		lblUserID.setLabelFor(textField);
 		textField.setBounds(167, 12, 100, 31);
 		textField.setFont(new Font("Times New Roman", Font.PLAIN, 16));
 		panel.add(textField);
@@ -104,9 +107,44 @@ public class Login extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String userName = textField.getText().toString();
+				
+				String user = textField.getText();
+				int id = Integer.parseInt(user);
 				char[] password = passwordField.getPassword();
 				String pwdStr = String .valueOf(password);
+				new RBAC();
+				
+				try {
+					if (RBAC.verifyLogin(id, pwdStr)){
+						char permission = RBAC.getPermission(id);
+						switch (permission) {
+						case 'S': {
+							StudentUI student = new StudentUI();
+							student.setVisible(true);
+							dispose();
+						}
+						case 'A' : {
+							AdminUI admin = new AdminUI();
+							admin.setVisible(true);
+							dispose();
+						}
+						case 'R' : {
+							RegistrarUI registrar = new RegistrarUI();
+							registrar.setVisible(true);
+							dispose();
+						}
+						case 'T' : {
+							TeacherUI teacher = new TeacherUI();
+							teacher.setVisible(true);
+							dispose();
+						}
+						}
+					} else {
+						JOptionPane.showMessageDialog(frame, "Wrong details/User does not exist");
+					}
+				} catch (SQLException e1) {
+					JOptionPane.showMessageDialog(frame, "Something is wrong with the database");
+				}
 			}
 		});
 		btnLogin.setBounds(137, 219, 93, 37);

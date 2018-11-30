@@ -16,6 +16,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DegreeAdd extends JFrame {
 
@@ -100,6 +102,13 @@ public class DegreeAdd extends JFrame {
 		contentPane.add(levelSelect);
 
 		JButton btnAddDegree = new JButton("Add Degree");
+		btnAddDegree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DegreeUI deg = new DegreeUI();
+				deg.setVisible(true);
+				dispose();
+			}
+		});
 		btnAddDegree.setBounds(297, 97, 109, 28);
 		contentPane.add(btnAddDegree);
 

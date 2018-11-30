@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class DeptAdd extends JFrame {
 
@@ -64,6 +66,13 @@ public class DeptAdd extends JFrame {
 		deptNameField.setColumns(10);
 
 		JButton btnAddUser = new JButton("Add Department");
+		btnAddUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DepartmentUI dept = new DepartmentUI();
+				dept.setVisible(true);
+				dispose();
+			}
+		});
 		btnAddUser.setBounds(152, 146, 133, 28);
 		contentPane.add(btnAddUser);
 	}
