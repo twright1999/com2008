@@ -1,11 +1,28 @@
 package Database;
-import java.util.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
 
+/**
+* DACTeacher.java
+*
+* Data Access Controller for Teacher
+*
+* @author Thomas Wright
+*/
+
 public class DACTeacher extends DAC {
+	
+	/**
+	* addGrade
+	* 
+	* takes a grade, module and a student and adds that grade
+	* 
+	* @param gradePercent the value of the grade to be added
+	* @param modID the unique identifier for the module 
+	* @param regNumber unique identifier for a student
+	*/
 	
 	public static void addGrade(float gradePercent, String modID, int regNumber) throws SQLException {
 		openConnection();
@@ -20,6 +37,14 @@ public class DACTeacher extends DAC {
 		closeConnection();
 	}
 	
+	/**
+	* removeGrade
+	* 
+	* takes a gradeID and removes it from the database
+	* 
+	* @param gradeID unique identifier for a grade
+	*/
+	
 	public static void removeGrade(int gradeID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
@@ -29,6 +54,17 @@ public class DACTeacher extends DAC {
 		closeConnection();
 
 	}
+	
+	/**
+	* calcPeriod
+	* 
+	* takes a regNumber and a periodID and determines whether the student has passed the given period
+	* 
+	* @param regNumber unique identifier for a student
+	* @param periodID unique identifier for a period
+	* 
+	* @return boolean returns true if the student passed the period
+	*/
 	
 	public static boolean calcPeriod(int regNumber, int periodID) throws SQLException {
 		openConnection();
@@ -65,6 +101,16 @@ public class DACTeacher extends DAC {
 			else
 				return false;
 		}
+	
+	/**
+	* calcDegree
+	* 
+	* takes a regNumber and determines what class of degree the student has
+	* 
+	* @param regNumber unique identifier for a student
+	* 
+	* @return String returns the name of the degree earned
+	*/
 	
 	public static String calcDegree(int regNumber) throws SQLException {
 		openConnection();
@@ -122,6 +168,18 @@ public class DACTeacher extends DAC {
 			
 		return "degree not found";
 	}
+	
+	/**
+	* getStudentStatus
+	* 
+	* takes a regNumber and returns all grades that the student has
+	* 
+	* @param regNumber unique identifier for a student
+	* 
+	* @return String returns a string containing all grades for all modules,
+	*                the average grade for every level and
+	*                the degree earned
+	*/
 	
 	public static String getStudentStatus(int regNumber) throws SQLException {
 		openConnection();
