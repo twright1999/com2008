@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="Classes"/>
-	<classpathentry kind="src" path="Database"/>
-	<classpathentry kind="src" path="UI"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="D:/Sheffield_studies/year2_semester1/mysql-connector-java-8.0.13/mysql-connector-java-8.0.13.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>

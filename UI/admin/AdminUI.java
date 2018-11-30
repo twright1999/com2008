@@ -1,6 +1,7 @@
 package admin;
 
 import java.awt.EventQueue;
+import java.awt.event.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,6 +11,10 @@ import javax.swing.border.EmptyBorder;
 public class AdminUI extends JFrame {
 
 	private JPanel contentPane;
+	private JButton btnUser;
+	private JButton btnDepartment;
+	private JButton btnModule;
+	private JButton btnDegree;
 
 	/**
 	 * Launch the application.
@@ -37,16 +42,36 @@ public class AdminUI extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 
-		JButton btnUser = new JButton("User");
+		btnUser = new JButton("User");
+		btnUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/**/
+			}
+		});
 		btnUser.setBounds(64, 62, 104, 28);
 
-		JButton btnModule = new JButton("Module");
+		btnModule = new JButton("Module");
+		btnModule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/**/
+			}
+		});
 		btnModule.setBounds(64, 157, 104, 28);
 
-		JButton btnDegree = new JButton("Degree");
+		btnDegree = new JButton("Degree");
+		btnDegree.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/**/
+			}
+		});
 		btnDegree.setBounds(278, 157, 104, 28);
 
-		JButton btnDepartment = new JButton("Department");
+		btnDepartment = new JButton("Department");
+		btnDepartment.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				/**/
+			}
+		});
 		btnDepartment.setBounds(278, 62, 104, 28);
 		contentPane.setLayout(null);
 		contentPane.add(btnUser);

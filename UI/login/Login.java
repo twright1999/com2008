@@ -20,6 +20,8 @@ import java.awt.GridBagConstraints;
 import javax.swing.border.EtchedBorder;
 import javax.swing.JButton;
 import javax.swing.UIManager;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class Login extends JFrame {
 
@@ -28,6 +30,8 @@ public class Login extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTextField textField;
+	private JPasswordField passwordField;
 
 	/**
 	 * Launch the application.
@@ -78,7 +82,7 @@ public class Login extends JFrame {
 		lblUsername.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblUsername);
 
-		JTextField textField = new JTextField();
+		textField = new JTextField();
 		lblUsername.setLabelFor(textField);
 		textField.setBounds(167, 12, 100, 31);
 		textField.setFont(new Font("Times New Roman", Font.PLAIN, 16));
@@ -90,7 +94,7 @@ public class Login extends JFrame {
 		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblPassword);
 
-		JPasswordField passwordField = new JPasswordField();
+		passwordField = new JPasswordField();
 		lblPassword.setLabelFor(passwordField);
 		passwordField.setBounds(167, 55, 100, 31);
 		passwordField.setFont(new Font("Times New Roman", Font.PLAIN, 16));
@@ -98,6 +102,13 @@ public class Login extends JFrame {
 		panel.add(passwordField);
 
 		JButton btnLogin = new JButton("Login");
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String userName = textField.getText().toString();
+				char[] password = passwordField.getPassword();
+				String pwdStr = String .valueOf(password);
+			}
+		});
 		btnLogin.setBounds(137, 219, 93, 37);
 		btnLogin.setFont(new Font("Times New Roman", Font.PLAIN, 21));
 		contentPane.add(btnLogin);
