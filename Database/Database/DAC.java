@@ -211,10 +211,10 @@ public class DAC {
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
-		Account acc = DAC.getAccount(13);
+		Account acc = DAC.getAccount(16);
 		System.out.println(acc.toString());
 		
-		Student student = DAC.getStudent(13);
+		Student student = DAC.getStudent(16);
 		System.out.println(student.toString());
 		
 		Grade[] grades = DAC.getStudentGrades(987654321);
