@@ -12,6 +12,30 @@ import Database.DACAdmin;
  * Role-Based Access Controller. For determining appropriate user access
  */
 public class RBAC extends DAC {
+	/**
+	 * 
+	 * @param userID
+	 * @return char ('S', 'A', 'R', 'T') if try block is successful.
+	 *         else returns 'N', which is a placeholder for permission - none
+	 * @throws SQLException
+	 */
+	public static char getPermission(int userID) throws SQLException {
+		try {
+			openConnection();
+			PreparedStatement stmt = connection.prepareStatement(
+					"SELECT permission FROM Account WHERE userID = ?");
+			stmt.setInt(1, userID);
+			ResultSet res = stmt.executeQuery();
+			return res.getString("permission").charAt(0);
+		}
+		catch(SQLException ex) {
+			System.out.print("In getPermission: " + ex.toString());
+			return 'N';
+		}
+		finally {
+			closeConnection();
+		}
+	}
 	
 	/**
 	 * 
