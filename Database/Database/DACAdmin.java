@@ -47,7 +47,7 @@ public class DACAdmin extends DAC {
 		openConnection();
 		String query = "UPDATE Account SET password = ? WHERE userID= ?";
 		PreparedStatement pstm = connection.prepareStatement(query);
-		pstm.setString(1, password);
+		pstm.setString(1,hashPassword(password));
 		pstm.setInt(2, userID);
 		pstm.executeUpdate();
 		closeConnection();
@@ -153,8 +153,13 @@ public class DACAdmin extends DAC {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		DACAdmin.removeModule("BAD69");
-		DACAdmin.addModule("BAD69", "BADMODULE2", 10, "AUTUMN", 1, '1', "BAD696");
+		String hash1 = hashPassword("password");
+		String hash2 = hashPassword("password");
+		System.out.println(hash1);
+		System.out.println(hash2);
+		System.out.println(hash1.equals(hash2));
+		//DACAdmin.removeModule("BAD69");
+		//DACAdmin.addModule("BAD69", "BADMODULE2", 10, "AUTUMN", 1, '1', "BAD696");
 	}
 
 
