@@ -1,8 +1,8 @@
 package admin;
 
 import java.awt.EventQueue;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -12,10 +12,9 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class DegreeUI extends JFrame {
 
@@ -27,6 +26,11 @@ public class DegreeUI extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -89,6 +93,17 @@ public class DegreeUI extends JFrame {
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setBounds(21, 185, 87, 28);
 		contentPane.add(btnDelete);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AdminUI admin = new AdminUI();
+				admin.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBounds(323, 185, 87, 28);
+		contentPane.add(btnCancel);
 	}
 
 }

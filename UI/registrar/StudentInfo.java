@@ -1,16 +1,17 @@
 package registrar;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import java.awt.Window.Type;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class StudentInfo extends JFrame {
 
@@ -74,7 +75,7 @@ public class StudentInfo extends JFrame {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBorder(null);
-		scrollPane_1.setBounds(22, 131, 393, 65);
+		scrollPane_1.setBounds(22, 100, 393, 65);
 		contentPane.add(scrollPane_1);
 		
 		JTable moduleTable = new JTable();
@@ -91,5 +92,27 @@ public class StudentInfo extends JFrame {
 		moduleTable.getColumnModel().getColumn(0).setPreferredWidth(87);
 		moduleTable.getColumnModel().getColumn(1).setPreferredWidth(46);
 		scrollPane_1.setViewportView(moduleTable);
+		
+		JButton btnAddModule = new JButton("Add Module");
+		btnAddModule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModuleSelect modPick = new ModuleSelect();
+				modPick.setVisible(true);
+				dispose();
+			}
+		});
+		btnAddModule.setBounds(22, 229, 109, 28);
+		contentPane.add(btnAddModule);
+		
+		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegistrarUI rgstr = new RegistrarUI();
+				rgstr.setVisible(true);
+				dispose();
+			}
+		});
+		btnClose.setBounds(306, 229, 109, 28);
+		contentPane.add(btnClose);
 	}
 }

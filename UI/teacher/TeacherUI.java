@@ -1,17 +1,19 @@
 package teacher;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.UIManager;
 import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 public class TeacherUI extends JFrame {
@@ -19,6 +21,7 @@ public class TeacherUI extends JFrame {
 	private JPanel contentPane;
 	private JTextField searchField;
 	private JTable stdNameTable;
+	private JButton btnSearch;
 
 	/**
 	 * Launch the application.
@@ -79,5 +82,14 @@ public class TeacherUI extends JFrame {
 		));
 		stdNameTable.setShowHorizontalLines(true);
 		scrollPane.setViewportView(stdNameTable);
+		
+		btnSearch = new JButton("Search");
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Code Here
+			}
+		});
+		btnSearch.setBounds(217, 18, 87, 28);
+		contentPane.add(btnSearch);
 	}
 }

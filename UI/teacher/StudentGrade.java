@@ -1,16 +1,17 @@
 package teacher;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.UIManager;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.JButton;
 
 public class StudentGrade extends JFrame {
 
@@ -20,6 +21,7 @@ public class StudentGrade extends JFrame {
 	private JButton btnProgress;
 	private JButton btnRepeat;
 	private JButton btnGraduate;
+	private JButton btnBack;
 
 	/**
 	 * Launch the application.
@@ -48,7 +50,7 @@ public class StudentGrade extends JFrame {
 	public StudentGrade() {
 		setTitle("Student Grades");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 589, 392);
+		setBounds(100, 100, 592, 305);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -79,20 +81,51 @@ public class StudentGrade extends JFrame {
 		scrollPane.setViewportView(gradesTable);
 		
 		btnResit = new JButton("Resit");
+		btnResit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Insert Code here
+			}
+		});
 		btnResit.setBounds(16, 131, 103, 28);
 		contentPane.add(btnResit);
 		
 		btnProgress = new JButton("Progress");
+		btnProgress.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Insert Code here
+			}
+		});
 		btnProgress.setBounds(162, 131, 103, 28);
 		contentPane.add(btnProgress);
 		
 		btnRepeat = new JButton("Repeat");
+		btnRepeat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Insert Code here
+			}
+		});
 		btnRepeat.setBounds(307, 131, 103, 28);
 		contentPane.add(btnRepeat);
 		
 		btnGraduate = new JButton("Graduate");
+		btnGraduate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Insert Code here
+			}
+		});
 		btnGraduate.setBounds(462, 131, 87, 28);
 		contentPane.add(btnGraduate);
+		
+		btnBack = new JButton("Back");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				TeacherUI teacher = new TeacherUI();
+				teacher.setVisible(true);
+				dispose();
+			}
+		});
+		btnBack.setBounds(462, 219, 87, 28);
+		contentPane.add(btnBack);
 	}
 
 }

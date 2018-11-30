@@ -1,17 +1,17 @@
 package registrar;
 
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JList;
-import java.awt.Window.Type;
-import javax.swing.JScrollPane;
 import javax.swing.AbstractListModel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 public class ModuleSelect extends JFrame {
 
@@ -42,7 +42,6 @@ public class ModuleSelect extends JFrame {
 	 * Create the frame.
 	 */
 	public ModuleSelect() {
-		setType(Type.POPUP);
 		setTitle("Available Modules");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -85,5 +84,16 @@ public class ModuleSelect extends JFrame {
 		
 		JList selectedMod = new JList();
 		scrollPane_1.setViewportView(selectedMod);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StudentInfo stdInfo = new StudentInfo();
+				stdInfo.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBounds(172, 218, 87, 28);
+		contentPane.add(btnCancel);
 	}
 }

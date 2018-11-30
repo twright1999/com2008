@@ -3,6 +3,8 @@ package admin;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
@@ -15,9 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class DegreeAdd extends JFrame {
 
@@ -27,6 +28,11 @@ public class DegreeAdd extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -134,5 +140,16 @@ public class DegreeAdd extends JFrame {
 			}
 		});
 		deptList.setSelectedIndex(0);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DegreeUI deg = new DegreeUI();
+				deg.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBounds(297, 138, 109, 28);
+		contentPane.add(btnCancel);
 	}
 }

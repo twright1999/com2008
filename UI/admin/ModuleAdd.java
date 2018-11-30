@@ -1,6 +1,8 @@
 package admin;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -10,9 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class ModuleAdd extends JFrame {
 
@@ -22,6 +23,11 @@ public class ModuleAdd extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -124,5 +130,16 @@ public class ModuleAdd extends JFrame {
 		degreeIDField.setBounds(116, 140, 102, 28);
 		contentPane.add(degreeIDField);
 		degreeIDField.setColumns(10);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ModuleUI mod = new ModuleUI();
+				mod.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBounds(280, 178, 108, 28);
+		contentPane.add(btnCancel);
 	}
 }

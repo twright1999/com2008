@@ -1,6 +1,8 @@
 package admin;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -10,10 +12,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import java.awt.Window.Type;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 
 public class UserAdd extends JFrame {
 
@@ -27,6 +27,11 @@ public class UserAdd extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -117,5 +122,27 @@ public class UserAdd extends JFrame {
 		});
 		btnAddUser.setBounds(298, 132, 87, 28);
 		contentPane.add(btnAddUser);
+		
+		JLabel lblTitle = new JLabel("Title");
+		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblTitle.setBounds(240, 66, 51, 16);
+		contentPane.add(lblTitle);
+		
+		JComboBox titleSelect = new JComboBox();
+		lblTitle.setLabelFor(titleSelect);
+		titleSelect.setModel(new DefaultComboBoxModel(new String[] {"Mr", "Ms"}));
+		titleSelect.setBounds(303, 61, 82, 26);
+		contentPane.add(titleSelect);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				User user = new User();
+				user.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBounds(298, 172, 87, 28);
+		contentPane.add(btnCancel);
 	}
 }

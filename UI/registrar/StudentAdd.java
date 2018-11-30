@@ -1,17 +1,18 @@
 package registrar;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
 
 public class StudentAdd extends JFrame {
 
@@ -52,12 +53,12 @@ public class StudentAdd extends JFrame {
 		
 		JLabel lblUserID = new JLabel("User ID");
 		lblUserID.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUserID.setBounds(126, 54, 85, 16);
+		lblUserID.setBounds(40, 41, 85, 16);
 		contentPane.add(lblUserID);
 		
 		JTextField idField = new JTextField();
 		lblUserID.setLabelFor(idField);
-		idField.setBounds(231, 48, 102, 28);
+		idField.setBounds(145, 35, 102, 28);
 		contentPane.add(idField);
 		idField.setColumns(10);
 		
@@ -66,29 +67,45 @@ public class StudentAdd extends JFrame {
 		lblPersonalTutor.setHorizontalAlignment(SwingConstants.CENTER);
 		lblPersonalTutor.setForeground(Color.BLACK);
 		lblPersonalTutor.setEnabled(true);
-		lblPersonalTutor.setBounds(126, 112, 85, 16);
+		lblPersonalTutor.setBounds(40, 99, 85, 16);
 		contentPane.add(lblPersonalTutor);
 		
 		JTextField ptField = new JTextField();
 		lblPersonalTutor.setLabelFor(ptField);
-		ptField.setBounds(231, 106, 102, 28);
+		ptField.setBounds(145, 93, 102, 28);
 		contentPane.add(ptField);
 		ptField.setColumns(10);
 		
 		JLabel lblPeriodOfStudy = new JLabel("Period of Study");
 		lblPeriodOfStudy.setHorizontalAlignment(SwingConstants.CENTER);
-		lblPeriodOfStudy.setBounds(126, 160, 85, 16);
+		lblPeriodOfStudy.setBounds(40, 147, 85, 16);
 		contentPane.add(lblPeriodOfStudy);
 		
 		JTextField periodField = new JTextField();
 		lblPeriodOfStudy.setLabelFor(periodField);
-		periodField.setBounds(231, 154, 102, 28);
+		periodField.setBounds(145, 141, 102, 28);
 		contentPane.add(periodField);
 		periodField.setColumns(10);
 		
 		JButton btnAddStudent = new JButton("Add Student");
-		btnAddStudent.setBounds(231, 212, 102, 28);
+		btnAddStudent.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//Insert Code here
+			}
+		});
+		btnAddStudent.setBounds(297, 59, 102, 28);
 		contentPane.add(btnAddStudent);
+		
+		JButton btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			RegistrarUI reg = new RegistrarUI();
+				reg.setVisible(true);
+				dispose();
+			}
+		});
+		btnCancel.setBounds(297, 119, 102, 28);
+		contentPane.add(btnCancel);
 	}
 
 }
