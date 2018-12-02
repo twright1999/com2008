@@ -122,21 +122,25 @@ public class Login extends JFrame {
 							StudentUI student = new StudentUI();
 							student.setVisible(true);
 							dispose();
+							break ;
 						}
 						case 'A' : {
 							AdminUI admin = new AdminUI();
 							admin.setVisible(true);
 							dispose();
+							break ;
 						}
 						case 'R' : {
 							RegistrarUI registrar = new RegistrarUI();
 							registrar.setVisible(true);
 							dispose();
+							break ;
 						}
 						case 'T' : {
 							TeacherUI teacher = new TeacherUI();
 							teacher.setVisible(true);
 							dispose();
+							break ;
 						}
 						}
 					} else {

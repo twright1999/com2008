@@ -88,7 +88,7 @@ public class DACAdmin extends DAC {
 		return;
 		
 	}
-	
+		
 	public static void addDegree(String degID, String name, char level, String depID) throws SQLException {
 		openConnection();
 		String query = "INSERT INTO Degree SET degID = ?, name = ?, level= ?, depID =(SELECT depID FROM Department WHERE depID = ?)";
@@ -153,13 +153,7 @@ public class DACAdmin extends DAC {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		String hash1 = hashPassword("password");
-		String hash2 = hashPassword("password");
-		System.out.println(hash1);
-		System.out.println(hash2);
-		System.out.println(hash1.equals(hash2));
-		//DACAdmin.removeModule("BAD69");
-		//DACAdmin.addModule("BAD69", "BADMODULE2", 10, "AUTUMN", 1, '1', "BAD696");
+		DACAdmin.addAccount("ROKAS", "diamond", 'R');
 	}
 
 
