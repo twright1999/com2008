@@ -1,23 +1,29 @@
 package registrar;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Accounts.*;
+import Database.*;
+import javax.swing.ListSelectionModel;
+
 public class RegistrarUI extends JFrame {
 	private JPanel contentPane;
+	private JTable table;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -39,6 +45,17 @@ public class RegistrarUI extends JFrame {
 			}
 		});
 	}
+	
+	public void display_table() throws SQLException {
+		Student[] students = DAC.getAllStudents();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		Object[] row = new Object[2];
+		for(int i=0;i<students.length;i++) {
+			row[0]=students[i].getUserID();
+			row[1]=students[i].getName();
+			model.addRow(row);
+		}
+	}
 
 	/**
 	 * Create the frame.
@@ -52,32 +69,21 @@ public class RegistrarUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblSearch = new JLabel("Search");
-		lblSearch.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSearch.setBounds(19, 25, 70, 16);
-		contentPane.add(lblSearch);
-		
-		JTextField searchField = new JTextField();
-		lblSearch.setLabelFor(searchField);
-		searchField.setBounds(101, 19, 102, 28);
-		contentPane.add(searchField);
-		searchField.setColumns(10);
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
 		scrollPane.setBounds(19, 65, 395, 88);
 		contentPane.add(scrollPane);
 		
-		JTable table = new JTable();
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		table.setShowHorizontalLines(true);
 		table.setShowVerticalLines(true);
 		scrollPane.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{"", null, null},
 			},
 			new String[] {
-				"Student ID", "First Name", "Last Name"
+				"Student ID", "Name"
 			}
 		));
 		
@@ -91,5 +97,41 @@ public class RegistrarUI extends JFrame {
 		});
 		btnAddStudent.setBounds(307, 19, 102, 28);
 		contentPane.add(btnAddStudent);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int row = table.getSelectedRow();
+				DefaultTableModel model= (DefaultTableModel)table.getModel();
+
+				int selected = (int) model.getValueAt(row, 0);
+				
+					if (row >= 0) {
+
+						model.removeRow(row);
+
+						try {
+							DACRegistrar.removeStudent(selected);
+							JOptionPane.showMessageDialog(frame,
+								    "Delete Successful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
+							table.revalidate();
+						}
+						catch (Exception w) {
+							JOptionPane.showInputDialog(this, "Connection Error!");
+						}
+					}
+			}
+		});
+		btnDelete.setBounds(19, 229, 87, 28);
+		contentPane.add(btnDelete);
+		
+		try {
+			display_table();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }
