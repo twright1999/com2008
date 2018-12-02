@@ -22,14 +22,19 @@ public class RBAC extends DAC {
 	public static char getPermission(int userID) throws SQLException {
 		try {
 			openConnection();
+			
 			PreparedStatement stmt = connection.prepareStatement(
 					"SELECT permission FROM Account WHERE userID = ?");
 			stmt.setInt(1, userID);
 			ResultSet res = stmt.executeQuery();
-			return res.getString("permission").charAt(0);
+			res.next();
+			System.out.println("after execute: " + res.toString());
+			char permission = res.getString("permission").charAt(0);
+			System.out.println("permission: " + permission);
+			return permission;
 		}
 		catch(SQLException ex) {
-			System.out.print("In getPermission: " + ex.toString());
+			System.out.println("In getPermission: " + ex.toString());
 			return 'N';
 		}
 		finally {
@@ -71,6 +76,7 @@ public class RBAC extends DAC {
 	
 	//testing
 	public static void main(String[] arg) throws SQLException {
+		//closeConnection();
 		System.out.println(verifyLogin(17, "password"));
 		System.out.println(verifyLogin(17, "not password"));
 	}
