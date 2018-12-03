@@ -138,8 +138,8 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2001', 'Year 2 big module', '80', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
-//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM1002')");
-//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM3001')");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM1002')"); NO LONGER IN DATABASE
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM3001')"); NO LONGER IN DATABASE
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2001')");
 //			stmt.executeUpdate("INSERT INTO Teacher VALUES (0,'COM2108', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 70.0, 'COM2008', 987654321)");
