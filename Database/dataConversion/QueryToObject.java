@@ -36,7 +36,28 @@ public final class QueryToObject {
 		}
 		//returns null if such account does not exist.
 		return null;
-		
+	}
+	
+	public static Account[] rowsToAccounts(ResultSet res, int count) throws SQLException {
+		Account[] accounts = new Account[count];
+		try {
+			int index = 0;
+			while (res.next()) {
+				int userID = res.getInt("userID");
+				String name = res.getString("name");
+				String password = "hidden"; //placeholder (no need to see hashed passwords)
+				char permission = res.getString("permission").charAt(0);
+				Account account = new Account (userID, name, password, permission);
+				accounts[index] = account;
+				System.out.println(">>rowsToAccounts: " + account.toString());
+			}
+			return accounts;
+		}
+		catch (SQLException ex) {
+			System.out.println("rowsToAccounts: " + ex.toString());
+		}
+		//if something goes wrong, show an error message in GUI
+		return null;
 	}
 	
 	public static Student rowToStudent(ResultSet resStudent, ResultSet resDegree, ResultSet resPeriod) {

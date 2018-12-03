@@ -48,12 +48,19 @@ public class DAC {
 		closeConnection();
 		return account;
 	}
-	/*
+	
 	public static Account[] getAccounts() throws SQLException {
 		openConnection();
-		PreparedStatement pstmt = connection
+		Statement stmt = connection.createStatement();
+		ResultSet res = stmt.executeQuery("SELECT * FROM Account");
+		int count = getCount("Account");
+		Account[] accounts = QueryToObject.rowsToAccounts(res, count);
+		closeConnection();
+		return accounts;
+		
+		
 	}
-	*/
+	
 	public static Student getStudent(int userID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt1 = connection.prepareStatement(
@@ -244,7 +251,7 @@ public class DAC {
 	}
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		
+		/*
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
@@ -261,12 +268,13 @@ public class DAC {
 		
 		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(987654321);
 		System.out.println(period.getStartDate());
-		/*
+		
 		Student[] students = DAC.getAllStudents();
 		System.out.println(students[0].getName());
 		*/
 		DAC.getDegrees();
 		DAC.getDepartments();
+		DAC.getAccounts();
 		
 	}
 }
