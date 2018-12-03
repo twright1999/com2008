@@ -193,7 +193,8 @@ public class DACAdmin extends DAC {
 		return;
 	}
 	/**
-	 * hashes a password 
+	 * hashes a password. Used when creating an Account and when logging into
+	 * the system
 	 * @param user password
 	 * @return hashed password (String)
 	 */
@@ -208,6 +209,7 @@ public class DACAdmin extends DAC {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
+		
 		/*DACAdmin.addAccount("ROKAS", "diamond", 'R');
 		DACAdmin.addAccount("ROKAS", "diamond", 'R'); */
 		//DACAdmin.removeAccount(19);

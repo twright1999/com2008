@@ -56,14 +56,45 @@ public class DACRegistrar extends DAC {
 		
 		public static Boolean checkRegistered(int userID) throws SQLException {
 			openConnection();
+			/*
+			 * check that all modules match the level
+			 * AND
+			 * check that the Student has core modules
+			 * AND
+			 * check that credits = 120
+			 */
+			PreparedStatement pstmt0 = connection.prepareStatement(
+					"SELECT level FROM PeriodOfStudy WHERE regNumber = ?");
+			pstmt0.setInt(1, userID);
+			ResultSet res0 = pstmt0.executeQuery();
+			res0.next();
+			char studentLevel = res0.getString("level").charAt(0);
+			System.out.println("student lvl: " + studentLevel);
+			//need to retrieve all the levels from the Modules that the student has chosen
+			PreparedStatement pstmt1 = connection.prepareStatement(
+					"");
+			/*
+			PreparedStatement pstmt1 = connection.prepareStatement(
+					" SELECT level FROM Module"
+					+ " LEFT JOIN (SELECT modID FROM Student_Module WHERE regNumber = ?) "
+					+ " ON Module.modID = Student_Module.modID ");
+					*/
+			pstmt1.setInt(1, userID);
+			
+			ResultSet res1 = pstmt1.executeQuery();
+			
+			while (res1.next()) {
+				System.out.println(res1.getString("level"));
+			}
+			/*
 			PreparedStatement pstm = connection.prepareStatement(
 					"SELECT regNumber FROM Student WHERE userID = ?");
 			pstm.setInt(1, userID);
 			pstm.executeUpdate();
 			ResultSet res = pstm.executeQuery();
-			Boolean x = !res.wasNull();
+			Boolean x = !res.wasNull();*/
 			closeConnection();
-			return x;
+			return true;
 			
 		}
 		
@@ -99,8 +130,8 @@ public class DACRegistrar extends DAC {
 		
 		//for testing
 		public static void main(String[] arg) throws SQLException {
-			DACRegistrar.dropModule(69420, "BAD69");
-			
+			//DACRegistrar.dropModule(69420, "BAD69");
+			DACRegistrar.checkRegistered(987654321);
 		}
 		
 

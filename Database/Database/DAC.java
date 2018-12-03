@@ -88,7 +88,7 @@ public class DAC {
 		int countS = resCountS.getInt(resCountS.getRow());
 		resCountA.next(); 
 		int countA = resCountA.getInt(resCountA.getRow());
-		
+		//check if number of Students match number of Accounts over the same ID (should never be false)
 		if (countA == countS && countA != 0) {
 			ResultSet resStudents = stmt.executeQuery(
 					"SELECT *FROM Student NATURAL JOIN Account WHERE permission = 'S'");
@@ -159,6 +159,22 @@ public class DAC {
 		return degree;
 	}
 	
+	public static Degree[] getDegrees() throws SQLException {
+		openConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM Degree");
+		ResultSet res = pstmt.executeQuery();
+		//counting how many Degrees there are to properly define an array of Degree[]
+		PreparedStatement pstmt2 = connection.prepareStatement(
+				"SELECT COUNT(*) FROM Degree");
+		ResultSet resCount = pstmt2.executeQuery();
+		resCount.next(); int count = resCount.getInt(resCount.getRow());
+		//converting rows to Degrees
+		Degree[] degrees = QueryToObject.rowsToDegrees(res, count);
+		closeConnection();
+		return degrees;
+	}
+	
 	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -207,7 +223,7 @@ public class DAC {
 	}
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		
+		/*
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
@@ -227,6 +243,8 @@ public class DAC {
 		
 		Student[] students = DAC.getAllStudents();
 		System.out.println(students[0].getName());
+		*/
+		DAC.getDegrees();
 		
 	}
 }

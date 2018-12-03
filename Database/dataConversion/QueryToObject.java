@@ -190,6 +190,29 @@ public final class QueryToObject {
 	return null;
 	}
 	
+	public static Degree[] rowsToDegrees(ResultSet res, int count) throws SQLException {
+		Degree[] degrees = new Degree[count];
+		try {
+			int index = 0;
+			while (res.next()) {
+				String degID = res.getString("degID");
+				String name = res.getString("name");
+				char level = res.getString("level").charAt(0);
+				String depID = res.getString("depID");
+				Degree degree = new Degree(degID, name, level, depID);
+				degrees[index] = degree;
+				index++;
+				System.out.println(degree.toString());
+			}
+			return degrees;
+		}
+			catch(SQLException ex) {
+				System.out.println("rowsToDegrees: " + ex.toString());
+			}
+		return null;
+		
+	}
+	
 	public static void main(String[] arg) throws SQLException {
 		
 	}
