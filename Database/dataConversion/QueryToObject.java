@@ -26,7 +26,7 @@ public final class QueryToObject {
 			String password = res.getString("password");
 			char permission = res.getString("permission").charAt(0);
 			account = new Account (userID, name, password, permission);
-			System.out.println(">>account is created");
+			System.out.println(">>getAccount: " + account.toString() );
 			return account;
 		}
 		catch (SQLException ex) {
@@ -209,6 +209,53 @@ public final class QueryToObject {
 			}
 	
 	return null;
+	}
+	
+	public static Module[] rowsToModules(ResultSet res, int count) throws SQLException {
+		Module[] modules = new Module[count];
+		int index = 0;
+		try {
+		while (res.next()) {
+			String moduleID = res.getString("modID");
+			String name = res.getString("name");
+			int credits = res.getInt("credits");
+			String taught = res.getString("taught");
+			Boolean obligatory = res.getBoolean("obligatory");
+			String degID = res.getString("degID");
+			Module module = new Module(moduleID, name, credits, taught, obligatory, degID);
+			modules[index] = module;
+			System.out.println("rowsToModules name: " + modules[index].getName());
+			index++;
+		}
+		return modules;
+		}
+		catch (SQLException ex) {
+			System.out.println("rowsToModules: " + ex.toString());
+		}
+		//if something goes wrong, show an error message in GUI
+		return null;
+	}
+	
+	public static Student_Module[] rowsToStudentModules(ResultSet res, int count) throws SQLException {
+		Student_Module[] student_modules = new Student_Module[count];
+		try {
+			int index = 0;
+			while (res.next()) {
+				int regNumber = res.getInt("regNumber");
+				String modID = res.getString("modID");
+				Student_Module std_mdl = new Student_Module(regNumber, modID);
+				student_modules[index] = std_mdl;
+				index++;
+				System.out.println("rowsToStdModules: " + std_mdl.toString());
+				
+			}
+			return student_modules;
+		}
+		catch (SQLException ex) {
+			System.out.println("rowsToStdModules: " + ex.toString());
+		}
+		//if something goes wrong, show an error message in GUI
+		return null;
 	}
 	
 	public static Degree[] rowsToDegrees(ResultSet res, int count) throws SQLException {
