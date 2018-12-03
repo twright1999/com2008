@@ -178,7 +178,7 @@ public final class QueryToObject {
 						acc.getPassword(), acc.getPermission(), regNumber, tutor,email);
 				students[index] = student;
 				index++;
-				System.out.println("while'ing");
+				System.out.println("rowsToStudents: " + student.toString());
 			}
 			return students;
 		}

@@ -47,9 +47,13 @@ public class DAC {
 		Account account = QueryToObject.rowToAccount(res);
 		closeConnection();
 		return account;
-				
 	}
-	
+	/*
+	public static Account[] getAccounts() throws SQLException {
+		openConnection();
+		PreparedStatement pstmt = connection
+	}
+	*/
 	public static Student getStudent(int userID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt1 = connection.prepareStatement(
@@ -165,10 +169,7 @@ public class DAC {
 				"SELECT * FROM Degree");
 		ResultSet res = pstmt.executeQuery();
 		//counting how many Degrees there are to properly define an array of Degree[]
-		PreparedStatement pstmt2 = connection.prepareStatement(
-				"SELECT COUNT(*) FROM Degree");
-		ResultSet resCount = pstmt2.executeQuery();
-		resCount.next(); int count = resCount.getInt(resCount.getRow());
+		int count = getCount("Degree");
 		//converting rows to Degrees
 		Degree[] degrees = QueryToObject.rowsToDegrees(res, count);
 		closeConnection();
@@ -180,11 +181,7 @@ public class DAC {
 		PreparedStatement pstmt = connection.prepareStatement(
 				"SELECT * FROM Department");
 		ResultSet res = pstmt.executeQuery();
-		//counting how many departments there are to define Department[] array
-		PreparedStatement pstmt2 = connection.prepareStatement(
-				"SELECT COUNT(*) FROM Department");
-		ResultSet resCount = pstmt2.executeQuery();
-		resCount.next(); int count = resCount.getInt(resCount.getRow());
+		int count = getCount("Department");
 		//converting rows to Departments
 		Department[] departments = QueryToObject.rowsToDepartments(res, count);
 		closeConnection();
@@ -202,6 +199,14 @@ public class DAC {
 		return period;
 	}
 	
+	public static int getCount(String table) throws SQLException {
+		if (connection == null) openConnection();
+		String query = "SELECT COUNT(*) FROM " + table;
+		PreparedStatement pstmt = connection.prepareStatement(query);
+		ResultSet resCount = pstmt.executeQuery();
+		resCount.next(); int count = resCount.getInt(resCount.getRow());
+		return count;
+	}
 	public static String generateEmail(String name) throws SQLException {
 		//check if such name already exsits
 		openConnection();
@@ -239,7 +244,7 @@ public class DAC {
 	}
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		/*
+		
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
@@ -256,7 +261,7 @@ public class DAC {
 		
 		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(987654321);
 		System.out.println(period.getStartDate());
-		
+		/*
 		Student[] students = DAC.getAllStudents();
 		System.out.println(students[0].getName());
 		*/
