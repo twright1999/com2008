@@ -6,22 +6,19 @@ package Utility;
  */
 public class Department {
 	
-	private String depId; //Three letter code (Like COM)
+	private String depID; //Three letter code (Like COM)
 	private String name;  //Full name (like Computer Science)
-	private Degree[] degrees; //Degrees available in this department
 	
-	public Department(String depId, String name, Degree[] degrees) {
-		this.depId = depId;
+	public Department(String depId, String name) {
+		this.depID = depId;
 		this.name = name;
-		this.degrees = degrees;
 	}
 	
-	public String getDepId() { return depId ; }
+	public String getDepId() { return depID ; }
 	public String getName() { return name ; }
-	public Degree[] getDegree() { return degrees; }
 	
 	public String toString() {
-		String all = "depID: " + depId + " dep name: " + name + " degrees: " + degrees.toString() + " " ;
+		String all = "depID: " + depID + " dep name: " + name + " " ;
 		return all;
 	}
 	

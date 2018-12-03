@@ -175,6 +175,22 @@ public class DAC {
 		return degrees;
 	}
 	
+	public static Department[] getDepartments() throws SQLException {
+		openConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM Department");
+		ResultSet res = pstmt.executeQuery();
+		//counting how many departments there are to define Department[] array
+		PreparedStatement pstmt2 = connection.prepareStatement(
+				"SELECT COUNT(*) FROM Department");
+		ResultSet resCount = pstmt2.executeQuery();
+		resCount.next(); int count = resCount.getInt(resCount.getRow());
+		//converting rows to Departments
+		Department[] departments = QueryToObject.rowsToDepartments(res, count);
+		closeConnection();
+		return departments;
+		}
+	
 	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -245,6 +261,7 @@ public class DAC {
 		System.out.println(students[0].getName());
 		*/
 		DAC.getDegrees();
+		DAC.getDepartments();
 		
 	}
 }

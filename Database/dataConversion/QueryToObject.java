@@ -209,8 +209,30 @@ public final class QueryToObject {
 			catch(SQLException ex) {
 				System.out.println("rowsToDegrees: " + ex.toString());
 			}
+		//if something goes wrong, show an error message in GUI
 		return null;
 		
+	}
+	
+	public static Department[] rowsToDepartments(ResultSet res, int count) throws SQLException {
+		Department[] departments = new Department[count];
+		try {
+			int index = 0;
+			while (res.next()) {
+				String depID = res.getString("depID");
+				String name = res.getString("name");
+				Department department = new Department(depID, name);
+				departments[index] = department;
+				index++;
+				System.out.println("rowsToDepartments: " + department.toString());
+			}
+			return departments;
+		}
+		catch (SQLException ex) {
+			System.out.println("rowsToDepartments: " + ex.toString());
+		}
+		//if something goes wrong, show an error message in GUI
+		return null;
 	}
 	
 	public static void main(String[] arg) throws SQLException {
