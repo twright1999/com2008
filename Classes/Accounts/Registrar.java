@@ -32,6 +32,11 @@ public class Registrar extends Account {
 		DACRegistrar.dropModule(regNumber, modID);
 	}
 	
+	public void registerStudent(String label, String startDate, String endDate, String level, int regNumber) {
+		DACRegistrar.registerStudent(label, startDate, endDate, level, regNumber);
+		
+	}
+	
 	private void checkRegistered(int regNumber) throws SQLException {
 		DACRegistrar.checkRegistered(regNumber);
 	}

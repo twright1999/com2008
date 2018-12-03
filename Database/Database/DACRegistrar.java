@@ -19,17 +19,6 @@ public class DACRegistrar extends DAC {
 			pstm.setInt(5, userID);
 			pstm.executeUpdate();
 			
-			Statement stmt = connection.createStatement();	
-			ResultSet moduleQuery = stmt.executeQuery("SELECT modID FROM Module WHERE degID = '" + degID + "'");
-			
-			while(moduleQuery.next()) {
-				query = "INSERT INTO Student_Module SET regNumber = ?, modID = ?";
-				pstm = connection.prepareStatement(query);
-				pstm.setInt(1, regNumber);
-				pstm.setString(2, moduleQuery.getString("modID"));
-				pstm.executeUpdate();
-			}
-			
 			closeConnection();
 			return;
 
@@ -67,6 +56,39 @@ public class DACRegistrar extends DAC {
 			closeConnection();
 			return;
 			
+		}
+		
+		public static void registerStudent(String label, String startDate, String endDate, String level, int regNumber) throws SQLException {
+			openConnection();
+			String query = "INSERT INTO PeriodOfStudy SET periodID = ?, label = ?, startDate = ?, endDate = ?, level = ?, regNumber = (SELECT regNumber FROM Student WHERE regNumber = ?)";
+			PreparedStatement pstm = connection.prepareStatement(query);
+			
+			pstm.setInt(1, 0);
+			pstm.setString(2, label);
+			pstm.setString(3, startDate);
+			pstm.setString(4, endDate);
+			pstm.setString(5, level);
+			pstm.setInt(6, regNumber);
+			pstm.executeUpdate();
+			
+			Statement stmt = connection.createStatement();
+			
+			ResultSet studentQuery = stmt.executeQuery("SELECT degID FROM Student WHERE regNumber = " + regNumber);
+			
+			studentQuery.next();
+			String degID = studentQuery.getString("degID");
+			
+			ResultSet moduleQuery = stmt.executeQuery("SELECT modID FROM Module WHERE degID = '" + degID + "' AND level = " + level);
+			
+			while(moduleQuery.next()) {
+				query = "INSERT INTO Student_Module SET regNumber = ?, modID = ?";
+				pstm = connection.prepareStatement(query);
+				pstm.setInt(1, regNumber);
+				pstm.setString(2, moduleQuery.getString("modID"));
+				pstm.executeUpdate();
+			}
+			
+			closeConnection();
 		}
 		
 		public static Boolean checkRegistered(int regNumber) throws SQLException {
@@ -166,7 +188,8 @@ public class DACRegistrar extends DAC {
 			//DACRegistrar.dropModule(69420, "BAD69");
 			//System.out.println(DACRegistrar.checkRegistered(987654321));
 			//removeStudent(999999999);
-			addStudent(444444444, "tom@tom.tom", "tutor man", "COMU01", 24);
+//			addStudent(555555555, "person@mail.com", "TUTOR", "COMU01", 24);
+			registerStudent("A", "2017-06-06", "2018-12-12", "2", 555555555);
 		}
 		
 
