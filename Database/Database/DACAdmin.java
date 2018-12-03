@@ -216,7 +216,9 @@ public class DACAdmin extends DAC {
 		//DACAdmin.setPermission(18, 'A');
 		//DACAdmin.addDepartment("COM", "Computer Science");
 		//DACAdmin.removeDepartment("BLA");
-		DACAdmin.addDegree("COMU01", "BSc Computer Science", '3', "COM");
+		//DACAdmin.addDegree("COMU01", "BSc Computer Science", '3', "COM");
+		//DACAdmin.addDepartment("CBE", "Chemical and Biological Engineering");
+		//DACAdmin.addDegree("CBEU65", "Chemical Engineering BSc", '2', "CBE");
 	}
 
 

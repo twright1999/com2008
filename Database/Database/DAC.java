@@ -209,6 +209,26 @@ public class DAC {
 		return student_modules;
 	}
 	
+	public static Module[] getModules() throws SQLException {
+		try {
+			openConnection();
+			int count = getCount("Module");
+			Statement stmt = connection.createStatement();
+			ResultSet res = stmt.executeQuery("SELECT * FROM Module");
+			Module[] modules = QueryToObject.rowsToModules(res, count);
+			//closeConnection();
+			return modules;
+		}
+		catch (SQLException ex) {
+			System.out.println("getModules: " + ex.toString());
+			//closeConnection();
+		}
+		finally {
+			closeConnection();
+		}
+		return null;
+	}
+	
 	public static Module[] getAvailableModules(int regNumber, String degID) throws SQLException {
 		try {
 			openConnection();
@@ -243,6 +263,10 @@ public class DAC {
 		catch (SQLException ex) {
 			System.out.println("getAvailableModules: " + ex.toString());
 			ex.printStackTrace();
+			
+		}
+		finally {
+			closeConnection();
 		}
 		return null;
 	}
@@ -341,7 +365,8 @@ public class DAC {
 		
 		//DAC.getCurrentStudentModules(987654321);
 		//DAC.getAccounts();
-		DAC.getAvailableModules(987654321, "COMU01");
+		//DAC.getAvailableModules(987654321, "COMU01");
+		DAC.getModules();
 		
 	}
 }
