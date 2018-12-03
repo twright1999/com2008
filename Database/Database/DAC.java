@@ -91,18 +91,18 @@ public class DAC {
 		try {
 		openConnection();
 		Statement stmt = connection.createStatement();
-		//checking if the number of accounts is the same as students (should always be true)
-		ResultSet resCountS = stmt.executeQuery("SELECT COUNT(*) FROM Student");
-		stmt = connection.createStatement();
+		//counting how many accounts there are which have permission 'S'
 		ResultSet resCountA = stmt.executeQuery("SELECT COUNT(*) FROM Account WHERE permission = 'S'");
-		resCountS.next();
-		int countS = resCountS.getInt(resCountS.getRow());
 		resCountA.next(); 
 		int countA = resCountA.getInt(resCountA.getRow());
+		
+		int countS = getCount("Student");
+		System.out.println("countA: " + countA + " & countS: " + countS);
+		
 		//check if number of Students match number of Accounts over the same ID (should never be false)
 		if (countA == countS && countA != 0) {
 			ResultSet resStudents = stmt.executeQuery(
-					"SELECT *FROM Student NATURAL JOIN Account WHERE permission = 'S'");
+					"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
 			/*
 			ResultSet resStudents = stmt.executeQuery(
 					"SELECT * FROM Account WHERE permission = 'S' "
@@ -275,6 +275,7 @@ public class DAC {
 		DAC.getDegrees();
 		DAC.getDepartments();
 		DAC.getAccounts();
+		DAC.getAllStudents();
 		
 	}
 }

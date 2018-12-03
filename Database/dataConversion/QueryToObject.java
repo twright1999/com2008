@@ -187,19 +187,19 @@ public final class QueryToObject {
 			while(res.next()) {
 				int userID = res.getInt("userID"); 
 				String name = res.getString("name");
-				String password = res.getString("password");
+				String password = "hidden"; //no need to display hashed password
 				char permission = res.getString("permission").charAt(0);
 				Account acc = new Account (userID, name, password, permission);
 				String email = res.getString("email");
 				int regNumber = res.getInt("regNumber");
 				
 				String tutor = res.getString("tutor");
-				
 				Student student = new Student(acc.getUserID(), acc.getName(),
-						acc.getPassword(), acc.getPermission(), regNumber, tutor,email);
+						acc.getPassword(), acc.getPermission(), regNumber, tutor, email);
+				System.out.println(">>rowsToStudents: " + student.toStringSimple());
 				students[index] = student;
 				index++;
-				System.out.println("rowsToStudents: " + student.toString());
+				
 			}
 			return students;
 		}

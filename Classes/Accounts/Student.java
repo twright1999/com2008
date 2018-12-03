@@ -20,7 +20,10 @@ public class Student extends Account {
 	private String tutor;
 	private PeriodOfStudy periodOfStudy;
 	
-	
+	/*
+	 * Initial Student constructor. Email field is missing because it will be
+	 * generated automatically
+	 */
 	public Student(int userID, String name, String password, char permission,
 			int regNumber, Degree degree, String tutor, PeriodOfStudy
 			periodOfStudy) throws SQLException {
@@ -32,7 +35,7 @@ public class Student extends Account {
 		this.email = DAC.generateEmail(name);
 	}
 	/*there is an email field, because this constructor is used when Student is already
-	 * created and inserted in database. 
+	 * in the database and the system requests more info about the student.
 	 */
 	public Student(int userID, String name, String password, char permission,
 			int regNumber, Degree degree, String tutor, PeriodOfStudy periodOfStudy,
@@ -55,6 +58,12 @@ public class Student extends Account {
 		this.email = email;
 	}
 	
+	public String toStringSimple() {
+		String all = super.toString() + " regNumber: " + regNumber +
+				" tutor: " + tutor + " email: " + email + " ";
+		return all;
+	}
+	
 	/*
 	 * For getting Student instance fields. Called in <GUI Name>
 	 * @param userId userId for SELECT query in getStudentStatus
@@ -63,12 +72,12 @@ public class Student extends Account {
 	public static String generateEmail(String sname) throws SQLException {
 		return DAC.generateEmail(sname);
 	}
-	
+	/*
 	public String toString() {
 		String all = super.toString() + degree.toString() + " email:" + email +
 				"  tutor: " + tutor + "  periodOfstudy: " + periodOfStudy.toString();
 		return all;
-	}
+	}*/
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException, ParseException, java.text.ParseException {
