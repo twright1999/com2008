@@ -21,11 +21,11 @@ public class DACRegistrar extends DAC {
 
 		}
 		
-		public static void removeStudent(int userID) throws SQLException {
+		public static void removeStudent(int regNumber) throws SQLException {
 			openConnection();
 			PreparedStatement pstm = connection.prepareStatement(
-					"DELETE FROM Student WHERE userID = ?");
-			pstm.setInt(1, userID);
+					"DELETE FROM Student WHERE regNumber = ?");
+			pstm.setInt(1, regNumber);
 			pstm.executeUpdate();
 			closeConnection();
 			return;
@@ -150,7 +150,8 @@ public class DACRegistrar extends DAC {
 		//for testing
 		public static void main(String[] arg) throws SQLException {
 			//DACRegistrar.dropModule(69420, "BAD69");
-			System.out.println(DACRegistrar.checkRegistered(987654321));
+			//System.out.println(DACRegistrar.checkRegistered(987654321));
+			removeStudent(999999999);
 		}
 		
 
