@@ -7,15 +7,29 @@ import java.util.*;
 
 public class DACRegistrar extends DAC {
 	
-		public static void addStudent(int regNumber, String email, String tutor, int userID) throws SQLException {
+		public static void addStudent(int regNumber, String email, String tutor, String degID, int userID) throws SQLException {
 			openConnection();
-			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, userID = (SELECT userID FROM Account WHERE userID = ?)";
+			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, degID = ?, userID = (SELECT userID FROM Account WHERE userID = ?)";
 			PreparedStatement pstm = connection.prepareStatement(query);
+			
 			pstm.setInt(1, regNumber);
 			pstm.setString(2, email);
 			pstm.setString(3, tutor);
-			pstm.setInt(4, userID);
+			pstm.setString(4, degID);
+			pstm.setInt(5, userID);
 			pstm.executeUpdate();
+			
+			Statement stmt = connection.createStatement();	
+			ResultSet moduleQuery = stmt.executeQuery("SELECT modID FROM Module WHERE degID = '" + degID + "'");
+			
+			while(moduleQuery.next()) {
+				query = "INSERT INTO Student_Module SET regNumber = ?, modID = ?";
+				pstm = connection.prepareStatement(query);
+				pstm.setInt(1, regNumber);
+				pstm.setString(2, moduleQuery.getString("modID"));
+				pstm.executeUpdate();
+			}
+			
 			closeConnection();
 			return;
 
@@ -151,7 +165,8 @@ public class DACRegistrar extends DAC {
 		public static void main(String[] arg) throws SQLException {
 			//DACRegistrar.dropModule(69420, "BAD69");
 			//System.out.println(DACRegistrar.checkRegistered(987654321));
-			removeStudent(999999999);
+			//removeStudent(999999999);
+			addStudent(444444444, "tom@tom.tom", "tutor man", "COMU01", 24);
 		}
 		
 
