@@ -124,7 +124,7 @@ public class DACAdmin extends DAC {
 		
 	public static void addDegree(String degID, String name, char level, String depID) throws SQLException {
 		openConnection();
-		String query = "INSERT INTO Degree SET degID = ?, name = ?, level= ?, depID =(SELECT depID FROM Department WHERE depID = ?)";
+		String query = "INSERT INTO Degree SET degID = ?, name = ?, level= ?, depID = ?";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setString(1, degID);
 		pstm.setString(2, name);
