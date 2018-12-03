@@ -92,6 +92,23 @@ public class OpenConnection {
 //				System.out.println(" regNumber: " + regNumber);
 //			}
 			
+//			ResultSet res6 = stmt.executeQuery("SELECT * FROM Module");
+//			while (res6.next()) {
+//				String modID  = res6.getString("modID");
+//				System.out.print("RESULT modID: " + modID);
+//				String name  = res6.getString("name");
+//				System.out.print(" name: " + name);
+//				int credits  = res6.getInt("credits");
+//				System.out.print(" credits: " + credits);
+//				String taught  = res6.getString("taught");
+//				System.out.print(" taught: " + taught);
+//				boolean obligatory  = res6.getBoolean("obligatory");
+//				System.out.print(" obligatory: " + obligatory);
+//				String level  = res6.getString("level");
+//				System.out.print(" level: " + level);
+//				String degID  = res6.getString("degID");
+//				System.out.println(" degID: " + degID);
+//			}
 				
 	
 //			stmt.executeUpdate("DELETE FROM Account");
@@ -118,15 +135,18 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2108', 'Functional Programming', '20', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM1002', 'Java Programming', '20', 'Year', True, '1', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Module VALUES ('COM3001', 'Year 3 Stuff WOW', '20', 'Autumn', True, '3', 'COMU01')");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM2001', 'Year 2 big module', '80', 'Autumn', True, '2', 'COMU01')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2008')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2108')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM1002')");
 //			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM3001')");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (987654321, 'COM2001')");
 //			stmt.executeUpdate("INSERT INTO Teacher VALUES (0,'COM2108', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 70.0, 'COM2008', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 69.0, 'COM2108', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 82.0, 'COM1002', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 100.0, 'COM3001', 987654321)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 88.0, 'COM2001', 987654321)");
 			
 			
 			

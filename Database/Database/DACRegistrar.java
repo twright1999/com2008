@@ -3,6 +3,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.*;
 
 public class DACRegistrar extends DAC {
 	
@@ -54,48 +55,66 @@ public class DACRegistrar extends DAC {
 			
 		}
 		
-		public static Boolean checkRegistered(int userID) throws SQLException {
+		public static Boolean checkRegistered(int regNumber) throws SQLException {
 			openConnection();
-			/*
-			 * check that all modules match the level
-			 * AND
-			 * check that the Student has core modules
-			 * AND
-			 * check that credits = 120
-			 */
-			PreparedStatement pstmt0 = connection.prepareStatement(
-					"SELECT level FROM PeriodOfStudy WHERE regNumber = ?");
-			pstmt0.setInt(1, userID);
-			ResultSet res0 = pstmt0.executeQuery();
-			res0.next();
-			char studentLevel = res0.getString("level").charAt(0);
-			System.out.println("student lvl: " + studentLevel);
-			//need to retrieve all the levels from the Modules that the student has chosen
-			PreparedStatement pstmt1 = connection.prepareStatement(
-					"");
-			/*
-			PreparedStatement pstmt1 = connection.prepareStatement(
-					" SELECT level FROM Module"
-					+ " LEFT JOIN (SELECT modID FROM Student_Module WHERE regNumber = ?) "
-					+ " ON Module.modID = Student_Module.modID ");
-					*/
-			pstmt1.setInt(1, userID);
+			Statement stmt = connection.createStatement();
 			
-			ResultSet res1 = pstmt1.executeQuery();
+			ResultSet periodQuery = stmt.executeQuery("SELECT level FROM PeriodOfStudy " +
+					"WHERE regNumber = " + regNumber +
+					" ORDER BY startDate DESC");
 			
-			while (res1.next()) {
-				System.out.println(res1.getString("level"));
+			periodQuery.next();
+			int level = periodQuery.getInt("level");
+			
+			ResultSet moduleQuery = stmt.executeQuery("SELECT Module.level FROM Module " +
+					"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
+					"WHERE Student_Module.regNumber = " + regNumber);
+			
+			boolean levelMatch = true;
+			while(moduleQuery.next()) {
+				if (Integer.parseInt(moduleQuery.getString("level")) != level) levelMatch = false;
 			}
-			/*
-			PreparedStatement pstm = connection.prepareStatement(
-					"SELECT regNumber FROM Student WHERE userID = ?");
-			pstm.setInt(1, userID);
-			pstm.executeUpdate();
-			ResultSet res = pstm.executeQuery();
-			Boolean x = !res.wasNull();*/
-			closeConnection();
-			return true;
 			
+			ResultSet studentQuery = stmt.executeQuery("SELECT degID FROM Student " +
+					"WHERE regNumber = " + regNumber );
+			
+			studentQuery.next();
+			String degID = studentQuery.getString("degID");
+			
+			moduleQuery = stmt.executeQuery("SELECT modID from Module " +
+					"WHERE obligatory = true AND degID = '" + degID + "'");
+			
+			ArrayList<String> modIDs = new ArrayList<String>();
+			while(moduleQuery.next()) {
+				modIDs.add(moduleQuery.getString("modID"));
+			}
+			
+			ResultSet studentModuleQuery = stmt.executeQuery("SELECT modID FROM Student_Module " +
+					"WHERE regNumber = " + regNumber);
+			
+			boolean allOb = true;
+			while(studentModuleQuery.next()) {
+				if (!modIDs.contains(studentModuleQuery.getString("modID"))) allOb = false;
+			}
+			
+			moduleQuery = stmt.executeQuery("SELECT Module.credits FROM Module " +
+					"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
+					"WHERE Student_Module.regNumber = " + regNumber);
+			
+			int creditsTotal = 0;
+			while(moduleQuery.next()) {
+				creditsTotal += moduleQuery.getInt("credits");
+			}
+			
+			closeConnection();
+			
+			if (level < 4) {
+				if (levelMatch && allOb && creditsTotal == 120) return true;
+				else return false;
+			} else {
+				if (levelMatch && allOb && creditsTotal == 180) return true;
+				else return false;
+			}			
 		}
 		
 		public static boolean checkCredits(int regNumber, int periodID) throws SQLException {
@@ -131,7 +150,7 @@ public class DACRegistrar extends DAC {
 		//for testing
 		public static void main(String[] arg) throws SQLException {
 			//DACRegistrar.dropModule(69420, "BAD69");
-			DACRegistrar.checkRegistered(987654321);
+			System.out.println(DACRegistrar.checkRegistered(987654321));
 		}
 		
 
