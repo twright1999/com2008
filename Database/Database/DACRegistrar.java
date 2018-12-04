@@ -6,10 +6,22 @@ import java.sql.Statement;
 import java.util.*;
 
 public class DACRegistrar extends DAC {
-	
+		/**
+		 * Adds student to the Student table. Not linked to PeriodOfStudy
+		 * or any of the modules yet, because the same student may advance
+		 * to different years and there is no need to "re add" the same person
+		 * 
+		 * @param regNumber
+		 * @param email
+		 * @param tutor
+		 * @param degID
+		 * @param userID
+		 * @throws SQLException
+		 */
 		public static void addStudent(int regNumber, String email, String tutor, String degID, int userID) throws SQLException {
 			openConnection();
-			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, degID = ?, userID = (SELECT userID FROM Account WHERE userID = ?)";
+			//add student to Student table
+			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, degID = ?, userID = ?";
 			PreparedStatement pstm = connection.prepareStatement(query);
 			
 			pstm.setInt(1, regNumber);
@@ -18,6 +30,7 @@ public class DACRegistrar extends DAC {
 			pstm.setString(4, degID);
 			pstm.setInt(5, userID);
 			pstm.executeUpdate();
+			//add student to the Degree table
 			
 			closeConnection();
 			return;
@@ -57,13 +70,23 @@ public class DACRegistrar extends DAC {
 			return;
 			
 		}
-		
+		/**
+		 * Adds student to the PeriodOfStudy table 
+		 * and auto links to obligatory modules
+		 * @param label
+		 * @param startDate
+		 * @param endDate
+		 * @param level
+		 * @param regNumber
+		 * @throws SQLException
+		 */
 		public static void registerStudent(String label, String startDate, String endDate, String level, int regNumber) throws SQLException {
 			openConnection();
-			String query = "INSERT INTO PeriodOfStudy SET periodID = ?, label = ?, startDate = ?, endDate = ?, level = ?, regNumber = (SELECT regNumber FROM Student WHERE regNumber = ?)";
+			String query = "INSERT INTO PeriodOfStudy SET periodID = ?, label = ?, startDate = ?, endDate = ?, level = ?, regNumber = ?";
 			PreparedStatement pstm = connection.prepareStatement(query);
+			String periodID = regNumber + label;
 			
-			pstm.setInt(1, 0);
+			pstm.setString(1, periodID);
 			pstm.setString(2, label);
 			pstm.setString(3, startDate);
 			pstm.setString(4, endDate);
@@ -188,8 +211,8 @@ public class DACRegistrar extends DAC {
 			//DACRegistrar.dropModule(69420, "BAD69");
 			//System.out.println(DACRegistrar.checkRegistered(987654321));
 			//removeStudent(999999999);
-//			addStudent(555555555, "person@mail.com", "TUTOR", "COMU01", 24);
-			registerStudent("A", "2017-06-06", "2018-12-12", "2", 555555555);
+            //addStudent(555555555, "person@mail.com", "TUTOR", "COMU01", 24);
+			registerStudent("B", "2017-06-06", "2018-12-12", "2", 1);
 		}
 		
 

@@ -3,14 +3,14 @@ package Utility;
 import java.sql.Date;
 
 public class PeriodOfStudy {
-	private int periodID;
+	private String periodID;
 	private char label;
 	private Date startDate;
 	private Date endDate;
 	private char level;
 	private int regNumber;
 	
-	public PeriodOfStudy(int periodID, char label, Date startDate, Date endDate,
+	public PeriodOfStudy(String periodID, char label, Date startDate, Date endDate,
 			char level, int regNumber) {
 		this.periodID = periodID;
 		this.label = label;
@@ -21,7 +21,7 @@ public class PeriodOfStudy {
 	}
 	
 	//get methods
-	public int getPeriodID() { return periodID ; }
+	public String getPeriodID() { return periodID ; }
 	public char getLabel() { return label; }
 	public Date getStartDate() { return startDate; }
 	public Date getEndDate() { return endDate; }

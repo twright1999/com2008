@@ -12,7 +12,7 @@ import java.sql.*;
 public class DAC {
 	protected static Connection connection;
 	/**
-	 * 
+	 * Opens a connection to database. Used in most DAC methods
 	 * @throws SQLException
 	 */
 	protected static void openConnection() throws SQLException {
@@ -35,12 +35,20 @@ public class DAC {
 		}
 		
 	}
-	
+	/**
+	 * Closes a connection. Used in most of DAC methods
+	 * @throws SQLException
+	 */
 	protected static void closeConnection() throws SQLException {
 		connection.close();
 		System.out.println("Conenction is closed");
 	}
-	
+	/**
+	 * Gets an account from database
+	 * @param userID
+	 * @return Account
+	 * @throws SQLException
+	 */
 	public static Account getAccount(int userID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -51,7 +59,11 @@ public class DAC {
 		closeConnection();
 		return account;
 	}
-	
+	/**
+	 * Returns an array of all Accounts
+	 * @return Account[]
+	 * @throws SQLException
+	 */
 	public static Account[] getAccounts() throws SQLException {
 		openConnection();
 		Statement stmt = connection.createStatement();
@@ -62,7 +74,12 @@ public class DAC {
 		return accounts;
 		
 	}
-	
+	/**
+	 * gets Student from the Database using userID 
+	 * @param userID
+	 * @return Student
+	 * @throws SQLException
+	 */
 	public static Student getStudent(int userID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt1 = connection.prepareStatement(
@@ -71,20 +88,6 @@ public class DAC {
 		pstmt1.setInt(1, userID);
 		pstmt1.setInt(2, userID);
 		ResultSet resStudent = pstmt1.executeQuery();
-		/*PreparedStatement pstmt2 = connection.prepareStatement(
-				"SELECT * FROM Degree WHERE degID = "
-				+ "(SELECT degID FROM Module WHERE modID = "
-						+ "(SELECT modID FROM Student_Module WHERE regNumber = "
-						+   "(SELECT regNumber FROM Student WHERE UserID = ? LIMIT 1) LIMIT 1 ) LIMIT 1) LIMIT 1");
-		pstmt2.setInt(1, userID);
-		ResultSet resDegree = pstmt2.executeQuery();
-		*/
-		/*
-		PreparedStatement pstmt3 = connection.prepareStatement(
-				"SELECT * FROM PeriodOfStudy WHERE regNumber = (SELECT regNumber FROM Student WHERE userID = ? LIMIT 1) LIMIT 1");
-		pstmt3.setInt(1, userID);
-		ResultSet resPeriod = pstmt3.executeQuery();
-		*/
 		Student student = QueryToObject.rowToStudent(resStudent/*, resDegree, resPeriod*/);
 		closeConnection();
 		return student;
@@ -107,10 +110,6 @@ public class DAC {
 		if (countA == countS && countA != 0) {
 			ResultSet resStudents = stmt.executeQuery(
 					"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
-			/*
-			ResultSet resStudents = stmt.executeQuery(
-					"SELECT * FROM Account WHERE permission = 'S' "
-					+ "UNION SELECT * FROM Student");*/
 			Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
 			closeConnection();
 			return students;
@@ -345,20 +344,20 @@ public class DAC {
 		Degree degree = DAC.getDegree("COMU01");
 		System.out.println(degree.toString());
 		
-		Account acc = DAC.getAccount(16);
+		Account acc = DAC.getAccount(1);
 		System.out.println(acc.toString());
 		
-		Student student = DAC.getStudent(16);
+		Student student = DAC.getStudent(1);
 		System.out.println(student.toString());
-		
-		Grade[] grades = DAC.getStudentGrades(987654321);
+		/*
+		Grade[] grades = DAC.getStudentGrades(1);
 		System.out.println(">>after DAC");
 		System.out.println(grades[0].toString());
 		System.out.println(grades[1].toString());
-		
-		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(987654321);
+		*/
+		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1);
 		System.out.println(period.getStartDate());
-		
+		/*
 		Student[] students = DAC.getAllStudents();
 		System.out.println(students[0].getName());
 		
@@ -366,13 +365,13 @@ public class DAC {
 		DAC.getDegrees();
 		DAC.getDepartments(); 
 		
-		DAC.getAllStudents(); */
+		DAC.getAllStudents(); 
 		
-		//DAC.getCurrentStudentModules(987654321);
-		//DAC.getAccounts();
-		//DAC.getAvailableModules(987654321, "COMU01");
+		DAC.getCurrentStudentModules(1);
+		DAC.getAccounts();
+		DAC.getAvailableModules(1, "COMU01");
 		DAC.getModules();
-		//DAC.getCurrentStudentModules(987654321);
-		
+		DAC.getCurrentStudentModules(1);
+		*/
 	}
 }

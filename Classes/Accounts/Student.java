@@ -1,15 +1,10 @@
 package Accounts;
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.text.SimpleDateFormat;
 
 import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
 
 import Database.DAC;
-import Utility.Degree;
 import Utility.PeriodOfStudy;
 
 public class Student extends Account {
@@ -43,12 +38,17 @@ public class Student extends Account {
 		this.tutor = tutor;
 		this.email = email;
 	}
-	
+	//get methods
 	public int getRegNumber() { return regNumber ; }
 	public String getDegID() { return degID ; }
 	public String getTutor() { return tutor ; }
 	public String getEmail() { return email ; }
-	
+	/**
+	 * Generates an email 
+	 * @param sname student's name
+	 * @return String (email)
+	 * @throws SQLException
+	 */
 	public static String generateEmail(String sname) throws SQLException {
 		return DAC.generateEmail(sname);
 	}
@@ -70,7 +70,7 @@ public class Student extends Account {
 		        java.sql.Date endDate = new java.sql.Date(utilDate2.getTime());
 		        System.out.println(startDate);
 		        System.out.println(endDate);
-		        PeriodOfStudy period = new PeriodOfStudy(1, 'B', startDate, endDate, 'B', 696969  );
+		        PeriodOfStudy period = new PeriodOfStudy("696969B", 'B', startDate, endDate, 'B', 696969);
 				Student student = new Student(696969, "Mr Takeshi sixNine", "gucci", 'S', 169, "COMU01", "Lil Pumpy");
 				System.out.println("student is created");
 				System.out.println("Student: " + student.toString());
