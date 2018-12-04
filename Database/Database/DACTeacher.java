@@ -321,7 +321,10 @@ public class DACTeacher extends DAC {
 			closeConnection();
 			
 			periodQuery.next();
-			if (degreeLevel == periodQuery.getString("level")) return "Graduate";
+			if (degreeLevel == periodQuery.getString("level")) {
+				if (degreeLevel == "4") return "Masters";
+				else return "Graduate";
+			}
 			
 			String nextLabel = Character.toString((char)(((int)(periodQuery.getString("label").charAt(0)))+1));
 			String nextLevel = Integer.toString((Integer.parseInt(periodQuery.getString("level")))+1);
