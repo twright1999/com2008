@@ -99,9 +99,10 @@ public final class QueryToObject {
 			res.next();
 			String degID = res.getString("degID");
 			String name = res.getString("name");
-			char level = res.getString("level").charAt(0);
+			int level = res.getInt("level");
 			String depID = res.getString("depID");
-			degree = new Degree(degID, name, level, depID);
+			boolean placement = res.getBoolean("placement");
+			degree = new Degree(degID, name, level, depID, placement);
 			return degree;
 		}
 		catch (SQLException ex) {
@@ -206,8 +207,9 @@ public final class QueryToObject {
 			int credits = res.getInt("credits");
 			String taught = res.getString("taught");
 			Boolean obligatory = res.getBoolean("obligatory");
+			char level = res.getString("level").charAt(0);
 			String degID = res.getString("degID");
-			Module module = new Module(moduleID, name, credits, taught, obligatory, degID);
+			Module module = new Module(moduleID, name, credits, taught, obligatory, level, degID);
 			modules[index] = module;
 			System.out.println("rowsToModules name: " + modules[index].getName());
 			index++;
@@ -220,21 +222,25 @@ public final class QueryToObject {
 		//if something goes wrong, show an error message in GUI
 		return null;
 	}
-	
+	/*
 	public static Student_Module[] rowsToStudentModules(ResultSet res, int count) throws SQLException {
-		Student_Module[] student_modules = new Student_Module[count];
+		Module[] modules = new Module[count];
 		try {
 			int index = 0;
 			while (res.next()) {
-				int regNumber = res.getInt("regNumber");
-				String modID = res.getString("modID");
-				Student_Module std_mdl = new Student_Module(regNumber, modID);
-				student_modules[index] = std_mdl;
+				String moduleID = res.getString("modID");
+				String name = res.getString("name");
+				int credits = res.getInt("credits");
+				String taught = res.getString("taught");
+				Boolean obligatory = res.getBoolean("obligatory");
+				String degID = res.getString("degID");
+				Module module = new Module(moduleID, name, credits, taught, obligatory, degID);
+				modules[index] = module;
 				index++;
-				System.out.println("rowsToStdModules: " + std_mdl.toString());
+				System.out.println("rowsToStdModules: " + module.toString());
 				
 			}
-			return student_modules;
+			return modules;
 		}
 		catch (SQLException ex) {
 			System.out.println("rowsToStdModules: " + ex.toString());
@@ -242,7 +248,7 @@ public final class QueryToObject {
 		//if something goes wrong, show an error message in GUI
 		return null;
 	}
-	
+	*/
 	public static Degree[] rowsToDegrees(ResultSet res, int count) throws SQLException {
 		Degree[] degrees = new Degree[count];
 		try {
@@ -250,9 +256,10 @@ public final class QueryToObject {
 			while (res.next()) {
 				String degID = res.getString("degID");
 				String name = res.getString("name");
-				char level = res.getString("level").charAt(0);
+				int level = res.getInt("level");
 				String depID = res.getString("depID");
-				Degree degree = new Degree(degID, name, level, depID);
+				boolean placement = res.getBoolean("placement");
+				Degree degree = new Degree(degID, name, level, depID, placement);
 				degrees[index] = degree;
 				index++;
 				System.out.println(degree.toString());

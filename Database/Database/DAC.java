@@ -242,22 +242,27 @@ public class DAC {
 	 * @return Student_Module[]
 	 * @throws SQLException
 	 */
-	public static Student_Module[] getCurrentStudentModules(int regNumber) throws SQLException {
+	public static Module[] getCurrentStudentModules(int regNumber) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM Student_Module WHERE regNumber = ?");
+				"SELECT * FROM Module"
+				+ " RIGHT JOIN (SELECT * FROM Student_Module WHERE regNumber = ?) AS st_md ON Module.modID = st_md.modID ");
 		pstmt.setInt(1, regNumber);
 		ResultSet res = pstmt.executeQuery();
-		
+		int count = getCountWhere("Student_Module", regNumber);
+		/*
 		pstmt = connection.prepareStatement("SELECT COUNT(*) FROM Student_Module WHERE regNumber = ?");
 		pstmt.setInt(1, regNumber);
 		ResultSet resCount = pstmt.executeQuery();
 		resCount.next();
 		int count = resCount.getInt(resCount.getRow()); 
+		*/
 		
-		Student_Module[] student_modules = QueryToObject.rowsToStudentModules(res, count);
+		
+		
+		Module[] currentStudentModules = QueryToObject.rowsToModules(res, count);
 		closeConnection();
-		return student_modules;
+		return currentStudentModules;
 	}
 	/**
 	 * Returns all modules as objects from Database
@@ -429,15 +434,15 @@ public class DAC {
 		
 		Student student = DAC.getStudent(1);
 		System.out.println(student.toString());
-		/*
+		
 		Grade[] grades = DAC.getStudentGrades(1);
 		System.out.println(">>after DAC");
 		System.out.println(grades[0].toString());
 		System.out.println(grades[1].toString());
-		*/
+		
 		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1, 'A');
 		System.out.println(period.getStartDate());
-		/*
+		
 		Student[] students = DAC.getAllStudents();
 		System.out.println(students[0].getName());
 		
@@ -449,9 +454,9 @@ public class DAC {
 		
 		DAC.getCurrentStudentModules(1);
 		DAC.getAccounts();
-		DAC.getAvailableModules(1, "COMU01");
+		DAC.getAvailableModules(1, "COMU01");*/
 		DAC.getModules();
-		DAC.getCurrentStudentModules(1);
-		*/
+		Module[] modules = DAC.getCurrentStudentModules(1);
+		
 	}
 }

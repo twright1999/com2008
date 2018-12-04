@@ -48,9 +48,9 @@ public class DACRegistrar extends DAC {
 
 		}
 
-		public static void addModule(int regNumber, String modID) throws SQLException {
+		public static void addStudentModule(int regNumber, String modID) throws SQLException {
 			openConnection();
-			String query = "INSERT INTO Student_Module SET regNumber = (SELECT regNumber FROM Student WHERE regNumber = ?), modID = (SELECT modID FROM Module WHERE modID = ?)";
+			String query = "INSERT INTO Student_Module SET regNumber = ?, modID = ?";
 			PreparedStatement pstm = connection.prepareStatement(query);
 			pstm.setInt(1, regNumber);
 			pstm.setString(2, modID);
@@ -212,7 +212,8 @@ public class DACRegistrar extends DAC {
 			//System.out.println(DACRegistrar.checkRegistered(987654321));
 			//removeStudent(999999999);
             //addStudent(555555555, "person@mail.com", "TUTOR", "COMU01", 24);
-			registerStudent("B", "2017-06-06", "2018-12-12", "2", 1);
+			//registerStudent("B", "2017-06-06", "2018-12-12", "2", 1);
+			
 		}
 		
 

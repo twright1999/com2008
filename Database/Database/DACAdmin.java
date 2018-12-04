@@ -122,14 +122,15 @@ public class DACAdmin extends DAC {
 		
 	}
 		
-	public static void addDegree(String degID, String name, char level, String depID) throws SQLException {
+	public static void addDegree(String degID, String name, char level, String depID, boolean placement) throws SQLException {
 		openConnection();
-		String query = "INSERT INTO Degree SET degID = ?, name = ?, level= ?, depID = ?";
+		String query = "INSERT INTO Degree SET degID = ?, name = ?, level= ?, depID = ?, placement = ?";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setString(1, degID);
 		pstm.setString(2, name);
 		pstm.setString(3, String.valueOf(level));
 		pstm.setString(4, depID);
+		pstm.setBoolean(5, placement);
 		pstm.executeUpdate();
 		closeConnection();
 		return;
@@ -217,8 +218,9 @@ public class DACAdmin extends DAC {
 		//DACAdmin.addDepartment("COM", "Computer Science");
 		//DACAdmin.removeDepartment("BLA");
 		//DACAdmin.addDegree("COMU01", "BSc Computer Science", '3', "COM");
-		//DACAdmin.addDepartment("CBE", "Chemical and Biological Engineering");
-		//DACAdmin.addDegree("CBEU65", "Chemical Engineering BSc", '2', "CBE");
+		//addDepartment("CBE", "Chemical and Biological Engineering");
+		//addDegree("CBEU65", "Chemical Engineering BSc", '2', "CBE", false);
+		addModule("CBE2007", "Process Control", 20, "Autumn", true, '2', "CBEU65");
 	}
 
 
