@@ -1,5 +1,7 @@
 package Accounts;
 import java.sql.SQLException;
+import java.util.List;
+
 import Database.DACTeacher;
 
 public class Teacher extends Account {
@@ -24,7 +26,7 @@ public class Teacher extends Account {
 		return DACTeacher.calcDegree(regNumber);
 	}
 	
-	private String getStudentStatus(int regNumber) throws SQLException {
+	private List<List<String>> getStudentStatus(int regNumber) throws SQLException {
 		return DACTeacher.getStudentStatus(regNumber);
 	}
 	
