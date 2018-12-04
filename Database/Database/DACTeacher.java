@@ -24,14 +24,14 @@ public class DACTeacher extends DAC {
 	* @param regNumber unique identifier for a student
 	*/
 	
-	public static void addGrade(float initialGrade, float resitGrade, String modID, int regNumber) throws SQLException {
+	public static void addInitialGrade(float initialGrade, String modID, int regNumber) throws SQLException {
 		openConnection();
 		String query = "INSERT INTO Grade (gradeID, gradePercent, modID, regNumber)" 
 			+ " values (?, ?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setInt(1, 0);
 		pstm.setFloat(2, initialGrade);
-		pstm.setFloat(3, resitGrade); //might be null
+		pstm.setFloat(3, -1); //-1 is a place holder for null 
 		pstm.setString(4, modID);
 		pstm.setInt(5, regNumber);
 		pstm.executeUpdate();	

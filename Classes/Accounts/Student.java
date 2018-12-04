@@ -19,7 +19,7 @@ public class Student extends Account {
 	private String email; //First letter of forname(s) ++ surname ++ 2 unique 2 digit integer (if the same name already exsits) ++ university address
 	private String tutor;
 	
-	/*
+	/**
 	 * Initial Student constructor. Email field is missing because it will be
 	 * generated automatically
 	 */
@@ -31,20 +31,8 @@ public class Student extends Account {
 		this.tutor = tutor;
 		this.email = generateEmail(name);
 	}
-	/*there is an email field, because this constructor is used when Student is already
-	 * in the database and the system requests more all info about the student.
-	 */
-	/*
-	public Student(int userID, String name, String password, char permission,
-			int regNumber, String degID, String tutor, String email) {
-		super(userID, name, password, permission);
-		this.regNumber = regNumber;
-		this.degID = degID;
-		this.tutor = tutor;
-		this.email = email;
-	}
-	*/
-	/*
+
+	/**
 	 * Constructor used to print all the Students. 
 	 */
 	public Student(int userID, String name, String password, char permission,
@@ -57,28 +45,19 @@ public class Student extends Account {
 	}
 	
 	public int getRegNumber() { return regNumber ; }
-	/*
-	public String toString() {
-		String all = super.toString() + " regNumber: " + regNumber +
-				" tutor: " + tutor + " email: " + email + " ";
-		return all;
-	}
-	*/
-	/*
-	 * For getting Student instance fields. Called in <GUI Name>
-	 * @param userId userId for SELECT query in getStudentStatus
-	 * @return Student
-	 */
+	public String getDegID() { return degID ; }
+	public String getTutor() { return tutor ; }
+	public String getEmail() { return email ; }
 	
 	public static String generateEmail(String sname) throws SQLException {
 		return DAC.generateEmail(sname);
 	}
-	/*
+	
 	public String toString() {
-		String all = super.toString() + degree.toString() + " email:" + email +
-				"  tutor: " + tutor + "  periodOfstudy: " + periodOfStudy.toString();
+		String all = super.toString() + " regNumber: " + regNumber +
+				" degID: " + degID + " tutor: " + tutor + " email: " + email;
 		return all;
-	}*/
+	}
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException, ParseException, java.text.ParseException {
