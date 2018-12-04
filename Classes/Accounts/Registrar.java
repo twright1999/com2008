@@ -13,8 +13,8 @@ public class Registrar extends Account {
 	
 	// need database stuff working first 
 	
-	private void addStudent(int regNumber, String email, String tutor, String degID, int studentUserID) throws SQLException {
-		DACRegistrar.addStudent(regNumber, email, tutor, degID, studentUserID);
+	private void addStudent(String email, String tutor, String degID, int studentUserID) throws SQLException {
+		DACRegistrar.addStudent(email, tutor, degID, studentUserID);
 		return;	
 	}
 	

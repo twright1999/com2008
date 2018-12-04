@@ -5,6 +5,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
 
+/**
+* DACTeacher.java
+*
+* Data Access Controller for Teacher
+*
+* @author Team 20
+*/
+
 public class DACRegistrar extends DAC {
 		/**
 		 * Adds student to the Student table. Not linked to PeriodOfStudy
@@ -18,13 +26,13 @@ public class DACRegistrar extends DAC {
 		 * @param userID
 		 * @throws SQLException
 		 */
-		public static void addStudent(int regNumber, String email, String tutor, String degID, int userID) throws SQLException {
+		public static void addStudent(String email, String tutor, String degID, int userID) throws SQLException {
 			openConnection();
 			//add student to Student table
 			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, degID = ?, userID = ?";
 			PreparedStatement pstm = connection.prepareStatement(query);
 			
-			pstm.setInt(1, regNumber);
+			pstm.setInt(1, 0);
 			pstm.setString(2, email);
 			pstm.setString(3, tutor);
 			pstm.setString(4, degID);
@@ -37,6 +45,15 @@ public class DACRegistrar extends DAC {
 
 		}
 		
+		/**
+		* removeStudent
+		* 
+		* takes a regNumber and removes the student from the database
+		* cascade allows all linked tables instances to be deleted too
+		* 
+		* @param regNumber unique identifier for a student
+		*/
+		
 		public static void removeStudent(int regNumber) throws SQLException {
 			openConnection();
 			PreparedStatement pstm = connection.prepareStatement(
@@ -47,6 +64,15 @@ public class DACRegistrar extends DAC {
 			return;
 
 		}
+		
+		/**
+		* addModule
+		* 
+		* takes a regNumber and a module id and creates a new record in Student_Module
+		* 
+		* @param regNumber unique identifier for a student
+		* @param modID unique identifier for a module
+		*/
 
 		public static void addStudentModule(int regNumber, String modID) throws SQLException {
 			openConnection();
@@ -59,6 +85,15 @@ public class DACRegistrar extends DAC {
 			return;
 		}
 		
+		/**
+		* dropModule
+		* 
+		* takes a regNumber and a module id and removes the record in Student_Module
+		* 
+		* @param regNumber unique identifier for a student
+		* @param modID unique identifier for a module
+		*/
+		
 		public static void dropModule(int regNumber, String modID) throws SQLException {
 			openConnection();
 			PreparedStatement pstm = connection.prepareStatement(
@@ -70,6 +105,7 @@ public class DACRegistrar extends DAC {
 			return;
 			
 		}
+
 		/**
 		 * Adds student to the PeriodOfStudy table 
 		 * and auto links to obligatory modules
@@ -80,6 +116,7 @@ public class DACRegistrar extends DAC {
 		 * @param regNumber
 		 * @throws SQLException
 		 */
+
 		public static void registerStudent(String label, String startDate, String endDate, String level, int regNumber) throws SQLException {
 			openConnection();
 			String query = "INSERT INTO PeriodOfStudy SET periodID = ?, label = ?, startDate = ?, endDate = ?, level = ?, regNumber = ?";
