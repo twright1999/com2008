@@ -6,13 +6,15 @@ import Utility.Module;
 import java.sql.*;
 
 /**
- * 
- * @author Rokas
+ * @author Team20
  * Main DataAccessController
  */
 public class DAC {
 	protected static Connection connection;
-
+	/**
+	 * 
+	 * @throws SQLException
+	 */
 	protected static void openConnection() throws SQLException {
 		
 		try {
@@ -69,19 +71,21 @@ public class DAC {
 		pstmt1.setInt(1, userID);
 		pstmt1.setInt(2, userID);
 		ResultSet resStudent = pstmt1.executeQuery();
-		PreparedStatement pstmt2 = connection.prepareStatement(
+		/*PreparedStatement pstmt2 = connection.prepareStatement(
 				"SELECT * FROM Degree WHERE degID = "
 				+ "(SELECT degID FROM Module WHERE modID = "
 						+ "(SELECT modID FROM Student_Module WHERE regNumber = "
 						+   "(SELECT regNumber FROM Student WHERE UserID = ? LIMIT 1) LIMIT 1 ) LIMIT 1) LIMIT 1");
 		pstmt2.setInt(1, userID);
 		ResultSet resDegree = pstmt2.executeQuery();
-		
+		*/
+		/*
 		PreparedStatement pstmt3 = connection.prepareStatement(
 				"SELECT * FROM PeriodOfStudy WHERE regNumber = (SELECT regNumber FROM Student WHERE userID = ? LIMIT 1) LIMIT 1");
 		pstmt3.setInt(1, userID);
 		ResultSet resPeriod = pstmt3.executeQuery();
-		Student student = QueryToObject.rowToStudent(resStudent, resDegree, resPeriod);
+		*/
+		Student student = QueryToObject.rowToStudent(resStudent/*, resDegree, resPeriod*/);
 		closeConnection();
 		return student;
 		

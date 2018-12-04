@@ -63,7 +63,7 @@ public final class QueryToObject {
 		return null;
 	}
 	
-	public static Student rowToStudent(ResultSet resStudent, ResultSet resDegree, ResultSet resPeriod) {
+	public static Student rowToStudent(ResultSet resStudent/*, ResultSet resDegree, ResultSet resPeriod*/) {
 		Student student;
 		try {
 			//get values from the main account table
@@ -79,7 +79,7 @@ public final class QueryToObject {
 			int regNumber = resStudent.getInt("regNumber");
 			String email = resStudent.getString("email");
 			String tutor = resStudent.getString("tutor");
-			
+			/*
 			//pulling degree values from result set and creating Degree instance
 			resDegree.next();
 			String degID = resDegree.getString("degID");
@@ -98,9 +98,9 @@ public final class QueryToObject {
 			int regNumberP = resPeriod.getInt("regNumber");
 			
 			PeriodOfStudy period = new PeriodOfStudy(periodID, label, startDate, endDate, levelP, regNumberP);
-			
+			*/
 	        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
-	        		acc.getPermission(),regNumber, degree, tutor, period, email);
+	        		acc.getPermission(),regNumber,tutor, email);
 	        System.out.println(">>student is created");
 			return student;
 		}
@@ -162,10 +162,11 @@ public final class QueryToObject {
 				int index = 0;
 				while(res.next()) {
 					int gradeID = res.getInt("gradeID");
-					float gradeP = res.getFloat("gradePercent");
+					float initialGrade = res.getFloat("initialGrade");
+					float resitGrade = res.getFloat("resitGrade");
 					String modID = res.getString("modID");
 					int regNumber = res.getInt("regNumber");
-					Grade grade = new Grade(gradeID, gradeP, modID, regNumber);
+					Grade grade = new Grade(gradeID, initialGrade, resitGrade,  modID, regNumber);
 					grades[index] = grade;
 					index++;
 					System.out.println("while'ing");
@@ -199,7 +200,7 @@ public final class QueryToObject {
 				String tutor = res.getString("tutor");
 				Student student = new Student(acc.getUserID(), acc.getName(),
 						acc.getPassword(), acc.getPermission(), regNumber, tutor, email);
-				System.out.println(">>rowsToStudents: " + student.toStringSimple());
+				//System.out.println(">>rowsToStudents: " + student.toStringSimple());
 				students[index] = student;
 				index++;
 				
