@@ -57,7 +57,7 @@ public final class Setup{
 					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS PeriodOfStudy("+
-					   "periodID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
+					   "periodID varchar (10) NOT NULL PRIMARY KEY UNIQUE,"+
 					   "label char NOT NULL,"+
 					   "startDate date NOT NULL,"+
 					   "endDate date NOT NULL,"+
