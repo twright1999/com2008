@@ -60,8 +60,8 @@ public class Admin extends Account {
 		return;
 	}
 
-	private void addModule(String modID, String modName, int credits, String taught, String obligatory, String degCode) throws SQLException {
-		DACAdmin.addModule(modID, modName, credits, taught, obligatory, degCode);
+	private void addModule(String modID, String modName, int credits, String taught, boolean obligatory, char level,  String degID) throws SQLException {
+		DACAdmin.addModule(modID, modName, credits, taught, obligatory, level, degID);
 		return;
 	}
 

@@ -162,7 +162,7 @@ public class DACAdmin extends DAC {
 	 * @param degID
 	 * @throws SQLException
 	 */
-	public static void addModule(String modID, String name, int credits, String taught, int obligatory, char level, String degID) throws SQLException {
+	public static void addModule(String modID, String name, int credits, String taught, boolean obligatory, char level, String degID) throws SQLException {
 		openConnection();
 		String query = "INSERT INTO Module SET modID = ?, name = ?, credits= ?, taught = ?, obligatory = ?, level = ?, degID =(SELECT degID FROM Degree WHERE degID = ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
@@ -170,7 +170,7 @@ public class DACAdmin extends DAC {
 		pstm.setString(2, name);
 		pstm.setInt(3, credits );
 		pstm.setString(4, taught);
-		pstm.setInt(5, obligatory);
+		pstm.setBoolean(5, obligatory);
 		pstm.setString(6, String.valueOf(level));
 		pstm.setString(7, degID);
 		pstm.executeUpdate();
