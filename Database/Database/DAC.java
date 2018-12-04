@@ -93,31 +93,37 @@ public class DAC {
 		return student;
 		
 	}
-	
+	/**
+	 * Returns all the Student from database (as objects), provided that the number of
+	 * accounts with permission 'S' and number of Students (should never
+	 * be false)
+	 * @return Student[] or null if there are no Students/something went wrong
+	 * @throws SQLException
+	 */
 	public static Student[] getAllStudents() throws SQLException {
 		try {
-		openConnection();
-		Statement stmt = connection.createStatement();
-		//counting how many accounts there are which have permission 'S'
-		ResultSet resCountA = stmt.executeQuery("SELECT COUNT(*) FROM Account WHERE permission = 'S'");
-		resCountA.next(); 
-		int countA = resCountA.getInt(resCountA.getRow());
-		
-		int countS = getCount("Student");
-		System.out.println("countA: " + countA + " & countS: " + countS);
-		
-		//check if number of Students match number of Accounts over the same ID (should never be false)
-		if (countA == countS && countA != 0) {
-			ResultSet resStudents = stmt.executeQuery(
-					"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
-			Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
-			closeConnection();
-			return students;
+			openConnection();
+			Statement stmt = connection.createStatement();
+			//counting how many accounts there are which have permission 'S'
+			ResultSet resCountA = stmt.executeQuery("SELECT COUNT(*) FROM Account WHERE permission = 'S'");
+			resCountA.next(); 
+			int countA = resCountA.getInt(resCountA.getRow());
+			
+			int countS = getCount("Student");
+			System.out.println("countA: " + countA + " & countS: " + countS);
+			
+			//check if number of Students match number of Accounts over the same ID (should never be false)
+			if (countA == countS && countA != 0) {
+				ResultSet resStudents = stmt.executeQuery(
+						"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
+				Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
+				closeConnection();
+				return students;
 		}
-		else {
-			closeConnection();
-			return null;
-		}
+			else {
+				closeConnection();
+				return null;
+			}
 	}
 		catch(SQLException ex) {
 			closeConnection();
@@ -125,41 +131,69 @@ public class DAC {
 		}
 		return null;
 	}
-	
+	/**
+	 * Returns Student Grades
+	 * @param regNumber
+	 * @return Grade[] or null if there are no grades/something went wrong
+	 * @throws SQLException
+	 */
 	public static Grade[] getStudentGrades(int regNumber) throws SQLException {
-		openConnection();
-		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM Grade WHERE regNumber = ?");
-		pstmt.setInt(1, regNumber);
-		ResultSet resGrades = pstmt.executeQuery();
-		//counting how many grades there are to know the array size of grades
-		pstmt = connection.prepareStatement("SELECT COUNT(*) FROM Grade WHERE regNumber = ?");
-		pstmt.setInt(1, regNumber);
-		ResultSet resCount = pstmt.executeQuery();
-		resCount.next();
-		int count = resCount.getInt(resCount.getRow());
-		Grade[] grades = QueryToObject.rowsToGrades(resGrades, count);
-		closeConnection();
-		return grades;
+		try {
+			openConnection();
+			PreparedStatement pstmt = connection.prepareStatement(
+					"SELECT * FROM Grade WHERE regNumber = ?");
+			pstmt.setInt(1, regNumber);
+			ResultSet resGrades = pstmt.executeQuery();
+			//counting how many grades there are to know the array size of grades
+			pstmt = connection.prepareStatement("SELECT COUNT(*) FROM Grade WHERE regNumber = ?");
+			pstmt.setInt(1, regNumber);
+			ResultSet resCount = pstmt.executeQuery();
+			resCount.next();
+			int count = resCount.getInt(resCount.getRow());
+			Grade[] grades = QueryToObject.rowsToGrades(resGrades, count);
+			closeConnection();
+			return grades;
+		}
+		catch (SQLException ex) {
+			closeConnection();
+			System.out.println("getStudentGrades: " + ex.toString());
+		}
+		return null;
 	}
-	
+	/**
+	 * Returns Student Degree that a Student is currently registered for
+	 * @param userID
+	 * @return Degree or null if something went wrong
+	 * @throws SQLException
+	 */
 	public static Degree getStudentDegree(int userID) throws SQLException {
-		openConnection();
-		//navigating from Student to Module: Student -> Student_Module -> Module
-		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT degID FROM Module WHERE modID = "
-				+ "(SELECT modID FROM Student_Module WHERE regNumber = "
-				+   "(SELECT regNumber FROM Student WHERE UserID = ? LIMIT 1) LIMIT 1 ) LIMIT 1");
-		
-		pstmt.setInt(1, userID);
-		ResultSet res = pstmt.executeQuery();
-		closeConnection();
-		String degID = res.getString("degID");
-		System.out.println(">>GETStudentDegree is executed");
-		return getDegree(degID);
-		
+		try {
+			openConnection();
+			//navigating from Student to Module: Student -> Student_Module -> Module
+			PreparedStatement pstmt = connection.prepareStatement(
+					"SELECT degID FROM Module WHERE modID = "
+					+ "(SELECT modID FROM Student_Module WHERE regNumber = "
+					+   "(SELECT regNumber FROM Student WHERE UserID = ? LIMIT 1) LIMIT 1 ) LIMIT 1");
+			
+			pstmt.setInt(1, userID);
+			ResultSet res = pstmt.executeQuery();
+			closeConnection();
+			String degID = res.getString("degID");
+			System.out.println(">>GETStudentDegree is executed");
+			return getDegree(degID);
+		}
+		catch (SQLException ex) {
+			closeConnection();
+			System.out.println("getStudentDegree: " + ex.toString());
+		}
+		return null;
 	}
-	
+	/**
+	 * returns a Degree object
+	 * @param degID
+	 * @return Degree
+	 * @throws SQLException
+	 */
 	public static Degree getDegree(String degID) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -170,7 +204,11 @@ public class DAC {
 		closeConnection();
 		return degree;
 	}
-	
+	/**
+	 * Returns all Degree objects in Database
+	 * @return Degree[]
+	 * @throws SQLException
+	 */
 	public static Degree[] getDegrees() throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -183,7 +221,11 @@ public class DAC {
 		closeConnection();
 		return degrees;
 	}
-	
+	/**
+	 * Returns all Department objects from Database
+	 * @return Department[]
+	 * @throws SQLException
+	 */
 	public static Department[] getDepartments() throws SQLException {
 		openConnection();
 		Statement stmt = connection.createStatement();
@@ -194,7 +236,12 @@ public class DAC {
 		closeConnection();
 		return departments;
 		}
-	
+	/**
+	 * Returns current Student_Modules as objects that a Student is registered for
+	 * @param regNumber
+	 * @return Student_Module[]
+	 * @throws SQLException
+	 */
 	public static Student_Module[] getCurrentStudentModules(int regNumber) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
@@ -212,7 +259,11 @@ public class DAC {
 		closeConnection();
 		return student_modules;
 	}
-	
+	/**
+	 * Returns all modules as objects from Database
+	 * @return Module[]
+	 * @throws SQLException
+	 */
 	public static Module[] getModules() throws SQLException {
 		try {
 			openConnection();
@@ -232,7 +283,13 @@ public class DAC {
 		}
 		return null;
 	}
-	
+	/**
+	 * Returns available Modules that a Student can choose from
+	 * @param regNumber
+	 * @param degID
+	 * @return Module[]
+	 * @throws SQLException
+	 */
 	public static Module[] getAvailableModules(int regNumber, String degID) throws SQLException {
 		try {
 			openConnection();
@@ -274,18 +331,29 @@ public class DAC {
 		}
 		return null;
 	}
-	
-	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber) throws SQLException {
+	/**
+	 * Returns a PeriodOfStudy object provided student's regNumber and the level
+	 * @param regNumber
+	 * @return PeriodOfStudy
+	 * @throws SQLException
+	 */
+	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber,  char label) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM PeriodOfStudy WHERE regNumber = ? LIMIT 1");
+				"SELECT * FROM PeriodOfStudy WHERE regNumber = ? AND label = ? LIMIT 1");
 		pstmt.setInt(1, regNumber);
+		pstmt.setString(2, Character.toString(label));
 		ResultSet res = pstmt.executeQuery();
 		PeriodOfStudy period = QueryToObject.rowToPeriod(res);
 		closeConnection();
 		return period;
 	}
-	
+	/**
+	 * Utility method for counting how many rows there are in particular table
+	 * @param table
+	 * @return int
+	 * @throws SQLException
+	 */
 	public static int getCount(String table) throws SQLException {
 		String query = "SELECT COUNT(*) FROM " + table;
 		PreparedStatement pstmt = connection.prepareStatement(query);
@@ -293,7 +361,13 @@ public class DAC {
 		resCount.next(); int count = resCount.getInt(resCount.getRow());
 		return count;
 	}
-	
+	/**
+	 * Utility method for counting how many rows there are for a particular regNumber
+	 * @param table
+	 * @param id
+	 * @return int
+	 * @throws SQLException
+	 */
 	public static int getCountWhere(String table, int id) throws SQLException {
 		String query = "SELECT COUNT(*) FROM " + table + " WHERE regNumber = " + id ;
 		Statement stmt = connection.createStatement();
@@ -302,7 +376,13 @@ public class DAC {
 		int count = resCount.getInt(resCount.getRow()); 
 		return count;
 	}
-	
+	/**
+	 * Generates an email for a Student when registering. This method is
+	 * used in Student constructor.
+	 * @param name
+	 * @return String (email)
+	 * @throws SQLException
+	 */
 	public static String generateEmail(String name) throws SQLException {
 		//check if such name already exsits
 		openConnection();
@@ -355,7 +435,7 @@ public class DAC {
 		System.out.println(grades[0].toString());
 		System.out.println(grades[1].toString());
 		*/
-		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1);
+		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1, 'A');
 		System.out.println(period.getStartDate());
 		/*
 		Student[] students = DAC.getAllStudents();
