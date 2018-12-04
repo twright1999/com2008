@@ -23,8 +23,8 @@ public class Registrar extends Account {
 		return;	
 	}
 	
-	private void addModule(int regNumber, String modID) throws SQLException {
-		DACRegistrar.addModule(regNumber, modID);
+	private void addStudentModule(int regNumber, String modID) throws SQLException {
+		DACRegistrar.addStudentModule(regNumber, modID);
 		return;	
 	}
 	
