@@ -96,10 +96,17 @@ public class DACTeacher extends DAC {
 			
 			closeConnection();
 			float average = totalPercent/totalGrades;
-			if (average >= 40.0 && passedEveryModule)
-				return true;
-			else
-				return false;
+			if (level == "4") {
+				if (average >= 50.0 && passedEveryModule)
+					return true;
+				else
+					return false;
+			} else {
+				if (average >= 40.0 && passedEveryModule)
+					return true;
+				else
+					return false;
+			}
 		}
 	
 	/**
