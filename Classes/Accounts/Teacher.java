@@ -8,8 +8,8 @@ public class Teacher extends Account {
 		super(userID, name, password, permission);
 	}
 	
-	private void addGrade(float gradePercent, String modID, int regNumber) throws SQLException {
-		DACTeacher.addGrade(gradePercent, modID, regNumber);
+	private void addGrade(float initialGrade, float resitGrade, String modID, int regNumber) throws SQLException {
+		DACTeacher.addGrade(initialGrade, resitGrade, modID, regNumber);
 	}
 	
 	private void removeGrade(int gradeID) throws SQLException {
