@@ -1,25 +1,35 @@
 package admin;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import Database.DAC;
+import Database.DACAdmin;
+import Utility.Department;
+
 public class DepartmentUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable table;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -42,26 +52,27 @@ public class DepartmentUI extends JFrame {
 		});
 	}
 
+	public void display_table() throws SQLException {
+		Department[] dep = DAC.getDepartments();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		Object[] row = new Object[2];
+		for(int i=0;i<dep.length;i++) {
+			row[0]=dep[i].getDepId();
+			row[1]=dep[i].getName();
+			model.addRow(row);
+		}
+	}
+	
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public DepartmentUI() {
+	public DepartmentUI() throws SQLException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-
-		JLabel lblSearch = new JLabel("Search:");
-		lblSearch.setBounds(35, 35, 51, 16);
-		lblSearch.setHorizontalAlignment(SwingConstants.CENTER);
-
-		JTextField textField = new JTextField();
-		textField.setBounds(98, 29, 102, 28);
-		textField.setColumns(10);
-
-		JButton btnSearch = new JButton("Search");
-		btnSearch.setBounds(218, 29, 87, 28);
 
 		JButton btnAdd = new JButton("Add");
 		btnAdd.addActionListener(new ActionListener() {
@@ -72,24 +83,60 @@ public class DepartmentUI extends JFrame {
 			}
 		});
 		btnAdd.setBounds(323, 29, 87, 28);
-
-		table = new JTable();
-		table.setRowSelectionAllowed(false);
-		table.setCellSelectionEnabled(true);
-		table.setBounds(11, 63, 416, 110);
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setModel(new DefaultTableModel(new Object[][] { { null, null, null }, { null, null, null }, },
-				new String[] { "column1", "column2", "column3" }));
-		table.setShowVerticalLines(true);
-		table.setShowHorizontalLines(true);
 		contentPane.setLayout(null);
-		contentPane.add(lblSearch);
-		contentPane.add(textField);
-		contentPane.add(btnSearch);
 		contentPane.add(btnAdd);
-		contentPane.add(table);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBorder(null);
+		scrollPane.setBounds(11, 63, 416, 110);
+		contentPane.add(scrollPane);
+		
+				table = new JTable();
+				scrollPane.setViewportView(table);
+				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+				table.setModel(new DefaultTableModel(
+					new Object[][] {
+					},
+					new String[] {
+						"Dep ID", "Name"
+					}
+				) {
+					boolean[] columnEditables = new boolean[] {
+						false, false
+					};
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
+				table.setShowVerticalLines(true);
+				table.setShowHorizontalLines(true);
 
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				DefaultTableModel model= (DefaultTableModel)table.getModel();
+
+				String selected = model.getValueAt(row, 0).toString();
+				
+					if (row >= 0) {
+
+						model.removeRow(row);
+
+						try {
+							DACAdmin.removeDepartment(selected);
+							JOptionPane.showMessageDialog(frame,
+								    "Delete Successful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
+							table.revalidate();
+						}
+						catch (Exception w) {
+							JOptionPane.showInputDialog(this, "Connection Error!");
+						}
+					}
+			}
+		});
 		btnDelete.setBounds(21, 185, 87, 28);
 		contentPane.add(btnDelete);
 		
@@ -103,5 +150,6 @@ public class DepartmentUI extends JFrame {
 		});
 		btnCancel.setBounds(323, 185, 87, 28);
 		contentPane.add(btnCancel);
+		display_table();
 	}
 }

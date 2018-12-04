@@ -2,6 +2,7 @@ package Database;
 import Accounts.*;
 import dataConversion.QueryToObject;
 import Utility.*;
+import Utility.Module;
 import java.sql.*;
 
 /**
@@ -366,8 +367,8 @@ public class DAC {
 		//DAC.getCurrentStudentModules(987654321);
 		//DAC.getAccounts();
 		//DAC.getAvailableModules(987654321, "COMU01");
-		//DAC.getModules();
-		DAC.getCurrentStudentModules(987654321);
+		DAC.getModules();
+		//DAC.getCurrentStudentModules(987654321);
 		
 	}
 }

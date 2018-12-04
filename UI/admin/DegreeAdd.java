@@ -1,28 +1,33 @@
 package admin;
 
-import java.awt.Color;
+import java.awt.Component;
 import java.awt.EventQueue;
-import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
-import javax.swing.AbstractListModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import Database.DACAdmin;
+
 public class DegreeAdd extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -78,21 +83,16 @@ public class DegreeAdd extends JFrame {
 		contentPane.add(dNameField);
 		dNameField.setColumns(10);
 
-		JLabel lblLead = new JLabel("Lead Department");
-		lblLead.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLead.setBounds(23, 103, 109, 16);
-		contentPane.add(lblLead);
+		JLabel lblDep = new JLabel("Department");
+		lblDep.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDep.setBounds(23, 103, 109, 16);
+		contentPane.add(lblDep);
 
-		JTextField lDeptField = new JTextField();
-		lblLead.setLabelFor(lDeptField);
-		lDeptField.setBounds(144, 97, 102, 28);
-		contentPane.add(lDeptField);
-		lDeptField.setColumns(10);
-
-		JLabel lblDept = new JLabel("Other Departments");
-		lblDept.setHorizontalAlignment(SwingConstants.CENTER);
-		lblDept.setBounds(23, 144, 109, 16);
-		contentPane.add(lblDept);
+		JTextField deptField = new JTextField();
+		lblDep.setLabelFor(deptField);
+		deptField.setBounds(144, 97, 102, 28);
+		contentPane.add(deptField);
+		deptField.setColumns(10);
 
 		JLabel lblLevel = new JLabel("Level of Study");
 		lblLevel.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,50 +101,49 @@ public class DegreeAdd extends JFrame {
 
 		JComboBox levelSelect = new JComboBox();
 		lblLevel.setLabelFor(levelSelect);
-		levelSelect.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "p" }));
+		levelSelect.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "P" }));
 		levelSelect.setSelectedIndex(0);
-		levelSelect.setMaximumRowCount(4);
+		levelSelect.setMaximumRowCount(5);
 		levelSelect.setBounds(350, 22, 82, 26);
 		contentPane.add(levelSelect);
 
 		JButton btnAddDegree = new JButton("Add Degree");
 		btnAddDegree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DegreeUI deg = new DegreeUI();
-				deg.setVisible(true);
-				dispose();
+				
+				String degID = codeField.getText();
+				String name = dNameField.getText();
+				char level = levelSelect.getSelectedItem().toString().charAt(0);
+				String depID = deptField.getText();
+				
+				try {
+					DACAdmin.addDegree(degID, name, level, depID);
+					JOptionPane.showMessageDialog(frame,
+						    "Successfully Added Degree",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
+					DegreeUI degUI = new DegreeUI();
+					degUI.setVisible(true);
+					dispose();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnAddDegree.setBounds(297, 97, 109, 28);
 		contentPane.add(btnAddDegree);
-
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(144, 144, 122, 98);
-		contentPane.add(scrollPane);
-
-		JList deptList = new JList();
-		lblDept.setLabelFor(deptList);
-		deptList.setSelectionBackground(new Color(169, 169, 169));
-		scrollPane.setViewportView(deptList);
-		deptList.setSelectionForeground(SystemColor.infoText);
-		deptList.setSelectedIndices(new int[] { 0 });
-		deptList.setModel(new AbstractListModel() {
-			String[] values = new String[] { "Dept1", "Dept2", "Dept3", "Dept4", "Dept5", "Dept6", "Dept7" };
-
-			public int getSize() {
-				return values.length;
-			}
-
-			public Object getElementAt(int index) {
-				return values[index];
-			}
-		});
-		deptList.setSelectedIndex(0);
 		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DegreeUI deg = new DegreeUI();
+				DegreeUI deg = null;
+				try {
+					deg = new DegreeUI();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				deg.setVisible(true);
 				dispose();
 			}

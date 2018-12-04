@@ -2,6 +2,8 @@ package dataConversion;
 import Accounts.*;
 import Database.DAC;
 import Utility.*;
+import Utility.Module;
+
 import java.sql.*;
 /**
  * 
@@ -49,6 +51,7 @@ public final class QueryToObject {
 				char permission = res.getString("permission").charAt(0);
 				Account account = new Account (userID, name, password, permission);
 				accounts[index] = account;
+				index++;
 				System.out.println(">>rowsToAccounts: " + account.toString());
 			}
 			return accounts;

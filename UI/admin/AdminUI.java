@@ -3,6 +3,7 @@ package admin;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -62,7 +63,13 @@ public class AdminUI extends JFrame {
 		btnModule = new JButton("Module");
 		btnModule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ModuleUI mod = new ModuleUI();
+				ModuleUI mod = null;
+				try {
+					mod = new ModuleUI();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				mod.setVisible(true);
 				dispose();
 			}
@@ -72,7 +79,13 @@ public class AdminUI extends JFrame {
 		btnDegree = new JButton("Degree");
 		btnDegree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DegreeUI degree = new DegreeUI();
+				DegreeUI degree = null;
+				try {
+					degree = new DegreeUI();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				degree.setVisible(true);
 				dispose();
 			}
@@ -82,7 +95,13 @@ public class AdminUI extends JFrame {
 		btnDepartment = new JButton("Department");
 		btnDepartment.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DepartmentUI dep = new DepartmentUI();
+				DepartmentUI dep = null;
+				try {
+					dep = new DepartmentUI();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				dep.setVisible(true);
 				dispose();
 			}
