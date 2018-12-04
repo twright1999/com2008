@@ -25,7 +25,7 @@ public final class Setup{
 					   "FOREIGN KEY (depID) references Department(depID) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Student("+
-					   "regNumber int (9) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "regNumber int (9) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
 					   "email varchar (50) NOT NULL,"+
 					   "tutor varchar (50) NOT NULL,"+
 					   "degID varchar (6) NOT NULL,"+
@@ -67,7 +67,8 @@ public final class Setup{
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Grade("+
 					   "gradeID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
-					   "gradePercent float NOT NULL,"+
+					   "initialGrade float NOT NULL,"+
+					   "resitGrade float,"+
 					   "modID varchar (7) NOT NULL,"+
 					   "regNumber int (9) NOT NULL,"+
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade,"+
