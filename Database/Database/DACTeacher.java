@@ -9,7 +9,7 @@ import java.sql.SQLException;
 *
 * Data Access Controller for Teacher
 *
-* @author Thomas Wright
+* @author Team 20
 */
 
 public class DACTeacher extends DAC {
@@ -102,7 +102,7 @@ public class DACTeacher extends DAC {
 	* @return boolean returns true if the student passed the period
 	*/
 	
-	public static boolean calcPeriod(int regNumber, int periodID) throws SQLException {
+	public static boolean calcPeriod(int regNumber, String periodID) throws SQLException {
 		openConnection();
 		Statement stmt = connection.createStatement();
 		
@@ -196,8 +196,8 @@ public class DACTeacher extends DAC {
 		
 		closeConnection();
 		
-		double bachelors = (grades[1] + grades[2])/2;
-		double masters = (grades[1] + grades[2] + grades[3])/3;
+		double bachelors = (grades[1] + grades[2]*2)/2;
+		double masters = (grades[1] + grades[2]*2 + grades[3]*2)/3;
 				
 		if (degreeName.contains("MSc")) {
 			if (grades[0] < 49.5) return "fail";
@@ -269,6 +269,54 @@ public class DACTeacher extends DAC {
 		
 		closeConnection();
 		return outputString;	
+	}
+	
+	/**
+	* advanceStudent
+	* 
+	* if a student passes the year they are registered for the next year, if not they resit the year
+	* 
+	* @param regNumber unique identifier for a student
+	* @param periodID unique identifier for a period
+	* @param startDate first day of the the next period
+	* @param endDate last day of the the next period
+	* 
+	* @return String returns a string stating what will happen to the student
+	*/
+	
+	public static String advanceStudent(int regNumber, String periodID, String startDate, String endDate) throws SQLException {
+		openConnection();
+		Statement stmt = connection.createStatement();
+		
+		if (calcPeriod(regNumber, periodID)) {
+			PreparedStatement pstm = connection.prepareStatement("DELETE FROM Student_Module WHERE regNumber = ?");
+			pstm.setInt(1, regNumber);
+			pstm.executeUpdate();
+			
+			ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.level FROM Degree " +
+					"INNER JOIN Student ON Degree.degID = Student.degID " +
+					"WHERE Student.regNumber = " + regNumber);
+			
+			degreeQuery.next();
+			String degreeLevel = degreeQuery.getString("level");
+			
+			ResultSet periodQuery =  stmt.executeQuery("SELECT label, level FROM PeriodOfStudy " +
+					"ORDER BY label DESC " +
+					"WHERE regNumber = " + regNumber);
+			
+			closeConnection();
+			
+			periodQuery.next();
+			if (degreeLevel == periodQuery.getString("level")) return "Graduate";
+			
+			String nextLabel = Character.toString((char)(((int)(periodQuery.getString("label").charAt(0)))+1));
+			String nextLevel = Integer.toString((Integer.parseInt(periodQuery.getString("level")))+1);
+			DACRegistrar.registerStudent(nextLabel, startDate, endDate, nextLevel, regNumber);
+			
+			return "Next Level";
+		} else {
+			return "Resit";
+		}
 	}
 	
 	//for testing
