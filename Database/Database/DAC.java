@@ -2,6 +2,7 @@ package Database;
 import Accounts.*;
 import dataConversion.QueryToObject;
 import Utility.*;
+import Utility.Module;
 import java.sql.*;
 
 /**
@@ -57,7 +58,6 @@ public class DAC {
 		Account[] accounts = QueryToObject.rowsToAccounts(res, count);
 		closeConnection();
 		return accounts;
-		
 		
 	}
 	
@@ -135,8 +135,6 @@ public class DAC {
 		ResultSet resCount = pstmt.executeQuery();
 		resCount.next();
 		int count = resCount.getInt(resCount.getRow());
-		System.out.println("Count: " + count) ;
-		System.out.println("before rowsToGrades");
 		Grade[] grades = QueryToObject.rowsToGrades(resGrades, count);
 		closeConnection();
 		return grades;
@@ -185,15 +183,94 @@ public class DAC {
 	
 	public static Department[] getDepartments() throws SQLException {
 		openConnection();
-		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM Department");
-		ResultSet res = pstmt.executeQuery();
+		Statement stmt = connection.createStatement();
+		ResultSet res = stmt.executeQuery("SELECT * FROM Department");
 		int count = getCount("Department");
 		//converting rows to Departments
 		Department[] departments = QueryToObject.rowsToDepartments(res, count);
 		closeConnection();
 		return departments;
 		}
+	
+	public static Student_Module[] getCurrentStudentModules(int regNumber) throws SQLException {
+		openConnection();
+		PreparedStatement pstmt = connection.prepareStatement(
+				"SELECT * FROM Student_Module WHERE regNumber = ?");
+		pstmt.setInt(1, regNumber);
+		ResultSet res = pstmt.executeQuery();
+		
+		pstmt = connection.prepareStatement("SELECT COUNT(*) FROM Student_Module WHERE regNumber = ?");
+		pstmt.setInt(1, regNumber);
+		ResultSet resCount = pstmt.executeQuery();
+		resCount.next();
+		int count = resCount.getInt(resCount.getRow()); 
+		
+		Student_Module[] student_modules = QueryToObject.rowsToStudentModules(res, count);
+		closeConnection();
+		return student_modules;
+	}
+	
+	public static Module[] getModules() throws SQLException {
+		try {
+			openConnection();
+			int count = getCount("Module");
+			Statement stmt = connection.createStatement();
+			ResultSet res = stmt.executeQuery("SELECT * FROM Module");
+			Module[] modules = QueryToObject.rowsToModules(res, count);
+			//closeConnection();
+			return modules;
+		}
+		catch (SQLException ex) {
+			System.out.println("getModules: " + ex.toString());
+			//closeConnection();
+		}
+		finally {
+			closeConnection();
+		}
+		return null;
+	}
+	
+	public static Module[] getAvailableModules(int regNumber, String degID) throws SQLException {
+		try {
+			openConnection();
+			//pull Student's level
+			PreparedStatement pstmt0 = connection.prepareStatement(
+					"SELECT level FROM PeriodOfStudy WHERE regNumber = ? LIMIT 1");
+			pstmt0.setInt(1, regNumber);
+			ResultSet resPeriod = pstmt0.executeQuery();
+			resPeriod.next();
+			String level = resPeriod.getString("level");
+			
+			//count how many available modules there are available
+			PreparedStatement pstmt1 = connection.prepareStatement(
+					"SELECT COUNT(*) FROM Module WHERE degID = ? AND level = ?");
+			pstmt1.setString(1, degID);
+			pstmt1.setString(2, level);
+			ResultSet resCount = pstmt1.executeQuery();
+			resCount.next() ; int count = resCount.getInt(resCount.getRow());
+			
+			//--
+			if (count != 0) {
+				PreparedStatement pstmt2 = connection.prepareStatement(
+						"SELECT * FROM Module WHERE  degID = ? AND level = ?");
+				pstmt2.setString(1, degID);
+				pstmt2.setString(2, level);
+				ResultSet res = pstmt2.executeQuery();
+				Module[] modules = QueryToObject.rowsToModules(res, count);
+				return modules ;
+			}
+			else return null;
+		}
+		catch (SQLException ex) {
+			System.out.println("getAvailableModules: " + ex.toString());
+			ex.printStackTrace();
+			
+		}
+		finally {
+			closeConnection();
+		}
+		return null;
+	}
 	
 	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber) throws SQLException {
 		openConnection();
@@ -207,13 +284,22 @@ public class DAC {
 	}
 	
 	public static int getCount(String table) throws SQLException {
-		if (connection == null) openConnection();
 		String query = "SELECT COUNT(*) FROM " + table;
 		PreparedStatement pstmt = connection.prepareStatement(query);
 		ResultSet resCount = pstmt.executeQuery();
 		resCount.next(); int count = resCount.getInt(resCount.getRow());
 		return count;
 	}
+	
+	public static int getCountWhere(String table, int id) throws SQLException {
+		String query = "SELECT COUNT(*) FROM " + table + " WHERE regNumber = " + id ;
+		Statement stmt = connection.createStatement();
+		ResultSet resCount = stmt.executeQuery(query);
+		resCount.next();
+		int count = resCount.getInt(resCount.getRow()); 
+		return count;
+	}
+	
 	public static String generateEmail(String name) throws SQLException {
 		//check if such name already exsits
 		openConnection();
@@ -271,11 +357,18 @@ public class DAC {
 		
 		Student[] students = DAC.getAllStudents();
 		System.out.println(students[0].getName());
-		*/
+		
+		
 		DAC.getDegrees();
-		DAC.getDepartments();
-		DAC.getAccounts();
-		DAC.getAllStudents();
+		DAC.getDepartments(); 
+		
+		DAC.getAllStudents(); */
+		
+		//DAC.getCurrentStudentModules(987654321);
+		//DAC.getAccounts();
+		//DAC.getAvailableModules(987654321, "COMU01");
+		DAC.getModules();
+		//DAC.getCurrentStudentModules(987654321);
 		
 	}
 }

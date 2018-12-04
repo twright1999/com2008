@@ -1,23 +1,33 @@
 package admin;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import Database.DACAdmin;
+
 public class ModuleAdd extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -84,13 +94,13 @@ public class ModuleAdd extends JFrame {
 		contentPane.add(credField);
 		credField.setColumns(10);
 
-		JLabel lblCore = new JLabel("Core or Not");
+		JLabel lblCore = new JLabel("Core");
 		lblCore.setHorizontalAlignment(SwingConstants.CENTER);
 		lblCore.setBounds(240, 72, 87, 16);
 		contentPane.add(lblCore);
 
 		JComboBox coreSelect = new JComboBox();
-		coreSelect.setModel(new DefaultComboBoxModel(new String[] { "Core", "Optional" }));
+		coreSelect.setModel(new DefaultComboBoxModel(new String[] {"True", "False"}));
 		lblCore.setLabelFor(coreSelect);
 		coreSelect.setBounds(332, 66, 100, 28);
 		contentPane.add(coreSelect);
@@ -109,17 +119,6 @@ public class ModuleAdd extends JFrame {
 		durationSelect.setBounds(332, 21, 100, 26);
 		contentPane.add(durationSelect);
 
-		JButton btnAddModule = new JButton("Add Module");
-		btnAddModule.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ModuleUI mod = new ModuleUI();
-				mod.setVisible(true);
-				dispose();
-			}
-		});
-		btnAddModule.setBounds(280, 138, 108, 28);
-		contentPane.add(btnAddModule);
-
 		JLabel lblDegreeId = new JLabel("Degree ID");
 		lblDegreeId.setHorizontalAlignment(SwingConstants.CENTER);
 		lblDegreeId.setBounds(23, 144, 87, 16);
@@ -131,10 +130,65 @@ public class ModuleAdd extends JFrame {
 		contentPane.add(degreeIDField);
 		degreeIDField.setColumns(10);
 		
+		JLabel lblLevel = new JLabel("Level");
+		lblLevel.setHorizontalAlignment(SwingConstants.CENTER);
+		lblLevel.setBounds(23, 184, 87, 16);
+		contentPane.add(lblLevel);
+		
+		JComboBox levelSelect = new JComboBox();
+		lblLevel.setLabelFor(levelSelect);
+		levelSelect.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "P"}));
+		levelSelect.setBounds(116, 179, 102, 27);
+		contentPane.add(levelSelect);
+		
+		JButton btnAddModule = new JButton("Add Module");
+		btnAddModule.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				String modID = modIDField.getText();
+				String name = modNameField.getText();
+				String cred = credField.getText();
+				int credits = Integer.parseInt(cred);
+				String taught = durationSelect.getSelectedItem().toString();
+				char level = levelSelect.getSelectedItem().toString().charAt(0);
+				String degID = degreeIDField.getText();
+				String core = coreSelect.getSelectedItem().toString();
+				int obligatory;
+				
+				if (core == "True") {
+					obligatory = 1;
+				}else {
+					obligatory = 0;
+				}
+				
+				try {
+					DACAdmin.addModule(modID, name, credits, taught, obligatory, level, degID);
+					JOptionPane.showMessageDialog(frame,
+						    "Successfully Added Module",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
+					ModuleUI modUI = new ModuleUI();
+					modUI.setVisible(true);
+					dispose();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnAddModule.setBounds(280, 138, 108, 28);
+		contentPane.add(btnAddModule);
+		
 		JButton btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ModuleUI mod = new ModuleUI();
+				ModuleUI mod = null;
+				try {
+					mod = new ModuleUI();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				mod.setVisible(true);
 				dispose();
 			}

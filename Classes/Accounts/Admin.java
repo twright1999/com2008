@@ -50,7 +50,7 @@ public class Admin extends Account {
 		return;	
 	}
 
-	private void addDegree(String degID, String depName, String level, String depID) throws SQLException {
+	private void addDegree(String degID, String depName, char level, String depID) throws SQLException {
 		DACAdmin.addDegree(depID, depName, level, depID);
 		return;	
 	}

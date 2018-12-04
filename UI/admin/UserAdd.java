@@ -1,27 +1,35 @@
 package admin;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import Database.DACAdmin;
+
 public class UserAdd extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField idField;
-	private JTextField fnField;
-	private JTextField lnField;
+	private JTextField nameField;
 	private JTextField pwField;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -55,38 +63,16 @@ public class UserAdd extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JLabel lblUserId = new JLabel("User ID");
-		lblUserId.setHorizontalAlignment(SwingConstants.CENTER);
-		lblUserId.setBounds(23, 26, 71, 16);
-		contentPane.add(lblUserId);
+		JLabel lblName = new JLabel("Name");
+		lblName.setHorizontalAlignment(SwingConstants.CENTER);
+		lblName.setBounds(23, 104, 71, 16);
+		contentPane.add(lblName);
 
-		idField = new JTextField();
-		lblUserId.setLabelFor(idField);
-		idField.setBounds(106, 20, 102, 28);
-		contentPane.add(idField);
-		idField.setColumns(10);
-
-		JLabel lblFirstName = new JLabel("First Name");
-		lblFirstName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblFirstName.setBounds(23, 66, 71, 16);
-		contentPane.add(lblFirstName);
-
-		fnField = new JTextField();
-		lblFirstName.setLabelFor(fnField);
-		fnField.setBounds(106, 60, 102, 28);
-		contentPane.add(fnField);
-		fnField.setColumns(10);
-
-		JLabel lblLastName = new JLabel("Last Name");
-		lblLastName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLastName.setBounds(23, 103, 71, 16);
-		contentPane.add(lblLastName);
-
-		lnField = new JTextField();
-		lblLastName.setLabelFor(lnField);
-		lnField.setBounds(106, 97, 102, 28);
-		contentPane.add(lnField);
-		lnField.setColumns(10);
+		nameField = new JTextField();
+		lblName.setLabelFor(nameField);
+		nameField.setBounds(106, 98, 102, 28);
+		contentPane.add(nameField);
+		nameField.setColumns(10);
 
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,37 +87,26 @@ public class UserAdd extends JFrame {
 
 		JLabel lblStatus = new JLabel("Role");
 		lblStatus.setHorizontalAlignment(SwingConstants.CENTER);
-		lblStatus.setBounds(240, 26, 51, 16);
+		lblStatus.setBounds(240, 31, 51, 16);
 		contentPane.add(lblStatus);
 
 		JComboBox roleSelect = new JComboBox();
 		lblStatus.setLabelFor(roleSelect);
-		roleSelect.setModel(new DefaultComboBoxModel(new String[] { "Student", "Teacher", "Registrar" }));
+		roleSelect.setModel(new DefaultComboBoxModel(new String[] {"Student", "Teacher", "Registrar"}));
 		roleSelect.setSelectedIndex(0);
 		roleSelect.setMaximumRowCount(3);
-		roleSelect.setBounds(303, 21, 82, 26);
+		roleSelect.setBounds(303, 26, 82, 26);
 		contentPane.add(roleSelect);
-
-		JButton btnAddUser = new JButton("Add User");
-		btnAddUser.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				User user = new User();
-				user.setVisible(true);
-				dispose();
-			}
-		});
-		btnAddUser.setBounds(298, 132, 87, 28);
-		contentPane.add(btnAddUser);
 		
 		JLabel lblTitle = new JLabel("Title");
 		lblTitle.setHorizontalAlignment(SwingConstants.CENTER);
-		lblTitle.setBounds(240, 66, 51, 16);
+		lblTitle.setBounds(23, 31, 51, 16);
 		contentPane.add(lblTitle);
 		
 		JComboBox titleSelect = new JComboBox();
 		lblTitle.setLabelFor(titleSelect);
 		titleSelect.setModel(new DefaultComboBoxModel(new String[] {"Mr", "Ms"}));
-		titleSelect.setBounds(303, 61, 82, 26);
+		titleSelect.setBounds(86, 26, 82, 26);
 		contentPane.add(titleSelect);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -144,5 +119,34 @@ public class UserAdd extends JFrame {
 		});
 		btnCancel.setBounds(298, 172, 87, 28);
 		contentPane.add(btnCancel);
+		
+		JButton btnAddUser = new JButton("Add User");
+		btnAddUser.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				
+				String title= titleSelect.getSelectedItem().toString();
+				String name = nameField.getText().toString();
+				String permission = roleSelect.getSelectedItem().toString();
+				char role = permission.charAt(0);
+				String pw = pwField.getText().toString();
+				String tName = title+" "+name;
+				
+				try {
+					DACAdmin.addAccount(tName, pw, role);
+					JOptionPane.showMessageDialog(frame,
+						    "Successfully Added Account",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
+					User user = new User();
+					user.setVisible(true);
+					dispose();
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnAddUser.setBounds(298, 132, 87, 28);
+		contentPane.add(btnAddUser);
 	}
 }

@@ -32,7 +32,7 @@ public class Registrar extends Account {
 		DACRegistrar.dropModule(regNumber, modID);
 	}
 	
-	public void registerStudent(String label, String startDate, String endDate, String level, int regNumber) {
+	public void registerStudent(String label, String startDate, String endDate, String level, int regNumber) throws SQLException {
 		DACRegistrar.registerStudent(label, startDate, endDate, level, regNumber);
 		
 	}
