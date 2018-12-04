@@ -13,15 +13,6 @@ public final class Setup{
 					   "password text NOT NULL,"+
 					   "permission char NOT NULL)");
 			
-			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Student("+
-					   "regNumber int (9) NOT NULL PRIMARY KEY UNIQUE,"+
-					   "email varchar (50) NOT NULL,"+
-					   "tutor varchar (50) NOT NULL,"+
-					   "degID varchar (6) NOT NULL,"+
-					   "userID int (8) NOT NULL UNIQUE,"+
-					   "FOREIGN KEY (degID) references Degree(degID) on delete cascade,"+
-					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
-			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Department("+
 					   "depID varchar (3) NOT NULL PRIMARY KEY UNIQUE,"+
 					   "name varchar (50) NOT NULL)");
@@ -30,8 +21,17 @@ public final class Setup{
 					   "degID varchar (6) NOT NULL PRIMARY KEY UNIQUE,"+
 					   "name varchar (50) NOT NULL,"+
 					   "level char NOT NULL,"+
-					   "depID varchar (3) NOT NULL UNIQUE,"+
+					   "depID varchar (3) NOT NULL,"+
 					   "FOREIGN KEY (depID) references Department(depID) on delete cascade)");
+			
+			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Student("+
+					   "regNumber int (9) NOT NULL PRIMARY KEY UNIQUE,"+
+					   "email varchar (50) NOT NULL,"+
+					   "tutor varchar (50) NOT NULL,"+
+					   "degID varchar (6) NOT NULL,"+
+					   "userID int (8) NOT NULL UNIQUE,"+
+					   "FOREIGN KEY (degID) references Degree(degID) on delete cascade,"+
+					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
 
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Module("+
 					   "modID varchar (7) NOT NULL PRIMARY KEY UNIQUE,"+
@@ -51,7 +51,7 @@ public final class Setup{
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Teacher("+
 					   "teacherID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
-					   "depID varchar (3) NOT NULL UNIQUE,"+
+					   "depID varchar (3) NOT NULL,"+
 					   "userID int (8) NOT NULL UNIQUE,"+
 					   "FOREIGN KEY (depID) references Department(depID) on delete cascade,"+
 					   "FOREIGN KEY (userID) references Account(userID) on delete cascade)");
@@ -62,7 +62,7 @@ public final class Setup{
 					   "startDate date NOT NULL,"+
 					   "endDate date NOT NULL,"+
 					   "level char NOT NULL,"+
-					   "regNumber int (9) NOT NULL UNIQUE,"+
+					   "regNumber int (9) NOT NULL,"+
 					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Grade("+
