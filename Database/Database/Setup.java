@@ -21,6 +21,7 @@ public final class Setup{
 					   "degID varchar (6) NOT NULL PRIMARY KEY UNIQUE,"+
 					   "name varchar (50) NOT NULL,"+
 					   "level char NOT NULL,"+
+					   "placement bit NOT NULL,"+
 					   "depID varchar (3) NOT NULL,"+
 					   "FOREIGN KEY (depID) references Department(depID) on delete cascade)");
 			
