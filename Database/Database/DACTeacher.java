@@ -27,7 +27,7 @@ public class DACTeacher extends DAC {
 	
 	public static void addInitialGrade(float initialGrade, String modID, int regNumber) throws SQLException {
 		openConnection();
-		String query = "INSERT INTO Grade (gradeID, gradePercent, modID, regNumber)" 
+		String query = "INSERT INTO Grade (gradeID, initialGrade, resitGrade, modID, regNumber)" 
 			+ " values (?, ?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setInt(1, 0);
@@ -339,6 +339,7 @@ public class DACTeacher extends DAC {
 	//for testing
 	public static void main(String[] arg) throws SQLException {
 //		updateResitGrade(6,-1);
+		addInitialGrade(25,"COM2008",1);
 		System.out.println(getStudentStatus(1));
 	}
 			
