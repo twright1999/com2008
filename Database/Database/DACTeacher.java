@@ -25,16 +25,16 @@ public class DACTeacher extends DAC {
 	* @param regNumber unique identifier for a student
 	*/
 	
-	public static void addInitialGrade(float initialGrade, String modID, int regNumber) throws SQLException {
+	public static void addInitialGrade(float initialGrade, String modID, String periodID) throws SQLException {
 		openConnection();
-		String query = "INSERT INTO Grade (gradeID, initialGrade, resitGrade, modID, regNumber)" 
+		String query = "INSERT INTO Grade (gradeID, initialGrade, resitGrade, modID, periodID)" 
 			+ " values (?, ?, ?, ?, ?)";
 		PreparedStatement pstm = connection.prepareStatement(query);
 		pstm.setInt(1, 0);
 		pstm.setFloat(2, initialGrade);
 		pstm.setFloat(3, -1); //-1 is a place holder for null 
 		pstm.setString(4, modID);
-		pstm.setInt(5, regNumber);
+		pstm.setString(5, periodID);
 		pstm.executeUpdate();	
 		closeConnection();
 	}
@@ -112,10 +112,8 @@ public class DACTeacher extends DAC {
 		periodQuery.next();
 		String level = periodQuery.getString("level");
 		
-		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, Module.level FROM Grade " + 
-				"INNER JOIN Module ON Grade.modID = Module.modID " +
-				"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
-				"WHERE Module.level = " + level + " && Student_Module.regNumber = " + regNumber);			
+		ResultSet gradeQuery = stmt.executeQuery("SELECT initialGrade, resitGrade FROM Grade " +
+				"WHERE periodID = " + periodID + " AND level = " + level);			
 		
 		float totalPercent = 0;
 		int totalGrades = 0;
@@ -128,10 +126,10 @@ public class DACTeacher extends DAC {
 			
 			totalPercent += gradeQuery.getFloat(gradeName);
 			totalGrades += 1;
-			if (gradeQuery.getString("level") == "P");
-			else if (Integer.parseInt(gradeQuery.getString("level")) == 4 && gradeQuery.getFloat(gradeName) < 50)
+			if (level == "P");
+			else if (Integer.parseInt(level) == 4 && gradeQuery.getFloat(gradeName) < 50)
 				passedEveryModule = false;
-			else if (Integer.parseInt(gradeQuery.getString("level")) < 4 && gradeQuery.getFloat(gradeName) < 40)
+			else if (Integer.parseInt(level) < 4 && gradeQuery.getFloat(gradeName) < 40)
 				passedEveryModule = false;				
 		}
 			
@@ -163,10 +161,9 @@ public class DACTeacher extends DAC {
 	public static String calcDegree(int regNumber) throws SQLException {
 		openConnection();
 		Statement stmt = connection.createStatement();
-		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, Module.level FROM Grade " + 
-				"INNER JOIN Module ON Grade.modID = Module.modID " +
-				"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
-				"WHERE Student_Module.regNumber = " + regNumber);
+		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, PeriodOfStudy.level FROM Grade " + 
+				"INNER JOIN PeriodOfStudy ON Grade.periodID = PeriodOfStudy.periodID " +
+				"WHERE PeriodOfStudy.regNumber = " + regNumber);
 		
 		double[] grades = {0,0,0,0};
 		int[] gradeCounts = {0,0,0,0};
@@ -229,7 +226,7 @@ public class DACTeacher extends DAC {
 	* 
 	* @param regNumber unique identifier for a student
 	* 
-	* @return String returns a string containing all grades for all modules,
+	* @return List<List<String>> returns a 2d array list of strings stating all grades for all modules,
 	*                the average grade for every level and
 	*                the degree earned
 	*/
@@ -339,7 +336,7 @@ public class DACTeacher extends DAC {
 	//for testing
 	public static void main(String[] arg) throws SQLException {
 //		updateResitGrade(6,-1);
-		addInitialGrade(25,"COM2008",1);
+//		addInitialGrade(25,"COM2008","A1");
 		System.out.println(getStudentStatus(1));
 	}
 			

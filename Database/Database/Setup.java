@@ -71,9 +71,9 @@ public final class Setup{
 					   "initialGrade float NOT NULL,"+
 					   "resitGrade float,"+
 					   "modID varchar (7) NOT NULL,"+
-					   "regNumber int (9) NOT NULL,"+
+					   "periodID varchar (10) NOT NULL,"+
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade,"+
-					   "FOREIGN KEY (regNumber) references Student(regNumber) on delete cascade)");
+					   "FOREIGN KEY (periodID) references PeriodOfStudy(periodID) on delete cascade)");
 
 			stmt.close();
 		}
