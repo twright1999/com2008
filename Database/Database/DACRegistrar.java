@@ -177,28 +177,6 @@ public class DACRegistrar extends DAC {
 				if (Integer.parseInt(moduleQuery.getString("level")) != level) levelMatch = false;
 			}
 			
-			ResultSet studentQuery = stmt.executeQuery("SELECT degID FROM Student " +
-					"WHERE regNumber = " + regNumber );
-			
-			studentQuery.next();
-			String degID = studentQuery.getString("degID");
-			
-			moduleQuery = stmt.executeQuery("SELECT modID from Module " +
-					"WHERE obligatory = true AND degID = '" + degID + "'");
-			
-			ArrayList<String> modIDs = new ArrayList<String>();
-			while(moduleQuery.next()) {
-				modIDs.add(moduleQuery.getString("modID"));
-			}
-			
-			ResultSet studentModuleQuery = stmt.executeQuery("SELECT modID FROM Student_Module " +
-					"WHERE regNumber = " + regNumber);
-			
-			boolean allOb = true;
-			while(studentModuleQuery.next()) {
-				if (!modIDs.contains(studentModuleQuery.getString("modID"))) allOb = false;
-			}
-			
 			moduleQuery = stmt.executeQuery("SELECT Module.credits FROM Module " +
 					"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
 					"WHERE Student_Module.regNumber = " + regNumber);
@@ -211,10 +189,10 @@ public class DACRegistrar extends DAC {
 			closeConnection();
 			
 			if (level < 4) {
-				if (levelMatch && allOb && creditsTotal == 120) return true;
+				if (levelMatch && creditsTotal == 120) return true;
 				else return false;
 			} else {
-				if (levelMatch && allOb && creditsTotal == 180) return true;
+				if (levelMatch && creditsTotal == 180) return true;
 				else return false;
 			}			
 		}
@@ -254,15 +232,17 @@ public class DACRegistrar extends DAC {
 			//DACRegistrar.dropModule(69420, "BAD69");
 			//System.out.println(DACRegistrar.checkRegistered(987654321));
 			//removeStudent(999999999);
-			DAC.getAccounts();
+			//DAC.getAccounts();
             //addStudent("TUTOR", "COMU01", 4);
 			//removeStudent(4);
-            DAC.getAllStudents();
+            //DAC.getAllStudents();
 			//registerStudent("B", "2017-06-06", "2018-12-12", "2", 1);
 			//DACRegistrar.addStudentModule(1, "COM3000");
 			//addStudentModule(1, "COM3004");
 			//addStudentModule(1, "COM3005");
 			//addStudentModule(1, "COM555");
+            
+            System.out.println(checkRegistered(9));
             
 		}
 		
