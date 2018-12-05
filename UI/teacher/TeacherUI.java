@@ -1,27 +1,36 @@
 package teacher;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-public class TeacherUI extends JFrame {
+import Accounts.*;
+import Database.*;
+import login.Login;
+import registrar.StudentInfo;
 
+import javax.swing.ListSelectionModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+public class TeacherUI extends JFrame {
+	protected int userIDGlobal;
+	protected static int regNumberGlobal;
 	private JPanel contentPane;
-	private JTextField searchField;
-	private JTable stdNameTable;
-	private JButton btnSearch;
+	private JTable table;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -43,12 +52,23 @@ public class TeacherUI extends JFrame {
 			}
 		});
 	}
+	
+	public void display_table() throws SQLException {
+		Student[] students = DAC.getAllStudents();
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		Object[] row = new Object[2];
+		for(int i=0;i<students.length;i++) {
+			row[0]=students[i].getUserID();
+			row[1]=students[i].getName();
+			model.addRow(row);
+		}
+	}
 
 	/**
 	 * Create the frame.
 	 */
 	public TeacherUI() {
-		setTitle("Teacher");
+		setTitle("Registrar");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -56,40 +76,103 @@ public class TeacherUI extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblSearch = new JLabel("Search");
-		lblSearch.setHorizontalAlignment(SwingConstants.CENTER);
-		lblSearch.setBounds(25, 24, 51, 16);
-		contentPane.add(lblSearch);
-		
-		searchField = new JTextField();
-		searchField.setBounds(88, 18, 102, 28);
-		contentPane.add(searchField);
-		searchField.setColumns(10);
-		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(25, 62, 379, 117);
+		scrollPane.setBounds(19, 65, 395, 88);
 		contentPane.add(scrollPane);
 		
-		stdNameTable = new JTable();
-		stdNameTable.setModel(new DefaultTableModel(
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setShowHorizontalLines(true);
+		table.setShowVerticalLines(true);
+		scrollPane.setViewportView(table);
+		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null},
 			},
 			new String[] {
-				"First Name", "Last Name"
+				"User ID", "Name"
 			}
-		));
-		stdNameTable.setShowHorizontalLines(true);
-		scrollPane.setViewportView(stdNameTable);
-		
-		btnSearch = new JButton("Search");
-		btnSearch.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//Code Here
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
-		btnSearch.setBounds(217, 18, 87, 28);
-		contentPane.add(btnSearch);
+		table.addMouseListener(new MouseAdapter() {
+			//@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					
+					int row = table.getSelectedRow();
+					DefaultTableModel model= (DefaultTableModel)table.getModel();
+
+					String userId = model.getValueAt(row, 0).toString();
+					//int userID = Integer.parseInt(userId);
+					StudentInfoT stdInfo = new StudentInfoT(userId);
+					stdInfo.setLocationRelativeTo(null);
+					stdInfo.setVisible(true);
+					System.out.println(userId);
+					userIDGlobal = Integer.parseInt(userId);
+					try {
+						regNumberGlobal = DAC.getStudent(userIDGlobal).getRegNumber();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					/*stdInfo.setVisible(true);
+					stdInfo.userIDField.setText(userID);
+					stdInfo.setDefaultCloseOperation(DISPOSE_ON_CLOSE);*/
+				}
+			}
+		});
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int row = table.getSelectedRow();
+				DefaultTableModel model= (DefaultTableModel)table.getModel();
+
+				int selected = (int) model.getValueAt(row, 0);
+				
+					if (row >= 0) {
+
+						model.removeRow(row);
+
+						try {
+							DACRegistrar.removeStudent(selected);
+							JOptionPane.showMessageDialog(frame,
+								    "Delete Successful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
+							table.revalidate();
+						}
+						catch (Exception w) {
+							JOptionPane.showInputDialog(this, "Connection Error!");
+						}
+					}
+			}
+		});
+		btnDelete.setBounds(19, 229, 87, 28);
+		contentPane.add(btnDelete);
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+				login.setVisible(true);
+				dispose();
+			}
+		});
+		btnLogout.setBounds(307, 229, 102, 28);
+		contentPane.add(btnLogout);
+		
+		try {
+			display_table();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }
