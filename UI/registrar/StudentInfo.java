@@ -101,7 +101,7 @@ public class StudentInfo extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(22, 42, 344, 49);
+		scrollPane.setBounds(22, 42, 345, 49);
 		contentPane.add(scrollPane);
 		
 		stdTable = new JTable();
@@ -125,7 +125,7 @@ public class StudentInfo extends JFrame {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBorder(null);
-		scrollPane_1.setBounds(400, 42, 163, 192);
+		scrollPane_1.setBounds(22, 116, 345, 192);
 		contentPane.add(scrollPane_1);
 		
 		table = new JTable();
@@ -134,7 +134,7 @@ public class StudentInfo extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Module", "Credit"
+				"Module", "Name", "Credit"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
@@ -176,7 +176,6 @@ public class StudentInfo extends JFrame {
 								    "Delete Successful",
 								    "Notice",
 								    JOptionPane.PLAIN_MESSAGE);
-							table.revalidate();
 						}
 						catch (Exception w) {
 							JOptionPane.showInputDialog(this, "Connection Error!");
@@ -190,7 +189,10 @@ public class StudentInfo extends JFrame {
 		JButton btnRefresh = new JButton("Refresh");
 		btnRefresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				table.revalidate();
+				StudentInfo stdInf = new StudentInfo(userID);
+				stdInf.setVisible(true);
+				stdInf.setLocationRelativeTo(null);
+				dispose();
 			}
 		});
 		btnRefresh.setBounds(376, 320, 87, 28);
@@ -202,10 +204,24 @@ public class StudentInfo extends JFrame {
 				DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
 				int regNumber = (int) model.getValueAt(0, 0);
 				try {
-					DACRegistrar.checkRegistered(regNumber);
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					boolean registered = DACRegistrar.checkRegistered(regNumber);
+					if (registered == true) {
+						JOptionPane.showMessageDialog(frame,
+							    "Registered Correctly",
+							    "Notice",
+							    JOptionPane.PLAIN_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(frame,
+							    "The number of credits are incorrect/Module unavailable for student",
+							    "Notice",
+							    JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (SQLException e2) {
+					JOptionPane.showMessageDialog(frame,
+						    "Error connecting to database",
+						    "Notice",
+						    JOptionPane.ERROR_MESSAGE);
+					e2.printStackTrace();
 				}
 			}
 		});

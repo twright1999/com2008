@@ -106,12 +106,21 @@ public class RegistrarUI extends JFrame {
 					
 					int row = table.getSelectedRow();
 					DefaultTableModel model= (DefaultTableModel)table.getModel();
-
-					String userId = model.getValueAt(row, 0).toString();
+					/*String userId = model.getValueAt(row, 0).toString();
 					StudentInfo stdInfo = new StudentInfo(userId);
 					stdInfo.setLocationRelativeTo(null);
 					stdInfo.setVisible(true);
-					System.out.println(userId);
+					System.out.println(userId);*/
+					try {
+						String userId = model.getValueAt(row, 0).toString();
+						StudentInfo stdInfo = new StudentInfo(userId);
+						stdInfo.setLocationRelativeTo(null);
+						stdInfo.setVisible(true);
+						System.out.println(userId);
+					}
+					catch (Exception w) {
+						JOptionPane.showInputDialog(this, "Student Not Registered");
+					}
 				}
 			}
 		});

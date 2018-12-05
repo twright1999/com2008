@@ -119,7 +119,7 @@ public class Login extends JFrame {
 						char permission = RBAC.getPermission(id);
 						switch (permission) {
 						case 'S': {
-							StudentUI student = new StudentUI();
+							StudentUI student = new StudentUI(id);
 							student.setVisible(true);
 							dispose();
 							break ;

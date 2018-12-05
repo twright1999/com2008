@@ -19,17 +19,20 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import java.awt.Color;
 
 public class StudentUI extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
+	private JTable studentDetail;
 	private JTable table_1;
+	private JTextField idField;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Throwable e) {
@@ -45,24 +48,25 @@ public class StudentUI extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	public void display_table(int userID) throws SQLException {
 		Student student = DAC.getStudent(userID);
-		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		Object[] row = new Object[5];
+		DefaultTableModel model = (DefaultTableModel)studentDetail.getModel();
+		Object[] row = new Object[6];
 		row[0]=student.getUserID();
 		row[1]=student.getName();
 		row[2]=student.getEmail();
 		row[3]=student.getDegID();
 		row[4]=student.getTutor();
+		row[5]=student.getRegNumber();
 		model.addRow(row);
 	}
 	
 	/**
 	 * Create the frame.
 	 */
-	public StudentUI() {
+	public StudentUI(int userID) {
 		setTitle("Student Information");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 860, 300);
@@ -76,16 +80,29 @@ public class StudentUI extends JFrame {
 		scrollPane.setBounds(6, 6, 834, 49);
 		contentPane.add(scrollPane);
 		
-		table = new JTable();
-		table.setModel(new DefaultTableModel(
+		studentDetail = new JTable();
+		studentDetail.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
+				"User ID", "Name", "Email", "Deg ID", "Tutor", "Reg ID"
 			}
-		));
-		scrollPane.setViewportView(table);
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		scrollPane.setViewportView(studentDetail);
+		
+		try {
+			display_table(userID);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBorder(null);
@@ -102,5 +119,15 @@ public class StudentUI extends JFrame {
 			}
 		));
 		scrollPane_1.setViewportView(table_1);
+		
+		idField = new JTextField();
+		idField.setBackground(UIManager.getColor("DesktopPane.background"));
+		idField.setBorder(null);
+		idField.setEnabled(false);
+		idField.setEditable(false);
+		idField.setVisible(false);
+		idField.setBounds(6, 239, 1, 24);
+		contentPane.add(idField);
+		idField.setColumns(10);
 	}
 }
