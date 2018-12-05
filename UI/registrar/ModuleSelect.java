@@ -1,21 +1,41 @@
 package registrar;
 
+import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.AbstractListModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import Database.DAC;
+import Database.DACRegistrar;
+import Utility.*;
+import Utility.Module;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 
 public class ModuleSelect extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
+	private JTable table;
+	public JTextField regNumField;
+	public JTextField degIDField;
+	protected Component frame;
 
 	/**
 	 * Launch the application.
@@ -38,6 +58,18 @@ public class ModuleSelect extends JFrame {
 		});
 	}
 
+	public void display_table(int regNumber, String degID) throws SQLException {
+		Module[] mod = DAC.getAvailableModules(regNumber, degID);
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		Object[] row = new Object[3];
+		for(int i=0;i<mod.length;i++) {
+			row[0]=mod[i].getModuleId();
+			row[1]=mod[i].getName();
+			row[2]=mod[i].getCredits();
+			model.addRow(row);
+		}
+	}
+	
 	/**
 	 * Create the frame.
 	 */
@@ -51,49 +83,92 @@ public class ModuleSelect extends JFrame {
 		contentPane.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(28, 38, 118, 175);
+		scrollPane.setBorder(null);
+		scrollPane.setBounds(18, 21, 192, 206);
 		contentPane.add(scrollPane);
 		
-		JList moduleList = new JList();
-		moduleList.setModel(new AbstractListModel() {
-			String[] values = new String[] {"Mod1", "Mod2", "Mod3"};
-			public int getSize() {
-				return values.length;
+		table = new JTable();
+		table.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Mod ID", "Name", "Credits"
 			}
-			public Object getElementAt(int index) {
-				return values[index];
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
 			}
 		});
-		scrollPane.setViewportView(moduleList);
+		scrollPane.setViewportView(table);
+
+		regNumField = new JTextField();
+		regNumField.setVisible(false);
+		regNumField.setEditable(false);
+		regNumField.setBounds(216, 231, 102, 28);
+		regNumField.setText("1");
+		contentPane.add(regNumField);
+		regNumField.setColumns(10);
 		
-		JButton btnGet = new JButton("Get");
-		btnGet.setBounds(172, 48, 87, 28);
-		contentPane.add(btnGet);
+		degIDField = new JTextField();
+		degIDField.setVisible(false);
+		degIDField.setEditable(false);
+		degIDField.setBounds(330, 231, 102, 28);
+		degIDField.setText("COMU01");
+		contentPane.add(degIDField);
+		degIDField.setColumns(10);
 		
 		JButton btnAdd_1 = new JButton("Add");
-		btnAdd_1.setBounds(172, 105, 87, 28);
+		btnAdd_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int row = table.getSelectedRow();
+				DefaultTableModel model= (DefaultTableModel)table.getModel();
+
+				String selected = model.getValueAt(row, 0).toString();
+				String regNum = regNumField.getText();
+				int regNumber = Integer.parseInt(regNum);
+				
+					if (row >= 0) {
+
+						model.removeRow(row);
+
+						try {
+							DACRegistrar.addStudentModule(regNumber, selected);
+							JOptionPane.showMessageDialog(frame,
+								    "Add Successful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
+							table.revalidate();
+						}
+						catch (Exception w) {
+							JOptionPane.showInputDialog(this, "Connection Error!");
+						}
+					}
+			}
+		});
+		btnAdd_1.setBounds(18, 229, 87, 28);
 		contentPane.add(btnAdd_1);
 		
-		JButton btnRemove = new JButton("Remove");
-		btnRemove.setBounds(172, 168, 87, 28);
-		contentPane.add(btnRemove);
-		
-		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(283, 37, 112, 176);
-		contentPane.add(scrollPane_1);
-		
-		JList selectedMod = new JList();
-		scrollPane_1.setViewportView(selectedMod);
-		
-		JButton btnCancel = new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
+		JButton btnClose = new JButton("Close");
+		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				StudentInfo stdInfo = new StudentInfo();
-				stdInfo.setVisible(true);
 				dispose();
 			}
 		});
-		btnCancel.setBounds(172, 218, 87, 28);
-		contentPane.add(btnCancel);
+		btnClose.setBounds(117, 229, 87, 28);
+		contentPane.add(btnClose);
+		
+		String regNum = regNumField.getText();
+		int regNumber = Integer.parseInt(regNum);
+		String degID = degIDField.getText();
+		
+		try {
+			display_table(regNumber, degID);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }

@@ -101,12 +101,34 @@ public class DegreeAdd extends JFrame {
 
 		JComboBox levelSelect = new JComboBox();
 		lblLevel.setLabelFor(levelSelect);
-		levelSelect.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4", "P" }));
+		levelSelect.setModel(new DefaultComboBoxModel(new String[] { "1", "2", "3", "4"}));
 		levelSelect.setSelectedIndex(0);
-		levelSelect.setMaximumRowCount(5);
+		levelSelect.setMaximumRowCount(4);
 		levelSelect.setBounds(350, 22, 82, 26);
 		contentPane.add(levelSelect);
 
+		JLabel lblDegreeTitle = new JLabel("Degree Title");
+		lblDegreeTitle.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDegreeTitle.setBounds(249, 60, 82, 28);
+		contentPane.add(lblDegreeTitle);
+		
+		JComboBox mBSelect = new JComboBox();
+		lblDegreeTitle.setLabelFor(mBSelect);
+		mBSelect.setModel(new DefaultComboBoxModel(new String[] {"MSc", "MEng", "BSc", "MPsy"}));
+		mBSelect.setBounds(350, 61, 82, 28);
+		contentPane.add(mBSelect);
+		
+		JLabel lblPlacement = new JLabel("Placement");
+		lblPlacement.setHorizontalAlignment(SwingConstants.CENTER);
+		lblPlacement.setBounds(252, 103, 79, 16);
+		contentPane.add(lblPlacement);
+		
+		JComboBox placeSelect = new JComboBox();
+		lblPlacement.setLabelFor(placeSelect);
+		placeSelect.setModel(new DefaultComboBoxModel(new String[] {"True", "False"}));
+		placeSelect.setBounds(350, 98, 82, 28);
+		contentPane.add(placeSelect);
+		
 		JButton btnAddDegree = new JButton("Add Degree");
 		btnAddDegree.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -115,9 +137,18 @@ public class DegreeAdd extends JFrame {
 				String name = dNameField.getText();
 				char level = levelSelect.getSelectedItem().toString().charAt(0);
 				String depID = deptField.getText();
+				String title = mBSelect.getSelectedItem().toString();
+				String fullName = title+" "+name;
+				String place = placeSelect.getSelectedItem().toString();
+				boolean placement;
+				if (place == "True") {
+					placement = true;
+				}else {
+					placement = false;
+				}
 				
 				try {
-					DACAdmin.addDegree(degID, name, level, depID);
+					DACAdmin.addDegree(degID, fullName, level, depID, placement);
 					JOptionPane.showMessageDialog(frame,
 						    "Successfully Added Degree",
 						    "Notice",
@@ -131,7 +162,7 @@ public class DegreeAdd extends JFrame {
 				}
 			}
 		});
-		btnAddDegree.setBounds(297, 97, 109, 28);
+		btnAddDegree.setBounds(173, 173, 109, 28);
 		contentPane.add(btnAddDegree);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -148,7 +179,7 @@ public class DegreeAdd extends JFrame {
 				dispose();
 			}
 		});
-		btnCancel.setBounds(297, 138, 109, 28);
+		btnCancel.setBounds(173, 214, 109, 28);
 		contentPane.add(btnCancel);
 	}
 }

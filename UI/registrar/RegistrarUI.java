@@ -18,7 +18,11 @@ import javax.swing.table.DefaultTableModel;
 
 import Accounts.*;
 import Database.*;
+import login.Login;
+
 import javax.swing.ListSelectionModel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RegistrarUI extends JFrame {
 	private JPanel contentPane;
@@ -83,9 +87,36 @@ public class RegistrarUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Student ID", "Name"
+				"User ID", "Name"
 			}
-		));
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		table.addMouseListener(new MouseAdapter() {
+			//@Override
+			public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					
+					int row = table.getSelectedRow();
+					DefaultTableModel model= (DefaultTableModel)table.getModel();
+
+					String userId = model.getValueAt(row, 0).toString();
+					//int userID = Integer.parseInt(userId);
+					StudentInfo stdInfo = new StudentInfo(userId);
+					stdInfo.setLocationRelativeTo(null);
+					stdInfo.setVisible(true);
+					System.out.println(userId);
+					/*stdInfo.setVisible(true);
+					stdInfo.userIDField.setText(userID);
+					stdInfo.setDefaultCloseOperation(DISPOSE_ON_CLOSE);*/
+				}
+			}
+		});
 		
 		JButton btnAddStudent = new JButton("Add Student");
 		btnAddStudent.addActionListener(new ActionListener() {
@@ -126,6 +157,17 @@ public class RegistrarUI extends JFrame {
 		});
 		btnDelete.setBounds(19, 229, 87, 28);
 		contentPane.add(btnDelete);
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+				login.setVisible(true);
+				dispose();
+			}
+		});
+		btnLogout.setBounds(307, 229, 102, 28);
+		contentPane.add(btnLogout);
 		
 		try {
 			display_table();

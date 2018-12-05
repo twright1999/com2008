@@ -153,12 +153,12 @@ public class ModuleAdd extends JFrame {
 				char level = levelSelect.getSelectedItem().toString().charAt(0);
 				String degID = degreeIDField.getText();
 				String core = coreSelect.getSelectedItem().toString();
-				int obligatory;
+				boolean obligatory;
 				
 				if (core == "True") {
-					obligatory = 1;
+					obligatory = true;
 				}else {
-					obligatory = 0;
+					obligatory = false;
 				}
 				
 				try {

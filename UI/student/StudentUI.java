@@ -7,12 +7,24 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import Accounts.Student;
+import Database.DAC;
+import login.Login;
+
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.awt.event.ActionEvent;
+import javax.swing.JTabbedPane;
 
 public class StudentUI extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -35,12 +47,25 @@ public class StudentUI extends JFrame {
 		});
 	}
 
+	public void display_table(int userID) throws SQLException {
+		Student student = DAC.getStudent(userID);
+		DefaultTableModel model = (DefaultTableModel)table.getModel();
+		Object[] row = new Object[5];
+		row[0]=student.getUserID();
+		row[1]=student.getName();
+		row[2]=student.getEmail();
+		row[3]=student.getDegID();
+		row[4]=student.getTutor();
+		model.addRow(row);
+	}
+	
 	/**
 	 * Create the frame.
 	 */
 	public StudentUI() {
+		setTitle("Student Information");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 860, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -48,30 +73,34 @@ public class StudentUI extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(40, 30, 360, 107);
+		scrollPane.setBounds(6, 6, 834, 49);
 		contentPane.add(scrollPane);
 		
-		JTable table = new JTable();
-		scrollPane.setViewportView(table);
+		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null},
-				{null, null, null, null},
+				{null, null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"Student ID", "Student Name", "New column", "New column"
+				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
 			}
-		) {
-			boolean[] columnEditables = new boolean[] {
-				false, false, false, false
-			};
-			public boolean isCellEditable(int row, int column) {
-				return columnEditables[column];
+		));
+		scrollPane.setViewportView(table);
+		
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBorder(null);
+		scrollPane_1.setBounds(6, 70, 834, 110);
+		contentPane.add(scrollPane_1);
+		
+		table_1 = new JTable();
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+				{null, null, null, null, null, null, null, null, null, null},
+			},
+			new String[] {
+				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
 			}
-		});
-		table.getColumnModel().getColumn(0).setResizable(false);
-		table.setRowSelectionAllowed(false);
-		table.setShowVerticalLines(true);
-		table.setShowHorizontalLines(true);
+		));
+		scrollPane_1.setViewportView(table_1);
 	}
 }

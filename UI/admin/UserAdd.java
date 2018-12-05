@@ -19,6 +19,7 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import Database.DACAdmin;
+import javax.swing.JPasswordField;
 
 public class UserAdd extends JFrame {
 
@@ -28,7 +29,7 @@ public class UserAdd extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField nameField;
-	private JTextField pwField;
+	private JPasswordField pwField;
 	protected Component frame;
 
 	/**
@@ -79,7 +80,7 @@ public class UserAdd extends JFrame {
 		lblPassword.setBounds(23, 144, 71, 16);
 		contentPane.add(lblPassword);
 
-		pwField = new JTextField();
+		pwField = new JPasswordField();
 		lblPassword.setLabelFor(pwField);
 		pwField.setBounds(106, 138, 102, 28);
 		contentPane.add(pwField);
@@ -128,7 +129,7 @@ public class UserAdd extends JFrame {
 				String name = nameField.getText().toString();
 				String permission = roleSelect.getSelectedItem().toString();
 				char role = permission.charAt(0);
-				String pw = pwField.getText().toString();
+				String pw = pwField.toString();
 				String tName = title+" "+name;
 				
 				try {

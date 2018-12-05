@@ -11,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
+import login.Login;
+
 public class AdminUI extends JFrame {
 
 	private JPanel contentPane;
@@ -112,5 +114,16 @@ public class AdminUI extends JFrame {
 		contentPane.add(btnModule);
 		contentPane.add(btnDegree);
 		contentPane.add(btnDepartment);
+		
+		JButton btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Login login = new Login();
+				login.setVisible(true);
+				dispose();
+			}
+		});
+		btnLogout.setBounds(180, 109, 87, 28);
+		contentPane.add(btnLogout);
 	}
 }
