@@ -18,27 +18,6 @@ public class Admin extends Account {
 		DACAdmin.removeAccount(accountUserID);
 		return;
 	}
-	
-
-	private void setPermission(int accountUserID, char accountPermission) throws SQLException {
-		DACAdmin.setPermission(accountUserID, accountPermission);
-		return;
-	}
-
-	private void setUserID(int accountOldUserID, int accountNewUserID) throws SQLException {
-		DACAdmin.setUserID(accountOldUserID, accountNewUserID);
-		return;
-	}
-
-	private void setPassword(int accountUserID, String newAccountPassword) throws SQLException {
-		DACAdmin.setPassword(accountUserID, newAccountPassword);
-		return;
-	}
-
-	private void setAccountName(int accountUserID, String newAccountName) throws SQLException {
-		DACAdmin.setUsername(accountUserID, newAccountName);
-		return;
-	}
 
 	private void addDepartment(String depID, String depName) throws SQLException {
 		DACAdmin.addDepartment(depID, depName);
@@ -50,8 +29,8 @@ public class Admin extends Account {
 		return;	
 	}
 
-	private void addDegree(String degID, String depName, char level, String depID) throws SQLException {
-		DACAdmin.addDegree(depID, depName, level, depID);
+	private void addDegree(String degID, String depName, char level, String depID, boolean placement) throws SQLException {
+		DACAdmin.addDegree(depID, depName, level, depID, placement);
 		return;	
 	}
 

@@ -43,54 +43,7 @@ public class DACAdmin extends DAC {
 		return;
 
 	}
-	/**
-	 * sets permission for provided user. 
-	 * @param userID	user's ID for which the permission is changed
-	 * @param permission  permission to apply to the user
-	 * @throws SQLException
-	 */
-	public static void setPermission(int userID, char permission) throws SQLException {
-		openConnection();
-		String query = "UPDATE Account SET permission = ? WHERE userID= ?";
-		PreparedStatement pstm = connection.prepareStatement(query);
-		pstm.setString(1, String.valueOf(permission));
-		pstm.setInt(2, userID);
-		pstm.executeUpdate();
-		closeConnection();
-		return;
-	}
-	/**
-	 * Changes the password for the user
-	 * @param userID
-	 * @param password
-	 * @throws SQLException
-	 */
-	public static void setPassword(int userID, String password) throws SQLException {
-		openConnection();
-		String query = "UPDATE Account SET password = ? WHERE userID= ?";
-		PreparedStatement pstm = connection.prepareStatement(query);
-		pstm.setString(1,hashPassword(password));
-		pstm.setInt(2, userID);
-		pstm.executeUpdate();
-		closeConnection();
-		return;
-	}
-	/**
-	 * sets the new name for the user
-	 * @param userID
-	 * @param name
-	 * @throws SQLException
-	 */
-	public static void setUsername(int userID, String name) throws SQLException {
-		openConnection();
-		String query = "UPDATE Account SET name = ? WHERE userID= ?";
-		PreparedStatement pstm = connection.prepareStatement(query);
-		pstm.setString(1, name);
-		pstm.setInt(2, userID);
-		pstm.executeUpdate();
-		closeConnection();
-		return;
-	}
+
 	/**
 	 * adds new department. To prevent adding department with the same ID,
 	 * catch the exception in GUI and display "such department already exists"
