@@ -64,7 +64,6 @@ public class StudentInfoT extends JFrame {
 		Object[] row = new Object[3];
 		row[0]=student.getRegNumber();
 		row[1]=student.getName();
-		//row[2]=student.getLevel();
 		row[2]=student.getDegID();
 		model.addRow(row);
 	}
@@ -222,7 +221,6 @@ public class StudentInfoT extends JFrame {
 		
 		int userId = Integer.parseInt(id);
 		DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
-		//int regNumber = (int)model.getValueAt(0, 0);
 		//char label = (char)model.getValueAt(0, 2);
 		
 		try {
@@ -231,13 +229,14 @@ public class StudentInfoT extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		/*
+		
+		int regNumber = (int)model.getValueAt(0, 0);
 		try {
 			display_table_module(regNumber);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}*/
+		}
 		
 	}
 }
