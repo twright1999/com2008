@@ -176,12 +176,14 @@ public class DACTeacher extends DAC {
 		openConnection();
 		Statement stmt = connection.createStatement();
 		
-		ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.name FROM Degree " +
+		ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.name, Degree.level FROM Degree " +
 				"INNER JOIN Student ON Student.degID = Degree.degID " +
 				"WHERE regNumber = " + regNumber);
 		
 		degreeQuery.next();
 		String degreeName = degreeQuery.getString("name");
+		String degreeLevel = degreeQuery.getString("level");
+		
 		
 		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, Module.level, Module.credits FROM Grade " + 
 				"INNER JOIN PeriodOfStudy ON Grade.periodID = PeriodOfStudy.periodID " +
@@ -199,6 +201,7 @@ public class DACTeacher extends DAC {
 		
 		int level = 0;
 		String gradeName;
+		boolean resitYear = false;
 		
 		while (gradeQuery.next()) {
 			if (gradeQuery.getFloat("resitGrade") >= 0) gradeName = "resitGrade";
@@ -209,6 +212,7 @@ public class DACTeacher extends DAC {
 			Double grade = gradeQuery.getDouble(gradeName);
 			
 			if (gradeName == "resitGrade") {
+				resitYear = true;
 				if (grade > 40 && level == 3) grade = 40.0;
 				else if (grade > 50 && level == 4) grade = 50.0;
 			}
@@ -216,29 +220,76 @@ public class DACTeacher extends DAC {
 			grades[level-1] += grade * (gradeQuery.getFloat("credits")/creditAmount);
 		}
 		
-		closeConnection();
-		
 		double bachelors = (grades[1] + grades[2]*2)/3;
 		double masters = (grades[1] + grades[2]*2 + grades[3]*2)/5;
-				
+		
+		ResultSet periodQuery = stmt.executeQuery("SELECT level FROM PeriodOfStudy " +
+				"WHERE regNumber = " + regNumber +
+				" ORDER BY level DESC");
+		
+		periodQuery.next();
+		String periodLevel = periodQuery.getString("level");
+		
+		boolean lastYearResit;
+		if (resitYear && degreeLevel == periodQuery.getString("level")) lastYearResit = true;
+		else lastYearResit = false;
+		
+		ResultSet moduleQuery = stmt.executeQuery("SELECT Module.name, Grade.initialGrade, Grade.resitGrade FROM Module " + 
+				"INNER JOIN Grade ON Module.modID = Grade.modID " + 
+				"INNER JOIN PeriodOfStudy ON Grade.periodID = PeriodOfStudy.periodID " +
+				"WHERE PeriodOfStudy.regNumber = " + regNumber);
+		
+		float dissertationGrade = 0;
+		while(moduleQuery.next()) {
+			if (moduleQuery.getString("name").contains("Dissertation")) {
+				if (moduleQuery.getFloat("resitGrade") >= 0) dissertationGrade = moduleQuery.getFloat("resitGrade");
+				else dissertationGrade = moduleQuery.getFloat("initialGrade");
+			}
+		}
+		
+		ResultSet periodIDQuery = stmt.executeQuery("SELECT periodID FROM PeriodOfStudy WHERE regNumber = " + regNumber);
+		
+		List<String> periodIDs = new ArrayList<String>();
+		while(periodIDQuery.next()) {
+			periodIDs.add(periodIDQuery.getString("periodID"));
+		}
+		
+		for (String id : periodIDs) {
+			if (!calcPeriod(id)) return "fail";
+		}
+			
+		closeConnection();
+		
+		boolean failedMasters = false;
+		
 		if (degreeName.contains("MSc")) {
-			if (grades[0] < 49.5) return "fail";
-			else if (grades[0] >= 49.5 && grades[0] < 59.5) return "pass";
-			else if (grades[0] >= 59.5 && grades[0] < 69.5) return "merit";
-			else if (grades[0] >= 69.5) return "disinction";
-		} else if (degreeName.contains("BSc") || degreeName.contains("BEng")) {
-			if (bachelors < 39.5) return "fail";
-			else if (bachelors >= 39.5 && bachelors < 44.5) return "pass (non-honours)";
-			else if (bachelors >= 44.5 && bachelors < 49.5) return "third class";
-			else if (bachelors >= 49.5 && bachelors < 59.5) return "lower second";
-			else if (bachelors >= 59.5 && bachelors < 69.5) return "upper second";
-			else if (bachelors >= 69.5) return "first class";
+			if (grades[3] < 49.5) {
+				if (degreeLevel == periodLevel) failedMasters = true;
+				else return "fail";		
+			}
+			if (dissertationGrade < 49.5) return "PGDip";
+			else if (grades[3] >= 49.5 && grades[3] < 59.5) return "Masters pass";
+			else if (grades[3] >= 59.5 && grades[3] < 69.5) return "Masters merit";
+			else if (grades[3] >= 69.5) return "Masters disinction";
 		} else if (degreeName.contains("MComp") || degreeName.contains("MEng")) {
-			if (masters < 49.5) return "fail";
-			else if (masters >= 49.5 && masters < 59.5) return "lower second";
-			else if (masters >= 59.5 && masters < 69.5) return "upper second";
-			else if (masters >= 69.5) return "first class";
+			if (masters < 49.5) {
+				if (degreeLevel == periodQuery.getString("level")) failedMasters = true;
+				else return "fail";	
+			}
+			else if (masters >= 49.5 && masters < 59.5) return "Masters lower second";
+			else if (masters >= 59.5 && masters < 69.5) return "Masters upper second";
+			else if (masters >= 69.5) return "Masters first class";
 		} 
+		
+		if (failedMasters || degreeName.contains("BSc") || degreeName.contains("BEng")) {
+			if (bachelors < 39.5) return "fail";
+			else if (bachelors >= 39.5 && lastYearResit) return "Bachelors: pass (non-honours)";
+			else if (bachelors >= 39.5 && bachelors < 44.5) return "Bachelors: pass (non-honours)";
+			else if (bachelors >= 44.5 && bachelors < 49.5) return "Bachelors: third class";
+			else if (bachelors >= 49.5 && bachelors < 59.5) return "Bachelors: lower second";
+			else if (bachelors >= 59.5 && bachelors < 69.5) return "Bachelors: upper second";
+			else if (bachelors >= 69.5) return "Bachelors: first class";
+		}
 			
 		return "degree not found";
 	}
@@ -386,10 +437,10 @@ public class DACTeacher extends DAC {
 	public static void main(String[] arg) throws SQLException {
 //		updateResitGrade(6,-1);
 //		addInitialGrade(25,"COM2008","A1");
-		updateInitialGrade(2, 40);
-		updateInitialGrade(3, 35);
 		
-		System.out.println(calcPeriod("1A"));
+		updateInitialGrade(23,40);
+		updateInitialGrade(22,60);
+		System.out.println(calcDegree(9));
 	}
 			
 }

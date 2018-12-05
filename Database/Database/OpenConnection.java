@@ -55,7 +55,7 @@ public class OpenConnection {
 //				String permission = res.getString("permission");
 //				System.out.println(" permission: " + permission);
 //			}
-//		
+////		
 //			ResultSet res2 = stmt.executeQuery("SELECT * FROM Student");
 //			while (res2.next()) {
 //				int regNumber = res2.getInt("regNumber");
@@ -68,9 +68,9 @@ public class OpenConnection {
 //				System.out.println(" userID: " + userID);
 //			}
 			
-//			ResultSet res3 = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE regNumber = 987654321");
+//			ResultSet res3 = stmt.executeQuery("SELECT * FROM PeriodOfStudy");
 //			while (res3.next()) {
-//				int id  = res3.getInt("periodID");
+//				String id  = res3.getString("periodID");
 //				System.out.print("RESULT id: " + id);
 //			}
 			
@@ -80,17 +80,17 @@ public class OpenConnection {
 //				System.out.print("RESULT id: " + id);
 //			}
 			
-//			ResultSet res5 = stmt.executeQuery("SELECT * FROM Grade");
-//			while (res5.next()) {
-//				int gradeID  = res5.getInt("gradeID");
-//				System.out.print("RESULT gradeID: " + gradeID);
-//				Double percent = res5.getDouble("gradePercent");
-//				System.out.print(" gradePercent: " + percent);
-//				String modID  = res5.getString("modID");
-//				System.out.print(" modID: " + modID);
-//				String regNumber  = res5.getString("regNumber");
-//				System.out.println(" regNumber: " + regNumber);
-//			}
+			ResultSet res5 = stmt.executeQuery("SELECT * FROM Grade");
+			while (res5.next()) {
+				int gradeID  = res5.getInt("gradeID");
+				System.out.print("RESULT gradeID: " + gradeID);
+				Double percent = res5.getDouble("initialGrade");
+				System.out.print(" gradePercent: " + percent);
+				String modID  = res5.getString("modID");
+				System.out.print(" modID: " + modID);
+				String periodID  = res5.getString("periodID");
+				System.out.println(" periodID: " + periodID);
+			}
 			
 //			ResultSet res6 = stmt.executeQuery("SELECT * FROM Module");
 //			while (res6.next()) {
@@ -109,6 +109,14 @@ public class OpenConnection {
 //				String degID  = res6.getString("degID");
 //				System.out.println(" degID: " + degID);
 //			}
+			
+//			ResultSet res7 = stmt.executeQuery("SELECT * FROM Student_Module");
+//			while (res7.next()) {
+//				String regNumber  = res7.getString("regNumber");
+//				System.out.print("RESULT regNumber: " + regNumber);
+//				String modID  = res7.getString("modID");
+//				System.out.println(" modID: " + modID);
+//			}
 				
 	
 //			stmt.executeUpdate("DELETE FROM Account");
@@ -125,6 +133,9 @@ public class OpenConnection {
 			 * BASE VALUES TEST
 			 * Already been executed
 			 */
+			
+			
+//			stmt.executeUpdate("UPDATE PeriodOfStudy SET level = '4' WHERE regNumber = 9");
 			
 //			stmt.executeUpdate("INSERT INTO Account VALUES (0, 'Mr Thomas Wright', 'password', 'S')");
 //			stmt.executeUpdate("INSERT INTO Account VALUES (0,'Mrs Teacher', 'password', 'T')");
@@ -147,6 +158,38 @@ public class OpenConnection {
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 82.0, 'COM1002', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 100.0, 'COM3001', 987654321)");
 //			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 88.0, 'COM2001', 987654321)");
+			
+//			stmt.executeUpdate("INSERT INTO Account VALUES (0, 'Mr Bob Bobson', 'password', 'S')");
+//			stmt.executeUpdate("INSERT INTO Degree VALUES ('COMP01', 'MSc Computer Science', '1', 0, 'COM')");
+//			stmt.executeUpdate("INSERT INTO Student VALUES (0, 'twright@sheffield.ac.uk', 'Mr Tue Toor', 'COMP01', '10')");
+//			stmt.executeUpdate("INSERT INTO Module VALUES ('COM1101', 'Mod1', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1102', 'Mod2', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1103', 'Mod3', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1104', 'Mod4', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1105', 'Mod5', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1106', 'Mod6', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1107', 'Mod7', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1108', 'Mod8', '20', 'Autumn', True, '1', 'COMP01'),"
+//														+"('COM1109', 'Dissertation', '20', 'Autumn', True, '1', 'COMP01')");
+//			stmt.executeUpdate("INSERT INTO Student_Module VALUES (9, 'COM1101'),"
+//																+"(9, 'COM1102'),"
+//																+"(9, 'COM1103'),"
+//																+"(9, 'COM1104'),"
+//																+"(9, 'COM1105'),"
+//																+"(9, 'COM1106'),"
+//																+"(9, 'COM1107'),"
+//																+"(9, 'COM1108'),"
+//																+"(9, 'COM1109')");
+//			stmt.executeUpdate("INSERT INTO PeriodOfStudy VALUES (0, 'A', '2018-09-17', '2019-06-06', '1', 9)");
+//			stmt.executeUpdate("INSERT INTO Grade VALUES (0, 80.0, -1, 'COM1101', 0),"
+//													   +"(0, 92.0, -1, 'COM1102', 0),"
+//													   +"(0, 71.0, -1, 'COM1103', 0),"
+//													   +"(0, 88.0, -1, 'COM1104', 0),"
+//													   +"(0, 76.0, -1, 'COM1105', 0),"
+//													   +"(0, 59.0, -1, 'COM1106', 0),"
+//													   +"(0, 77.0, -1, 'COM1107', 0),"
+//													   +"(0, 98.0, -1, 'COM1108', 0),"
+//													   +"(0, 40.0, -1, 'COM1109', 0)");
 			
 			
 			
