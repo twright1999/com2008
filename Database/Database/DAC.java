@@ -176,6 +176,32 @@ public class DAC {
 		return null;
 	}
 	/**
+	 * gets current/latest student level
+	 * @param regNumber
+	 * @return char - level index
+	 * @throws SQLException
+	 */
+	public static char getStudentLevel(int regNumber) throws SQLException {
+		try {
+			openConnection();
+			
+			PreparedStatement pstmt = connection.prepareStatement(
+					"SELECT level FROM PeriodOfStudy WHERE regNumber = ? ORDER BY startDate DESC LIMIT 1");
+			pstmt.setInt(1, regNumber);
+			ResultSet res = pstmt.executeQuery();
+			res.next();
+			char level = res.getString("level").charAt(0);
+			closeConnection();
+			return level; 
+			
+		}
+		catch (SQLException ex) {
+			closeConnection();
+			System.out.println("getStudentLevel: " + ex.toString());
+		}
+		return (Character)null;
+	}
+	/**
 	 * returns a Degree object
 	 * @param degID
 	 * @return Degree
@@ -436,5 +462,6 @@ public class DAC {
 		DAC.getModules();
 		Module[] modules = DAC.getCurrentStudentModules(1);
 		
+		System.out.println(getStudentLevel(1));
 	}
 }

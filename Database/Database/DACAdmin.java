@@ -163,7 +163,7 @@ public class DACAdmin extends DAC {
 	
 	//for testing
 	public static void main(String[] arg) throws SQLException {
-		
+		DACAdmin.addAccount("admin", "admin", 'A');
 		/*DACAdmin.addAccount("ROKAS", "diamond", 'R');
 		DACAdmin.addAccount("ROKAS", "diamond", 'R'); */
 		//DACAdmin.removeAccount(19);
@@ -173,7 +173,7 @@ public class DACAdmin extends DAC {
 		//DACAdmin.addDegree("COMU01", "BSc Computer Science", '3', "COM");
 		//addDepartment("CBE", "Chemical and Biological Engineering");
 		//addDegree("CBEU65", "Chemical Engineering BSc", '2', "CBE", false);
-		addModule("CBE2007", "Process Control", 20, "Autumn", true, '2', "CBEU65");
+		//addModule("CBE2007", "Process Control", 20, "Autumn", true, '2', "CBEU65");
 	}
 
 

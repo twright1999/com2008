@@ -255,11 +255,15 @@ public class DACRegistrar extends DAC {
 			//System.out.println(DACRegistrar.checkRegistered(987654321));
 			//removeStudent(999999999);
 			DAC.getAccounts();
-            addStudent("TUTOR", "COMU01", 4);
+            //addStudent("TUTOR", "COMU01", 4);
 			//removeStudent(4);
             DAC.getAllStudents();
 			//registerStudent("B", "2017-06-06", "2018-12-12", "2", 1);
-			
+			//DACRegistrar.addStudentModule(1, "COM3000");
+			//addStudentModule(1, "COM3004");
+			//addStudentModule(1, "COM3005");
+			//addStudentModule(1, "COM555");
+            
 		}
 		
 
