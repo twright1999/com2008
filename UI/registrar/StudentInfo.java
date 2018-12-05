@@ -28,43 +28,25 @@ import javax.swing.JTextField;
 
 public class StudentInfo extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable stdTable;
 	static JTable table;
 	protected Component frame;
 	public JTextField userIDField;
 
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentInfo frame = new StudentInfo();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
-
 	public void display_table_student(int userID) throws SQLException {
 		Student student = DAC.getStudent(userID);
-		//PeriodOfStudy period = DAC.getStudentPeriodOfStudy(regNumber, label);
+		char level = DAC.getStudentLevel(student.getRegNumber());
 		DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
-		Object[] row = new Object[3];
+		Object[] row = new Object[4];
 		row[0]=student.getRegNumber();
 		row[1]=student.getName();
-		//row[2]=student.getLevel();
 		row[2]=student.getDegID();
+		row[3]=level;
 		model.addRow(row);
 	}
 	
@@ -85,7 +67,7 @@ public class StudentInfo extends JFrame {
 	 */
 	public StudentInfo(String userID) {
 		setTitle("Student Information");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 601, 405);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -96,19 +78,19 @@ public class StudentInfo extends JFrame {
 		btnAddModule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				ModuleSelect modPick = new ModuleSelect();
 				
 				DefaultTableModel model= (DefaultTableModel)stdTable.getModel();
 				
 				String regNumber = model.getValueAt(0, 0).toString();
-				String degID = model.getValueAt(0, 4).toString();
+				String degID = model.getValueAt(0, 2).toString();
 				
+				ModuleSelect modPick = new ModuleSelect(regNumber, degID);
 				modPick.setVisible(true);
 				modPick.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				modPick.regNumField.setText(regNumber);
-				modPick.degIDField.setText(degID);
 			}
 		});
+		btnAddModule.setBounds(22, 320, 109, 28);
+		contentPane.add(btnAddModule);
 		
 		userIDField = new JTextField();
 		userIDField.setEditable(false);
@@ -129,11 +111,11 @@ public class StudentInfo extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Reg ID", "Name", "Level", "Degree ID"
+				"Reg ID", "Name", "Degree ID", "Level"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -164,8 +146,6 @@ public class StudentInfo extends JFrame {
 		});
 		table.setShowVerticalLines(true);
 		table.setShowHorizontalLines(true);
-		btnAddModule.setBounds(22, 320, 109, 28);
-		contentPane.add(btnAddModule);
 		
 		JButton btnClose = new JButton("Close");
 		btnClose.addActionListener(new ActionListener() {
@@ -216,12 +196,27 @@ public class StudentInfo extends JFrame {
 		btnRefresh.setBounds(376, 320, 87, 28);
 		contentPane.add(btnRefresh);
 		
+		JButton btnCheck = new JButton("Check");
+		btnCheck.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
+				int regNumber = (int) model.getValueAt(0, 0);
+				try {
+					DACRegistrar.checkRegistered(regNumber);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnCheck.setBounds(280, 320, 87, 28);
+		contentPane.add(btnCheck);
+		
 		String id = userIDField.getText();
 		
 		int userId = Integer.parseInt(id);
 		DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
-		//int regNumber = (int)model.getValueAt(0, 0);
-		//char label = (char)model.getValueAt(0, 2);
+		
 		
 		try {
 			display_table_student(userId);
@@ -229,13 +224,13 @@ public class StudentInfo extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		/*
+		
+		int regNumber = (int)model.getValueAt(0, 0);
 		try {
 			display_table_module(regNumber);
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
-		}*/
-		
+		}
 	}
 }
