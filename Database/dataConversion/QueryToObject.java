@@ -79,9 +79,10 @@ public final class QueryToObject {
 			int regNumber = resStudent.getInt("regNumber");
 			String email = resStudent.getString("email");
 			String tutor = resStudent.getString("tutor");
+			String degID = resStudent.getString("degID");
 			
 	        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
-	        		acc.getPermission(),regNumber,tutor, email);
+	        		acc.getPermission(),regNumber, degID, tutor, email);
 	        System.out.println(">>student is created");
 			return student;
 		}
@@ -184,6 +185,7 @@ public final class QueryToObject {
 						acc.getPassword(), acc.getPermission(), regNumber, degID, tutor, email);
 				//System.out.println(">>rowsToStudents: " + student.toStringSimple());
 				students[index] = student;
+				System.out.println("rowsToStudents:" + student.toString());
 				index++;
 				
 			}

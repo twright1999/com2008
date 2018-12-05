@@ -18,6 +18,7 @@ public class Student extends Account {
 	 * Initial Student constructor. Email field is missing because it will be
 	 * generated automatically
 	 */
+	/*
 	public Student(int userID, String name, String password, char permission,
 			int regNumber, String degID, String tutor) throws SQLException {
 		super(userID, name, password, permission);
@@ -26,7 +27,7 @@ public class Student extends Account {
 		this.tutor = tutor;
 		this.email = generateEmail(name);
 	}
-
+*/
 	/**
 	 * Constructor used to print all the Students. 
 	 */
@@ -71,9 +72,9 @@ public class Student extends Account {
 		        System.out.println(startDate);
 		        System.out.println(endDate);
 		        PeriodOfStudy period = new PeriodOfStudy("696969B", 'B', startDate, endDate, 'B', 696969);
-				Student student = new Student(696969, "Mr Takeshi sixNine", "gucci", 'S', 169, "COMU01", "Lil Pumpy");
-				System.out.println("student is created");
-				System.out.println("Student: " + student.toString());
+				//Student student = new Student(696969, "Mr Takeshi sixNine", "gucci", 'S', 169, "COMU01", "Lil Pumpy");
+				//System.out.println("student is created");
+				//System.out.println("Student: " + student.toString());
 		 }catch (ParseException e) {
 		        e.printStackTrace();
 		    }
