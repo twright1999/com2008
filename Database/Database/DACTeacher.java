@@ -161,12 +161,27 @@ public class DACTeacher extends DAC {
 	public static String calcDegree(int regNumber) throws SQLException {
 		openConnection();
 		Statement stmt = connection.createStatement();
-		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, PeriodOfStudy.level FROM Grade " + 
+		
+		ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.name FROM Degree " +
+				"INNER JOIN Student ON Student.degID = Degree.degID " +
+				"WHERE regNumber = " + regNumber);
+		
+		degreeQuery.next();
+		String degreeName = degreeQuery.getString("name");
+		
+		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, Module.level, Module.credits FROM Grade " + 
 				"INNER JOIN PeriodOfStudy ON Grade.periodID = PeriodOfStudy.periodID " +
+				"INNER JOIN Module ON Grade.modID = Module.modID " +
 				"WHERE PeriodOfStudy.regNumber = " + regNumber);
 		
+		int creditAmount = 0;
+		if (degreeName.contains("MSc") || degreeName.contains("MComp") || degreeName.contains("MEng")) {
+			creditAmount = 180;
+		} else if (degreeName.contains("BSc") || degreeName.contains("BEng")) {
+			creditAmount = 120;
+		}
+		
 		double[] grades = {0,0,0,0};
-		int[] gradeCounts = {0,0,0,0};
 		
 		int level = 0;
 		String gradeName;
@@ -177,25 +192,13 @@ public class DACTeacher extends DAC {
 			
 			level = Integer.parseInt(gradeQuery.getString("level"));
 			
-			grades[level-1] += gradeQuery.getDouble(gradeName);
-			gradeCounts[level-1] += 1;
+			grades[level-1] += gradeQuery.getDouble(gradeName) * (gradeQuery.getFloat("credits")/creditAmount);
 		}
-		
-		for (int i = 0; i <= 3; i++) {
-			if (grades[i] != 0) grades[i] /= gradeCounts[i];
-		}
-		
-		ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.name FROM Degree " +
-				"INNER JOIN Student ON Student.degID = Degree.degID " +
-				"WHERE regNumber = " + regNumber);
-		
-		degreeQuery.next();
-		String degreeName = degreeQuery.getString("name");
 		
 		closeConnection();
 		
-		double bachelors = (grades[1] + grades[2]*2)/2;
-		double masters = (grades[1] + grades[2]*2 + grades[3]*2)/3;
+		double bachelors = (grades[1] + grades[2]*2)/3;
+		double masters = (grades[1] + grades[2]*2 + grades[3]*2)/5;
 				
 		if (degreeName.contains("MSc")) {
 			if (grades[0] < 49.5) return "fail";
@@ -234,7 +237,15 @@ public class DACTeacher extends DAC {
 	public static List<List<String>> getStudentStatus(int regNumber) throws SQLException {
 		openConnection();
 		Statement stmt = connection.createStatement();
-		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, Module.level, Module.name FROM Grade " + 
+		
+		ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.name FROM Degree " +
+				"INNER JOIN Student ON Student.degID = Degree.degID " +
+				"WHERE regNumber = " + regNumber);
+		
+		degreeQuery.next();
+		String degreeName = degreeQuery.getString("name");
+		
+		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, Module.level, Module.name, Module.credits FROM Grade " + 
 				"INNER JOIN Module ON Grade.modID = Module.modID " +
 				"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
 				"WHERE Student_Module.regNumber = " + regNumber);
@@ -242,12 +253,18 @@ public class DACTeacher extends DAC {
 		List<List<String>> outputArray = new ArrayList<List<String>>();
 		
 		double[] grades = {0,0,0,0};
-		int[] gradeCounts = {0,0,0,0};
 		
 		int level = 0;
 		String gradeName;
 		
 		List<String> subArray = new ArrayList<String>();
+		
+		int creditAmount = 0;
+		if (degreeName.contains("MSc") || degreeName.contains("MComp") || degreeName.contains("MEng")) {
+			creditAmount = 180;
+		} else if (degreeName.contains("BSc") || degreeName.contains("BEng")) {
+			creditAmount = 120;
+		}
 		
 		while (gradeQuery.next()) {
 			if (gradeQuery.getFloat("resitGrade") >= 0) gradeName = "resitGrade";
@@ -260,14 +277,13 @@ public class DACTeacher extends DAC {
 			subArray = new ArrayList<String>();
 			
 			level = Integer.parseInt(gradeQuery.getString("level"));
-			grades[level-1] += gradeQuery.getDouble(gradeName);
-			gradeCounts[level-1] += 1;
+			grades[level-1] += gradeQuery.getDouble(gradeName) * (gradeQuery.getFloat("credits")/creditAmount);
 		}
 		
 		for (int i = 0; i <= 3; i++) {
 			if (grades[i] != 0) {
 				subArray.add("Level " + Integer.toString(i+1));
-				subArray.add(Double.toString(grades[i] / gradeCounts[i]));
+				subArray.add(Double.toString(grades[i]));
 				outputArray.add(subArray);
 				
 				subArray = new ArrayList<String>();
@@ -337,7 +353,7 @@ public class DACTeacher extends DAC {
 	public static void main(String[] arg) throws SQLException {
 //		updateResitGrade(6,-1);
 //		addInitialGrade(25,"COM2008","A1");
-		System.out.println(getStudentStatus(1));
+		System.out.println(calcDegree(1));
 	}
 			
 }
