@@ -2,8 +2,6 @@ package Accounts;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
-
 import Database.DAC;
 import Utility.PeriodOfStudy;
 
@@ -47,22 +45,8 @@ public class Student extends Account {
 	}
 	
 	//for testing
-	public static void main(String[] arg) throws SQLException, ParseException, java.text.ParseException {
-		
-		 SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-		 try {
-		        java.util.Date utilDate1 = format.parse("2019/01/05");
-		        java.sql.Date startDate = new java.sql.Date(utilDate1.getTime());
-		        java.util.Date utilDate2 = format.parse("2069/04/20");
-		        java.sql.Date endDate = new java.sql.Date(utilDate2.getTime());
-		        System.out.println(startDate);
-		        System.out.println(endDate);
-		        PeriodOfStudy period = new PeriodOfStudy("696969B", 'B', startDate, endDate, 'B', 696969);
-		 }catch (ParseException e) {
-		        e.printStackTrace();
-		    }
-		 		
+	public static void main(String[] arg) throws SQLException {
+			
 	}
-	
 	
 }
