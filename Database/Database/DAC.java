@@ -358,12 +358,12 @@ public class DAC {
 	 * @return PeriodOfStudy
 	 * @throws SQLException
 	 */
-	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber,  char label) throws SQLException {
+	public static PeriodOfStudy getStudentPeriodOfStudy(int regNumber) throws SQLException {
 		openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
-				"SELECT * FROM PeriodOfStudy WHERE regNumber = ? AND label = ? LIMIT 1");
+				"SELECT * FROM PeriodOfStudy WHERE regNumber = ? ORDER BY startDate DESC LIMIT 1");
 		pstmt.setInt(1, regNumber);
-		pstmt.setString(2, Character.toString(label));
+		//pstmt.setString(2, Character.toString(label));
 		ResultSet res = pstmt.executeQuery();
 		PeriodOfStudy period = QueryToObject.rowToPeriod(res);
 		closeConnection();
@@ -455,10 +455,9 @@ public class DAC {
 		System.out.println(">>after DAC");
 		System.out.println(grades[0].toString());
 		System.out.println(grades[1].toString());
-		
-		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1, 'A');
-		System.out.println(period.getStartDate());
-		
+		*/
+		System.out.println(getStudentPeriodOfStudy(1).getPeriodID());
+		/*
 		Student[] students = DAC.getAllStudents();
 		System.out.println(students[0].getName());
 		
@@ -476,5 +475,6 @@ public class DAC {
 		
 		System.out.println(getStudentLevel(1));*/
 		Grade[] grades = DAC.getStudentGrades(1);
+		getAccounts();
 	}
 }
