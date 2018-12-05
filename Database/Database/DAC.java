@@ -128,11 +128,22 @@ public class DAC {
 		try {
 			openConnection();
 			PreparedStatement pstmt = connection.prepareStatement(
-					"SELECT * FROM Grade WHERE regNumber = ?");
+					"SELECT * FROM Grade "
+					+ "RIGHT JOIN (SELECT periodID FROM PeriodOfStudy WHERE regNumber = ?) AS stPeriod "
+					+ " ON stPeriod.periodID = Grade.periodID ");
 			pstmt.setInt(1, regNumber);
 			ResultSet resGrades = pstmt.executeQuery();
+			/*while (resGrades.next()) {
+				String periodID = resGrades.getString("periodID");
+				System.out.println("PERIOD: " + periodID);
+			}*/
+			
+			
 			//counting how many grades there are to know the array size of grades
-			pstmt = connection.prepareStatement("SELECT COUNT(*) FROM Grade WHERE regNumber = ?");
+			pstmt = connection.prepareStatement(
+					"SELECT COUNT(*) FROM Grade "
+					+ "RIGHT JOIN (SELECT periodID FROM PeriodOfStudy WHERE regNumber = ?) AS stPeriod "
+					+ " ON stPeriod.periodID = Grade.periodID ");
 			pstmt.setInt(1, regNumber);
 			ResultSet resCount = pstmt.executeQuery();
 			resCount.next();
@@ -144,6 +155,7 @@ public class DAC {
 		catch (SQLException ex) {
 			closeConnection();
 			System.out.println("getStudentGrades: " + ex.toString());
+			ex.printStackTrace();
 		}
 		return null;
 	}
@@ -439,7 +451,7 @@ public class DAC {
 		Student student = DAC.getStudent(1);
 		System.out.println(student.toString());
 		
-		Grade[] grades = DAC.getStudentGrades(1);
+		
 		System.out.println(">>after DAC");
 		System.out.println(grades[0].toString());
 		System.out.println(grades[1].toString());
@@ -458,10 +470,11 @@ public class DAC {
 		
 		DAC.getCurrentStudentModules(1);
 		DAC.getAccounts();
-		DAC.getAvailableModules(1, "COMU01");*/
+		DAC.getAvailableModules(1, "COMU01");
 		DAC.getModules();
 		Module[] modules = DAC.getCurrentStudentModules(1);
 		
-		System.out.println(getStudentLevel(1));
+		System.out.println(getStudentLevel(1));*/
+		Grade[] grades = DAC.getStudentGrades(1);
 	}
 }

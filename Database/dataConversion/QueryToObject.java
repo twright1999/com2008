@@ -147,11 +147,11 @@ public final class QueryToObject {
 					float initialGrade = res.getFloat("initialGrade");
 					float resitGrade = res.getFloat("resitGrade");
 					String modID = res.getString("modID");
-					int regNumber = res.getInt("regNumber");
-					Grade grade = new Grade(gradeID, initialGrade, resitGrade,  modID, regNumber);
+					String periodID = res.getString("periodID");
+					Grade grade = new Grade(gradeID, initialGrade, resitGrade,  modID, periodID);
 					grades[index] = grade;
 					index++;
-					System.out.println("while'ing");
+					System.out.println("while'ing: " + modID);
 				}
 				return grades;
 			}
