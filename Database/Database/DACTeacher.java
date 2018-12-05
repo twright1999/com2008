@@ -192,7 +192,14 @@ public class DACTeacher extends DAC {
 			
 			level = Integer.parseInt(gradeQuery.getString("level"));
 			
-			grades[level-1] += gradeQuery.getDouble(gradeName) * (gradeQuery.getFloat("credits")/creditAmount);
+			Double grade = gradeQuery.getDouble(gradeName);
+			
+			if (gradeName == "resitGrade") {
+				if (grade > 40 && level == 3) grade = 40.0;
+				else if (grade > 50 && level == 4) grade = 50.0;
+			}
+			
+			grades[level-1] += grade * (gradeQuery.getFloat("credits")/creditAmount);
 		}
 		
 		closeConnection();
@@ -276,8 +283,15 @@ public class DACTeacher extends DAC {
 			
 			subArray = new ArrayList<String>();
 			
+			Double grade = gradeQuery.getDouble(gradeName);
+			
+			if (gradeName == "resitGrade") {
+				if (grade > 40 && level == 3) grade = 40.0;
+				else if (grade > 50 && level == 4) grade = 50.0;
+			}
+			
 			level = Integer.parseInt(gradeQuery.getString("level"));
-			grades[level-1] += gradeQuery.getDouble(gradeName) * (gradeQuery.getFloat("credits")/creditAmount);
+			grades[level-1] += grade * (gradeQuery.getFloat("credits")/creditAmount);
 		}
 		
 		for (int i = 0; i <= 3; i++) {
