@@ -104,26 +104,13 @@ public class DAC {
 		try {
 			openConnection();
 			Statement stmt = connection.createStatement();
-			//counting how many accounts there are which have permission 'S'
-			ResultSet resCountA = stmt.executeQuery("SELECT COUNT(*) FROM Account WHERE permission = 'S'");
-			resCountA.next(); 
-			int countA = resCountA.getInt(resCountA.getRow());
-			
+			//counting how many students there are 
 			int countS = getCount("Student");
-			System.out.println("countA: " + countA + " & countS: " + countS);
-			
-			//check if number of Students match number of Accounts over the same ID (should never be false)
-			if (countA == countS && countA != 0) {
-				ResultSet resStudents = stmt.executeQuery(
-						"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
-				Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
-				closeConnection();
-				return students;
-		}
-			else {
-				closeConnection();
-				return null;
-			}
+			ResultSet resStudents = stmt.executeQuery(
+					"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
+			Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
+			closeConnection();
+			return students;
 	}
 		catch(SQLException ex) {
 			closeConnection();
@@ -250,15 +237,6 @@ public class DAC {
 		pstmt.setInt(1, regNumber);
 		ResultSet res = pstmt.executeQuery();
 		int count = getCountWhere("Student_Module", regNumber);
-		/*
-		pstmt = connection.prepareStatement("SELECT COUNT(*) FROM Student_Module WHERE regNumber = ?");
-		pstmt.setInt(1, regNumber);
-		ResultSet resCount = pstmt.executeQuery();
-		resCount.next();
-		int count = resCount.getInt(resCount.getRow()); 
-		*/
-		
-		
 		
 		Module[] currentStudentModules = QueryToObject.rowsToModules(res, count);
 		closeConnection();
@@ -390,7 +368,7 @@ public class DAC {
 	 */
 	public static String generateEmail(String name) throws SQLException {
 		//check if such name already exsits
-		openConnection();
+		//openConnection();
 		PreparedStatement pstmt = connection.prepareStatement(
 				"SELECT email FROM Student WHERE userID = "
 				+ "(SELECT userID FROM Account WHERE name = ? LIMIT 1)"
@@ -418,7 +396,7 @@ public class DAC {
 			int lastSpace = name.lastIndexOf(" ");
 			String surname = name.substring(lastSpace+1);
 			String email = nameLetter + surname + "1" + uniEmail;
-			closeConnection();
+			//closeConnection();
 			return email;
 		}
 		

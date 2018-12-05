@@ -18,32 +18,37 @@ public class DACRegistrar extends DAC {
 		 * Adds student to the Student table. Not linked to PeriodOfStudy
 		 * or any of the modules yet, because the same student may advance
 		 * to different years and there is no need to "re add" the same person
-		 * 
-		 * @param regNumber
-		 * @param email
+		 * every year
 		 * @param tutor
 		 * @param degID
 		 * @param userID
 		 * @throws SQLException
 		 */
-		public static void addStudent(String email, String tutor, String degID, int userID) throws SQLException {
+		public static void addStudent(String tutor, String degID, int userID) throws SQLException {
 			openConnection();
-			//add student to Student table
-			String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, degID = ?, userID = ?";
-			PreparedStatement pstm = connection.prepareStatement(query);
-			
-			pstm.setInt(1, 0);
-			pstm.setString(2, email);
-			pstm.setString(3, tutor);
-			pstm.setString(4, degID);
-			pstm.setInt(5, userID);
-			pstm.executeUpdate();
-			//add student to the Degree table
-			
+			//check if account for this Student exists
+			PreparedStatement pstmt0 = connection.prepareStatement(
+					"SELECT * FROM Account WHERE userID = ? AND permission = 'S' LIMIT 1");
+			pstmt0.setInt(1, userID);
+			ResultSet acc = pstmt0.executeQuery();
+			//if there is such account, then add student
+			if (acc.next()) {
+				String name = acc.getString("name");
+				
+				//add student to Student table
+				String query = "INSERT INTO Student SET regNumber = ?, email = ?, tutor = ?, degID = ?, userID = ?";
+				PreparedStatement pstm = connection.prepareStatement(query);
+				
+				pstm.setInt(1, 0);
+				pstm.setString(2, DAC.generateEmail(name));
+				pstm.setString(3, tutor);
+				pstm.setString(4, degID);
+				pstm.setInt(5, userID);
+				pstm.executeUpdate();				
+			}
 			closeConnection();
-			return;
-
 		}
+			
 		
 		/**
 		* removeStudent
@@ -69,6 +74,7 @@ public class DACRegistrar extends DAC {
 		* addModule
 		* 
 		* takes a regNumber and a module id and creates a new record in Student_Module
+		* Used when a student chooses non obligatory module
 		* 
 		* @param regNumber unique identifier for a student
 		* @param modID unique identifier for a module
@@ -248,7 +254,10 @@ public class DACRegistrar extends DAC {
 			//DACRegistrar.dropModule(69420, "BAD69");
 			//System.out.println(DACRegistrar.checkRegistered(987654321));
 			//removeStudent(999999999);
-            //addStudent(555555555, "person@mail.com", "TUTOR", "COMU01", 24);
+			DAC.getAccounts();
+            addStudent("TUTOR", "COMU01", 4);
+			//removeStudent(4);
+            DAC.getAllStudents();
 			//registerStudent("B", "2017-06-06", "2018-12-12", "2", 1);
 			
 		}

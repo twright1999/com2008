@@ -68,7 +68,6 @@ public final class QueryToObject {
 		try {
 			//get values from the main account table
 			System.out.println("rowToStudent before rowToAccount");
-			//Account acc = rowToAccount(resStudent);
 			//then add the missing student instance variables
 			resStudent.next();
 			int userID = resStudent.getInt("userID"); 
@@ -79,9 +78,10 @@ public final class QueryToObject {
 			int regNumber = resStudent.getInt("regNumber");
 			String email = resStudent.getString("email");
 			String tutor = resStudent.getString("tutor");
+			String degID = resStudent.getString("degID");
 			
 	        student = new Student(acc.getUserID(), acc.getName(), acc.getPassword(),
-	        		acc.getPermission(),regNumber,tutor, email);
+	        		acc.getPermission(),regNumber, degID, tutor, email);
 	        System.out.println(">>student is created");
 			return student;
 		}
@@ -184,6 +184,7 @@ public final class QueryToObject {
 						acc.getPassword(), acc.getPermission(), regNumber, degID, tutor, email);
 				//System.out.println(">>rowsToStudents: " + student.toStringSimple());
 				students[index] = student;
+				System.out.println("rowsToStudents:" + student.toString());
 				index++;
 				
 			}
@@ -222,33 +223,7 @@ public final class QueryToObject {
 		//if something goes wrong, show an error message in GUI
 		return null;
 	}
-	/*
-	public static Student_Module[] rowsToStudentModules(ResultSet res, int count) throws SQLException {
-		Module[] modules = new Module[count];
-		try {
-			int index = 0;
-			while (res.next()) {
-				String moduleID = res.getString("modID");
-				String name = res.getString("name");
-				int credits = res.getInt("credits");
-				String taught = res.getString("taught");
-				Boolean obligatory = res.getBoolean("obligatory");
-				String degID = res.getString("degID");
-				Module module = new Module(moduleID, name, credits, taught, obligatory, degID);
-				modules[index] = module;
-				index++;
-				System.out.println("rowsToStdModules: " + module.toString());
-				
-			}
-			return modules;
-		}
-		catch (SQLException ex) {
-			System.out.println("rowsToStdModules: " + ex.toString());
-		}
-		//if something goes wrong, show an error message in GUI
-		return null;
-	}
-	*/
+	
 	public static Degree[] rowsToDegrees(ResultSet res, int count) throws SQLException {
 		Degree[] degrees = new Degree[count];
 		try {
