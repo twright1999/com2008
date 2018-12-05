@@ -112,8 +112,7 @@ public class Login extends JFrame {
 				int id = Integer.parseInt(user);
 				char[] password = passwordField.getPassword();
 				String pwdStr = String .valueOf(password);
-				new RBAC();
-				
+
 				try {
 					if (RBAC.verifyLogin(id, pwdStr)){
 						char permission = RBAC.getPermission(id);

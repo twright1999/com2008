@@ -26,13 +26,13 @@ public class StudentUI extends JFrame {
 
 	private JPanel contentPane;
 	private JTable studentDetail;
-	private JTable table_1;
-	private JTextField idField;
+	private JTable studentGrade;
+	private JButton btnLogout;
 
 	/**
 	 * Launch the application.
 	 */
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		} catch (Throwable e) {
@@ -41,14 +41,14 @@ public class StudentUI extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					StudentUI frame = new StudentUI();
+					StudentUI frame = new StudentUI(1);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}*/
+	}
 
 	public void display_table(int userID) throws SQLException {
 		Student student = DAC.getStudent(userID);
@@ -109,25 +109,35 @@ public class StudentUI extends JFrame {
 		scrollPane_1.setBounds(6, 70, 834, 110);
 		contentPane.add(scrollPane_1);
 		
-		table_1 = new JTable();
-		table_1.setModel(new DefaultTableModel(
+		studentGrade = new JTable();
+		studentGrade.setShowVerticalLines(true);
+		studentGrade.setShowHorizontalLines(true);
+		studentGrade.setModel(new DefaultTableModel(
 			new Object[][] {
 				{null, null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
 				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
 			}
-		));
-		scrollPane_1.setViewportView(table_1);
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false, false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		scrollPane_1.setViewportView(studentGrade);
 		
-		idField = new JTextField();
-		idField.setBackground(UIManager.getColor("DesktopPane.background"));
-		idField.setBorder(null);
-		idField.setEnabled(false);
-		idField.setEditable(false);
-		idField.setVisible(false);
-		idField.setBounds(6, 239, 1, 24);
-		contentPane.add(idField);
-		idField.setColumns(10);
+		btnLogout = new JButton("Logout");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Login login = new Login();
+				login.setVisible(true);
+				dispose();
+			}
+		});
+		btnLogout.setBounds(753, 229, 87, 28);
+		contentPane.add(btnLogout);
 	}
 }

@@ -129,11 +129,12 @@ public class UserAdd extends JFrame {
 				String name = nameField.getText().toString();
 				String permission = roleSelect.getSelectedItem().toString();
 				char role = permission.charAt(0);
-				String pw = pwField.toString();
+				char[] pw = pwField.getPassword();
+				String passwo = String.valueOf(pw);
 				String tName = title+" "+name;
 				
 				try {
-					DACAdmin.addAccount(tName, pw, role);
+					DACAdmin.addAccount(tName, passwo, role);
 					JOptionPane.showMessageDialog(frame,
 						    "Successfully Added Account",
 						    "Notice",
