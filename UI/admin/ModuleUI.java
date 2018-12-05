@@ -55,12 +55,14 @@ public class ModuleUI extends JFrame {
 	public void display_table() throws SQLException {
 		Module[] modules = DAC.getModules();
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		Object[] row = new Object[4];
+		Object[] row = new Object[6];
 		for(int i=0;i<modules.length;i++) {
 			row[0]=modules[i].getModuleId();
 			row[1]=modules[i].getName();
-			row[2]=modules[i].getObligatory();
-			row[3]=modules[i].getDegId();
+			row[2]=modules[i].getCredits();
+			row[3]=modules[i].getLevel();
+			row[4]=modules[i].getObligatory();
+			row[5]=modules[i].getDegId();
 			model.addRow(row);
 		}
 	}
@@ -71,7 +73,7 @@ public class ModuleUI extends JFrame {
 	 */
 	public ModuleUI() throws SQLException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 539, 337);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -84,13 +86,13 @@ public class ModuleUI extends JFrame {
 				dispose();
 			}
 		});
-		btnAdd.setBounds(323, 29, 87, 28);
+		btnAdd.setBounds(433, 28, 87, 28);
 		contentPane.setLayout(null);
 		contentPane.add(btnAdd);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(11, 63, 416, 110);
+		scrollPane.setBounds(11, 63, 509, 110);
 		contentPane.add(scrollPane);
 		
 				table = new JTable();
@@ -100,11 +102,11 @@ public class ModuleUI extends JFrame {
 					new Object[][] {
 					},
 					new String[] {
-						"Module ID", "Name", "Obligatory", "Deg ID"
+						"Module ID", "Name", "Credits", "Level", "Obligatory", "Deg ID"
 					}
 				) {
 					boolean[] columnEditables = new boolean[] {
-						false, false, false, false
+						false, false, false, false, false, false
 					};
 					public boolean isCellEditable(int row, int column) {
 						return columnEditables[column];
@@ -139,7 +141,7 @@ public class ModuleUI extends JFrame {
 					}
 			}
 		});
-		btnDelete.setBounds(21, 185, 87, 28);
+		btnDelete.setBounds(11, 185, 87, 28);
 		contentPane.add(btnDelete);
 		
 		JButton btnCancel = new JButton("Cancel");
@@ -150,7 +152,7 @@ public class ModuleUI extends JFrame {
 				dispose();
 			}
 		});
-		btnCancel.setBounds(323, 185, 87, 28);
+		btnCancel.setBounds(433, 185, 87, 28);
 		contentPane.add(btnCancel);
 		display_table();
 	}
