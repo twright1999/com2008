@@ -343,21 +343,21 @@ public class DACTeacher extends DAC {
 		openConnection();
 		Statement stmt = connection.createStatement();
 		
+		ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.level FROM Degree " +
+				"INNER JOIN Student ON Degree.degID = Student.degID " +
+				"WHERE Student.regNumber = " + regNumber);
+		
+		degreeQuery.next();
+		String degreeLevel = degreeQuery.getString("level");
+		
+		ResultSet periodQuery =  stmt.executeQuery("SELECT label, level FROM PeriodOfStudy " +
+				"ORDER BY label DESC " +
+				"WHERE regNumber = " + regNumber);
+		
 		if (calcPeriod(periodID)) {
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM Student_Module WHERE regNumber = ?");
 			pstm.setInt(1, regNumber);
 			pstm.executeUpdate();
-			
-			ResultSet degreeQuery = stmt.executeQuery("SELECT Degree.level FROM Degree " +
-					"INNER JOIN Student ON Degree.degID = Student.degID " +
-					"WHERE Student.regNumber = " + regNumber);
-			
-			degreeQuery.next();
-			String degreeLevel = degreeQuery.getString("level");
-			
-			ResultSet periodQuery =  stmt.executeQuery("SELECT label, level FROM PeriodOfStudy " +
-					"ORDER BY label DESC " +
-					"WHERE regNumber = " + regNumber);
 			
 			closeConnection();
 			
@@ -373,6 +373,11 @@ public class DACTeacher extends DAC {
 			
 			return "Next Level";
 		} else {
+			closeConnection();
+			
+			String nextLabel = Character.toString((char)(((int)(periodQuery.getString("label").charAt(0)))+1));
+			DACRegistrar.registerStudent(nextLabel, startDate, endDate, periodQuery.getString("level"), regNumber);
+			
 			return "Resit";
 		}
 	}
@@ -381,7 +386,9 @@ public class DACTeacher extends DAC {
 	public static void main(String[] arg) throws SQLException {
 //		updateResitGrade(6,-1);
 //		addInitialGrade(25,"COM2008","A1");
-		updateInitialGrade(2, 50);
+		updateInitialGrade(2, 40);
+		updateInitialGrade(3, 35);
+		
 		System.out.println(calcPeriod("1A"));
 	}
 			
