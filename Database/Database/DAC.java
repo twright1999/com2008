@@ -104,27 +104,13 @@ public class DAC {
 		try {
 			openConnection();
 			Statement stmt = connection.createStatement();
-			//counting how many accounts there are which have permission 'S'
-			/*ResultSet resCountA = stmt.executeQuery("SELECT COUNT(*) FROM Account WHERE permission = 'S'");
-			resCountA.next(); 
-			int countA = resCountA.getInt(resCountA.getRow());
-			*/
+			//counting how many students there are 
 			int countS = getCount("Student");
-			//System.out.println("countA: " + countA + " & countS: " + countS);
-			
-			//check if number of Students match number of Accounts over the same ID (should never be false)
-			/*if (countA == countS && countA != 0) {*/
-				ResultSet resStudents = stmt.executeQuery(
-						"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
-				Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
-				closeConnection();
-				return students;
-				/*
-		}
-			else {
-				closeConnection();
-				return null;
-			}*/
+			ResultSet resStudents = stmt.executeQuery(
+					"SELECT * FROM Student NATURAL JOIN Account WHERE permission = 'S'");
+			Student[] students = QueryToObject.rowsToStudents(resStudents, countS);
+			closeConnection();
+			return students;
 	}
 		catch(SQLException ex) {
 			closeConnection();

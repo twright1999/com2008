@@ -14,7 +14,7 @@ public class Registrar extends Account {
 	// need database stuff working first 
 	
 	private void addStudent(String email, String tutor, String degID, int studentUserID) throws SQLException {
-		DACRegistrar.addStudent(email, tutor, degID, studentUserID);
+		DACRegistrar.addStudent(tutor, degID, studentUserID);
 		return;	
 	}
 	
