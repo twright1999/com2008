@@ -18,8 +18,8 @@ public class Teacher extends Account {
 		DACTeacher.removeGrade(gradeID);
 	}
 	
-	private boolean calcPeriod(int regNumber, String periodID) throws SQLException {
-		return DACTeacher.calcPeriod(regNumber, periodID);	
+	private boolean calcPeriod(String periodID) throws SQLException {
+		return DACTeacher.calcPeriod(periodID);	
 	}
 	
 	private String calcDegree(int regNumber) throws SQLException {

@@ -103,21 +103,24 @@ public class DACTeacher extends DAC {
 	* @return boolean returns true if the student passed the period
 	*/
 	
-	public static boolean calcPeriod(int regNumber, String periodID) throws SQLException {
+	public static boolean calcPeriod(String periodID) throws SQLException {
 		openConnection();
 		Statement stmt = connection.createStatement();
-		
-		ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = " + periodID);
+		ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = '" + periodID + "'");
 		
 		periodQuery.next();
 		String level = periodQuery.getString("level");
 		
-		ResultSet gradeQuery = stmt.executeQuery("SELECT initialGrade, resitGrade FROM Grade " +
-				"WHERE periodID = " + periodID + " AND level = " + level);			
+		ResultSet gradeQuery = stmt.executeQuery("SELECT Grade.initialGrade, Grade.resitGrade, Module.level FROM Grade " +
+				"INNER JOIN Module ON Grade.modID = Module.modID " +
+				"WHERE Grade.periodID = '" + periodID + "'");			
 		
 		float totalPercent = 0;
 		int totalGrades = 0;
 		boolean passedEveryModule = true;
+		List<Float> failed = new ArrayList<Float>();
+		List<Integer> failedLevel = new ArrayList<Integer>();
+		
 		String gradeName;
 		
 		while (gradeQuery.next()) {
@@ -127,26 +130,37 @@ public class DACTeacher extends DAC {
 			totalPercent += gradeQuery.getFloat(gradeName);
 			totalGrades += 1;
 			if (level == "P");
-			else if (Integer.parseInt(level) == 4 && gradeQuery.getFloat(gradeName) < 50)
+			else if (Integer.parseInt(level) == 4 && gradeQuery.getFloat(gradeName) < 50) {
 				passedEveryModule = false;
-			else if (Integer.parseInt(level) < 4 && gradeQuery.getFloat(gradeName) < 40)
-				passedEveryModule = false;				
+				failed.add(gradeQuery.getFloat(gradeName));
+				failedLevel.add(gradeQuery.getInt("level"));
+			} else if (Integer.parseInt(level) < 4 && gradeQuery.getFloat(gradeName) < 40) {
+				passedEveryModule = false;	
+				failed.add(gradeQuery.getFloat(gradeName));
+				failedLevel.add(gradeQuery.getInt("level"));
+			}			
 		}
 			
-			closeConnection();
-			float average = totalPercent/totalGrades;
-			if (level == "4") {
-				if (average >= 50.0 && passedEveryModule)
-					return true;
-				else
-					return false;
-			} else {
-				if (average >= 40.0 && passedEveryModule)
-					return true;
-				else
-					return false;
-			}
+		closeConnection();
+		
+		if (failed.size() == 1) {
+			if (failedLevel.get(0) < 4 && failed.get(0) >= 30) passedEveryModule = true;
+			else if (failedLevel.get(0) == 4 && failed.get(0) >= 40) passedEveryModule = true;
+		}	
+		
+		float average = totalPercent/totalGrades;
+		if (level == "4") {
+			if (average >= 50.0 && passedEveryModule)
+				return true;
+			else
+				return false;
+		} else {
+			if (average >= 40.0 && passedEveryModule)
+				return true;
+			else
+				return false;
 		}
+	}
 	
 	/**
 	* calcDegree
@@ -329,7 +343,7 @@ public class DACTeacher extends DAC {
 		openConnection();
 		Statement stmt = connection.createStatement();
 		
-		if (calcPeriod(regNumber, periodID)) {
+		if (calcPeriod(periodID)) {
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM Student_Module WHERE regNumber = ?");
 			pstm.setInt(1, regNumber);
 			pstm.executeUpdate();
@@ -367,7 +381,8 @@ public class DACTeacher extends DAC {
 	public static void main(String[] arg) throws SQLException {
 //		updateResitGrade(6,-1);
 //		addInitialGrade(25,"COM2008","A1");
-		System.out.println(calcDegree(1));
+		updateInitialGrade(2, 50);
+		System.out.println(calcPeriod("1A"));
 	}
 			
 }
