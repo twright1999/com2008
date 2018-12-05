@@ -52,11 +52,13 @@ public class RegistrarUI extends JFrame {
 	
 	public void display_table() throws SQLException {
 		Student[] students = DAC.getAllStudents();
+		
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		Object[] row = new Object[2];
+		Object[] row = new Object[3];
 		for(int i=0;i<students.length;i++) {
 			row[0]=students[i].getUserID();
 			row[1]=students[i].getName();
+			row[2]=students[i].getRegNumber();
 			model.addRow(row);
 		}
 	}
@@ -87,7 +89,7 @@ public class RegistrarUI extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"User ID", "Name"
+				"User ID", "Name", "Reg ID"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
@@ -106,14 +108,10 @@ public class RegistrarUI extends JFrame {
 					DefaultTableModel model= (DefaultTableModel)table.getModel();
 
 					String userId = model.getValueAt(row, 0).toString();
-					//int userID = Integer.parseInt(userId);
 					StudentInfo stdInfo = new StudentInfo(userId);
 					stdInfo.setLocationRelativeTo(null);
 					stdInfo.setVisible(true);
 					System.out.println(userId);
-					/*stdInfo.setVisible(true);
-					stdInfo.userIDField.setText(userID);
-					stdInfo.setDefaultCloseOperation(DISPOSE_ON_CLOSE);*/
 				}
 			}
 		});
@@ -168,6 +166,17 @@ public class RegistrarUI extends JFrame {
 		});
 		btnLogout.setBounds(307, 229, 102, 28);
 		contentPane.add(btnLogout);
+		
+		JButton btnRegister = new JButton("Register");
+		btnRegister.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegisterStudent register = new RegisterStudent();
+				register.setVisible(true);
+				register.setLocationRelativeTo(null);
+			}
+		});
+		btnRegister.setBounds(165, 229, 87, 28);
+		contentPane.add(btnRegister);
 		
 		try {
 			display_table();

@@ -37,27 +37,6 @@ public class ModuleSelect extends JFrame {
 	public JTextField degIDField;
 	protected Component frame;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ModuleSelect frame = new ModuleSelect();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	public void display_table(int regNumber, String degID) throws SQLException {
 		Module[] mod = DAC.getAvailableModules(regNumber, degID);
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
@@ -73,7 +52,7 @@ public class ModuleSelect extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ModuleSelect() {
+	public ModuleSelect(String regNo, String degId) {
 		setTitle("Available Modules");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
@@ -84,7 +63,7 @@ public class ModuleSelect extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(18, 21, 192, 206);
+		scrollPane.setBounds(18, 21, 370, 206);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
@@ -108,7 +87,7 @@ public class ModuleSelect extends JFrame {
 		regNumField.setVisible(false);
 		regNumField.setEditable(false);
 		regNumField.setBounds(216, 231, 102, 28);
-		regNumField.setText("1");
+		regNumField.setText(regNo);
 		contentPane.add(regNumField);
 		regNumField.setColumns(10);
 		
@@ -116,7 +95,7 @@ public class ModuleSelect extends JFrame {
 		degIDField.setVisible(false);
 		degIDField.setEditable(false);
 		degIDField.setBounds(330, 231, 102, 28);
-		degIDField.setText("COMU01");
+		degIDField.setText(degId);
 		contentPane.add(degIDField);
 		degIDField.setColumns(10);
 		
