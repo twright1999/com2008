@@ -135,7 +135,10 @@ public class User extends JFrame {
 							table.revalidate();
 						}
 						catch (Exception w) {
-							JOptionPane.showInputDialog(this, "Connection Error!");
+							JOptionPane.showMessageDialog(frame,
+								    "Delete Unsuccessful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
 						}
 					}
 			}

@@ -100,6 +100,7 @@ public class ModuleSelect extends JFrame {
 		degIDField.setColumns(10);
 		
 		JButton btnAdd_1 = new JButton("Add");
+		btnAdd_1.setToolTipText("Select a module and click this button to add to student");
 		btnAdd_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int row = table.getSelectedRow();
@@ -131,6 +132,7 @@ public class ModuleSelect extends JFrame {
 		contentPane.add(btnAdd_1);
 		
 		JButton btnClose = new JButton("Close");
+		btnClose.setToolTipText("Click this when finished adding modules");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

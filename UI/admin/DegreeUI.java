@@ -134,7 +134,10 @@ public class DegreeUI extends JFrame {
 							table.revalidate();
 						}
 						catch (Exception w) {
-							JOptionPane.showInputDialog(this, "Connection Error!");
+							JOptionPane.showMessageDialog(frame,
+								    "Delete unSuccessful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
 						}
 					}
 			}

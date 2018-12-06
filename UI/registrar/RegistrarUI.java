@@ -23,6 +23,7 @@ import login.Login;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
 
 public class RegistrarUI extends JFrame {
 	private JPanel contentPane;
@@ -93,7 +94,7 @@ public class RegistrarUI extends JFrame {
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false
+				false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -119,7 +120,10 @@ public class RegistrarUI extends JFrame {
 						System.out.println(userId);
 					}
 					catch (Exception w) {
-						JOptionPane.showInputDialog(this, "Student Not Registered");
+						JOptionPane.showMessageDialog(frame,
+							    "Student Not Registered",
+							    "Notice",
+							    JOptionPane.PLAIN_MESSAGE);
 					}
 				}
 			}
@@ -133,16 +137,17 @@ public class RegistrarUI extends JFrame {
 				dispose();
 			}
 		});
-		btnAddStudent.setBounds(307, 19, 102, 28);
+		btnAddStudent.setBounds(312, 25, 102, 28);
 		contentPane.add(btnAddStudent);
 		
 		JButton btnDelete = new JButton("Delete");
+		btnDelete.setToolTipText("Choose a Student and press delete to delete student");
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				int row = table.getSelectedRow();
 				DefaultTableModel model= (DefaultTableModel)table.getModel();
 
-				int selected = (int) model.getValueAt(row, 0);
+				int selected = (int) model.getValueAt(row, 2);
 				
 					if (row >= 0) {
 
@@ -157,7 +162,11 @@ public class RegistrarUI extends JFrame {
 							table.revalidate();
 						}
 						catch (Exception w) {
-							JOptionPane.showInputDialog(this, "Connection Error!");
+							JOptionPane.showMessageDialog(frame,
+								    "Delete Unsuccessful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
+							table.revalidate();
 						}
 					}
 			}
@@ -176,7 +185,7 @@ public class RegistrarUI extends JFrame {
 		btnLogout.setBounds(307, 229, 102, 28);
 		contentPane.add(btnLogout);
 		
-		JButton btnRegister = new JButton("Register");
+		JButton btnRegister = new JButton("Register Student");
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				RegisterStudent register = new RegisterStudent();
@@ -184,8 +193,16 @@ public class RegistrarUI extends JFrame {
 				register.setLocationRelativeTo(null);
 			}
 		});
-		btnRegister.setBounds(165, 229, 87, 28);
+		btnRegister.setBounds(143, 229, 130, 28);
 		contentPane.add(btnRegister);
+		
+		JLabel lblRegisteredAndNot = new JLabel("Registered and Not Registered Students:");
+		lblRegisteredAndNot.setBounds(19, 37, 233, 16);
+		contentPane.add(lblRegisteredAndNot);
+		
+		JLabel lblDoubleClickStudent = new JLabel("Double click student in table to view details and add modules");
+		lblDoubleClickStudent.setBounds(19, 9, 336, 16);
+		contentPane.add(lblDoubleClickStudent);
 		
 		try {
 			display_table();

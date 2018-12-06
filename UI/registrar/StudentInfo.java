@@ -93,6 +93,8 @@ public class StudentInfo extends JFrame {
 		contentPane.add(btnAddModule);
 		
 		userIDField = new JTextField();
+		userIDField.setEnabled(false);
+		userIDField.setVisible(false);
 		userIDField.setEditable(false);
 		userIDField.setBounds(22, 6, 76, 28);
 		userIDField.setText(userID);
@@ -157,6 +159,7 @@ public class StudentInfo extends JFrame {
 		contentPane.add(btnClose);
 		
 		JButton btnDeleteModule = new JButton("Delete Module");
+		btnDeleteModule.setToolTipText("Select a module from the module list and click this button to delete");
 		btnDeleteModule.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = table.getSelectedRow();
@@ -199,6 +202,7 @@ public class StudentInfo extends JFrame {
 		contentPane.add(btnRefresh);
 		
 		JButton btnCheck = new JButton("Check");
+		btnCheck.setToolTipText("Click this to check if student is registered correcctly");
 		btnCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model = (DefaultTableModel)stdTable.getModel();

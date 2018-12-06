@@ -7,9 +7,12 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.AbstractTableModel;
 
 import Accounts.Student;
 import Database.DAC;
+import Database.DACTeacher;
 import login.Login;
 
 import javax.swing.JScrollPane;
@@ -17,6 +20,7 @@ import javax.swing.UIManager;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
@@ -24,31 +28,14 @@ import java.awt.Color;
 
 public class StudentUI extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTable studentDetail;
 	private JTable studentGrade;
 	private JButton btnLogout;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentUI frame = new StudentUI(1);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	public void display_table(int userID) throws SQLException {
 		Student student = DAC.getStudent(userID);
@@ -61,6 +48,17 @@ public class StudentUI extends JFrame {
 		row[4]=student.getTutor();
 		row[5]=student.getRegNumber();
 		model.addRow(row);
+	}
+	
+	public void displayTable(int regNumber) throws SQLException {
+		List<List<String>> grades = DACTeacher.getStudentStatus(regNumber);
+		DefaultTableModel model = (DefaultTableModel)studentGrade.getModel();
+		Object[] row = new Object[2];
+		for(int i=0;i<grades.size();i++) {
+			row[0]=grades.get(i).get(0);
+			row[1]=grades.get(i).get(1);
+			model.addRow(row);
+		}
 	}
 	
 	/**
@@ -81,6 +79,8 @@ public class StudentUI extends JFrame {
 		contentPane.add(scrollPane);
 		
 		studentDetail = new JTable();
+		studentDetail.setShowVerticalLines(true);
+		studentDetail.setShowHorizontalLines(true);
 		studentDetail.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
@@ -106,7 +106,7 @@ public class StudentUI extends JFrame {
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBorder(null);
-		scrollPane_1.setBounds(6, 70, 834, 110);
+		scrollPane_1.setBounds(6, 70, 834, 156);
 		contentPane.add(scrollPane_1);
 		
 		studentGrade = new JTable();
@@ -114,14 +114,13 @@ public class StudentUI extends JFrame {
 		studentGrade.setShowHorizontalLines(true);
 		studentGrade.setModel(new DefaultTableModel(
 			new Object[][] {
-				{null, null, null, null, null, null, null, null, null, null},
 			},
 			new String[] {
-				"New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column", "New column"
+				"Title", "Mark"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
-				false, false, false, false, false, false, false, false, false, false
+				false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -139,5 +138,12 @@ public class StudentUI extends JFrame {
 		});
 		btnLogout.setBounds(753, 229, 87, 28);
 		contentPane.add(btnLogout);
+		int regNumber = (int) studentDetail.getValueAt(0, 5);
+		try {
+			displayTable(regNumber);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 	}
 }

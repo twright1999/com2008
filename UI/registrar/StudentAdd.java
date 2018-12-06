@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,6 +21,10 @@ import javax.swing.border.EmptyBorder;
 import Accounts.Student;
 import Database.DAC;
 import Database.DACRegistrar;
+import Utility.Degree;
+import Utility.PeriodOfStudy;
+
+import javax.swing.JComboBox;
 
 public class StudentAdd extends JFrame {
 
@@ -30,7 +35,7 @@ public class StudentAdd extends JFrame {
 	private JPanel contentPane;
 	private JTextField idField;
 	private JTextField ptField;
-	private JTextField degIDField;
+	private JComboBox degIDField;
 	protected Component frame;
 
 	/**
@@ -96,10 +101,21 @@ public class StudentAdd extends JFrame {
 		lblDegreeId.setBounds(25, 108, 85, 16);
 		contentPane.add(lblDegreeId);
 		
-		degIDField = new JTextField();
+		degIDField = new JComboBox();
+		Degree[] degrees = null;
+		try {
+			degrees = DAC.getDegrees();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		String[] degree = new String[degrees.length];
+		for (int i = 0; i <degrees.length; i++) {
+			degree[i] = degrees[i].getDegID();
+		}
+		degIDField.setModel(new DefaultComboBoxModel(degree));
 		degIDField.setBounds(122, 99, 102, 28);
 		contentPane.add(degIDField);
-		degIDField.setColumns(10);
 		lblDegreeId.setLabelFor(degIDField);
 		
 		JButton btnAddStudent = new JButton("Add Student");
@@ -108,7 +124,7 @@ public class StudentAdd extends JFrame {
 				String user = idField.getText();
 				int userID = Integer.parseInt(user);
 				String pt = ptField.getText();
-				String degID = degIDField.getText();
+				String degID = (String) degIDField.getSelectedItem();
 				
 				try {
 					DACRegistrar.addStudent(pt, degID, userID);
