@@ -86,7 +86,7 @@ public class DACTeacher extends DAC {
 	public static void removeGrade(int gradeID) throws SQLException {
 		openConnection();
 		PreparedStatement pstm = connection.prepareStatement(
-				"DELETE * FROM Grade WHERE gradeID = ?");
+				"DELETE FROM Grade WHERE gradeID = ?");
 		pstm.setInt(1, gradeID);
 		pstm.executeUpdate();
 		closeConnection();
