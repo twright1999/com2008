@@ -1,31 +1,21 @@
 package teacher;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.swing.AbstractListModel;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.UIManager;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Database.DAC;
-import Database.DACRegistrar;
 import Database.DACTeacher;
-import Utility.*;
-import Utility.Module;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 
 public class GradeSelect extends JFrame {
 

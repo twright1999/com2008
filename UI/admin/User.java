@@ -17,8 +17,9 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Accounts.*;
-import Database.*;
+import Accounts.Account;
+import Database.DAC;
+import Database.DACAdmin;
 
 public class User extends JFrame {
 

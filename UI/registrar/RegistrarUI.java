@@ -4,26 +4,26 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Accounts.*;
-import Database.*;
+import Accounts.Student;
+import Database.DAC;
+import Database.DACRegistrar;
 import login.Login;
-
-import javax.swing.ListSelectionModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JLabel;
 
 public class RegistrarUI extends JFrame {
 	private JPanel contentPane;
@@ -101,17 +101,12 @@ public class RegistrarUI extends JFrame {
 			}
 		});
 		table.addMouseListener(new MouseAdapter() {
-			//@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					
 					int row = table.getSelectedRow();
 					DefaultTableModel model= (DefaultTableModel)table.getModel();
-					/*String userId = model.getValueAt(row, 0).toString();
-					StudentInfo stdInfo = new StudentInfo(userId);
-					stdInfo.setLocationRelativeTo(null);
-					stdInfo.setVisible(true);
-					System.out.println(userId);*/
+					
 					try {
 						String userId = model.getValueAt(row, 0).toString();
 						StudentInfo stdInfo = new StudentInfo(userId);

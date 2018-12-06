@@ -1,35 +1,26 @@
 package teacher;
 
 import java.awt.Component;
-
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.UIManager;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Accounts.Student;
 import Database.DAC;
-import Database.DACRegistrar;
 import Database.DACTeacher;
-import Utility.PeriodOfStudy;
 import Utility.Grade;
-import Utility.Module;
-
-import javax.swing.ListSelectionModel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JInternalFrame;
+import Utility.PeriodOfStudy;
 
 public class StudentInfoT extends JFrame {
 
@@ -206,13 +197,9 @@ public class StudentInfoT extends JFrame {
 				PeriodOfStudy period = null;
 				try {
 					period = DAC.getStudentPeriodOfStudy(regNumber);
-					JOptionPane.showMessageDialog(frame,
-						    "Advance Successful",
-						    "Notice",
-						    JOptionPane.PLAIN_MESSAGE);
 				} catch (SQLException e1) {
 					JOptionPane.showMessageDialog(frame,
-						    "Advance Unsuccessful",
+						    "Period cannot be found",
 						    "Notice",
 						    JOptionPane.PLAIN_MESSAGE);
 					e1.printStackTrace();
@@ -224,7 +211,10 @@ public class StudentInfoT extends JFrame {
 				try {
 					endResult = DACTeacher.advanceStudent(regNumber, periodID, startDate, endDate);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(frame,
+						    "Advance Unsuccessful",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
 					e1.printStackTrace();
 				}
 				if (endResult.contains("Bachelors") || endResult.contains("Masters")) {
@@ -270,7 +260,6 @@ public class StudentInfoT extends JFrame {
 		int userId = Integer.parseInt(id);
 		DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
 		DefaultTableModel gradeModel = (DefaultTableModel)table_1.getModel();
-		//char label = (char)model.getValueAt(0, 2);
 		
 		try {
 			display_table_student(userId);
@@ -301,7 +290,6 @@ public class StudentInfoT extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				//int userID = Integer.parseInt(userId);
 				GradeAdd gradeAdd;
 				try {
 					gradeAdd = new GradeAdd(id);
@@ -327,7 +315,6 @@ public class StudentInfoT extends JFrame {
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						//int userID = Integer.parseInt(userId);
 						GradeUpdate gradeUpdate;
 						try {
 							DefaultTableModel model = (DefaultTableModel)table.getModel();
@@ -355,7 +342,6 @@ public class StudentInfoT extends JFrame {
 		button_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				//int userID = Integer.parseInt(userId);
 				ResitGradeUpdate resitGradeUpdate;
 				try {
 					DefaultTableModel model = (DefaultTableModel)table.getModel();

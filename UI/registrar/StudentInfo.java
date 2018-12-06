@@ -1,7 +1,6 @@
 package registrar;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
@@ -12,19 +11,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.UIManager;
+import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import Accounts.Student;
 import Database.DAC;
 import Database.DACRegistrar;
-import Utility.PeriodOfStudy;
 import Utility.Module;
-
-import javax.swing.ListSelectionModel;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
 
 public class StudentInfo extends JFrame {
 
@@ -181,7 +175,10 @@ public class StudentInfo extends JFrame {
 								    JOptionPane.PLAIN_MESSAGE);
 						}
 						catch (Exception w) {
-							JOptionPane.showInputDialog(this, "Connection Error!");
+							JOptionPane.showMessageDialog(frame,
+								    "Delete Unsuccessful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
 						}
 					}
 			}

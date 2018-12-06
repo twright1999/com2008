@@ -17,7 +17,6 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 import Database.DACAdmin;
-import registrar.RegistrarUI;
 
 public class DeptAdd extends JFrame {
 

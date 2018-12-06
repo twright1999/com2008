@@ -4,27 +4,24 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import Accounts.*;
-import Database.*;
+import Accounts.Student;
+import Database.DAC;
 import login.Login;
-import registrar.StudentInfo;
-
-import javax.swing.ListSelectionModel;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JLabel;
 
 public class TeacherUI extends JFrame {
 	protected int userIDGlobal;
@@ -103,7 +100,6 @@ public class TeacherUI extends JFrame {
 			}
 		});
 		table.addMouseListener(new MouseAdapter() {
-			//@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
 					
@@ -111,7 +107,6 @@ public class TeacherUI extends JFrame {
 					DefaultTableModel model= (DefaultTableModel)table.getModel();
 
 					String userId = model.getValueAt(row, 0).toString();
-					//int userID = Integer.parseInt(userId);
 					StudentInfoT stdInfo = new StudentInfoT(userId);
 					stdInfo.setLocationRelativeTo(null);
 					stdInfo.setVisible(true);
@@ -123,9 +118,6 @@ public class TeacherUI extends JFrame {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
-					/*stdInfo.setVisible(true);
-					stdInfo.userIDField.setText(userID);
-					stdInfo.setDefaultCloseOperation(DISPOSE_ON_CLOSE);*/
 				}
 			}
 		});

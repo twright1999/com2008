@@ -9,6 +9,7 @@ import java.sql.SQLException;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -18,13 +19,9 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
-import Accounts.Student;
 import Database.DAC;
 import Database.DACRegistrar;
 import Utility.Degree;
-import Utility.PeriodOfStudy;
-
-import javax.swing.JComboBox;
 
 public class StudentAdd extends JFrame {
 

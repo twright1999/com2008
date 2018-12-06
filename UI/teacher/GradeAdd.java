@@ -1,11 +1,9 @@
 package teacher;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -14,21 +12,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import Accounts.Student;
 import Database.DAC;
-import Database.DACAdmin;
 import Database.DACTeacher;
 import Utility.Module;
 import Utility.PeriodOfStudy;
-
-import javax.swing.JPasswordField;
-import javax.swing.JTable;
 
 public class GradeAdd extends JFrame {
 
@@ -42,26 +35,6 @@ public class GradeAdd extends JFrame {
 	protected Component frame;
 	public JTextField userIDField;
 
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GradeAdd frame = new GradeAdd();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the frame.
@@ -99,6 +72,13 @@ public class GradeAdd extends JFrame {
 		contentPane.add(label);
 		
 		JButton button = new JButton("Cancel");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StudentInfoT studentInfoT = new StudentInfoT(userID);
+				studentInfoT.setVisible(true);
+				dispose();
+			}
+		});
 		button.setBounds(187, 227, 87, 28);
 		contentPane.add(button);
 		
@@ -107,10 +87,6 @@ public class GradeAdd extends JFrame {
 		int userId = Integer.parseInt(id);
 		Student student = DAC.getStudent(userId);
 		int regNumber = student.getRegNumber();
-		
-		
-		
-		
 		
 		JComboBox titleSelect = new JComboBox();
 		lblTitle.setLabelFor(titleSelect);
@@ -146,8 +122,15 @@ public class GradeAdd extends JFrame {
 				String periodID = roleSelect.getSelectedItem().toString();
 				try {
 					DACTeacher.addInitialGrade(gradeFloat, moduleID, periodID);
+					JOptionPane.showMessageDialog(frame,
+						    "Add Successful",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(frame,
+						    "Add Unsuccessful",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
 					e1.printStackTrace();
 				}
 				StudentInfoT studentInfoT = new StudentInfoT(id);

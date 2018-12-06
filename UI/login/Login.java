@@ -107,39 +107,39 @@ public class Login extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				String user = textField.getText();
 				int id = Integer.parseInt(user);
 				char[] password = passwordField.getPassword();
-				String pwdStr = String .valueOf(password);
+				String pwdStr = String.valueOf(password);
 
 				try {
-					if (RBAC.verifyLogin(id, pwdStr)){
+					if (RBAC.verifyLogin(id, pwdStr)) {
 						char permission = RBAC.getPermission(id);
 						switch (permission) {
 						case 'S': {
 							StudentUI student = new StudentUI(id);
 							student.setVisible(true);
 							dispose();
-							break ;
+							break;
 						}
-						case 'A' : {
+						case 'A': {
 							AdminUI admin = new AdminUI();
 							admin.setVisible(true);
 							dispose();
-							break ;
+							break;
 						}
-						case 'R' : {
+						case 'R': {
 							RegistrarUI registrar = new RegistrarUI();
 							registrar.setVisible(true);
 							dispose();
-							break ;
+							break;
 						}
-						case 'T' : {
+						case 'T': {
 							TeacherUI teacher = new TeacherUI();
 							teacher.setVisible(true);
 							dispose();
-							break ;
+							break;
 						}
 						}
 					} else {

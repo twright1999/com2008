@@ -1,34 +1,24 @@
 package teacher;
 
 import java.awt.Component;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.List;
 
-import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 
 import Accounts.Student;
 import Database.DAC;
-import Database.DACAdmin;
 import Database.DACTeacher;
 import Utility.Module;
-import Utility.PeriodOfStudy;
-
-import javax.swing.JPasswordField;
-import javax.swing.JTable;
 
 public class GradeUpdate extends JFrame {
 
@@ -42,27 +32,6 @@ public class GradeUpdate extends JFrame {
 	protected Component frame;
 	public JTextField userIDField;
 	private JTextField textField;
-
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GradeAdd frame = new GradeAdd();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	/**
 	 * Create the frame.
@@ -96,6 +65,13 @@ public class GradeUpdate extends JFrame {
 		contentPane.add(lblTitle);
 		
 		JButton button = new JButton("Cancel");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				StudentInfoT student = new StudentInfoT(userID);
+				student.setVisible(true);
+				dispose();
+			}
+		});
 		button.setBounds(187, 227, 87, 28);
 		contentPane.add(button);
 		
@@ -126,8 +102,15 @@ public class GradeUpdate extends JFrame {
 				float gradeFloat = Float.parseFloat(gradeString);
 				try {
 					DACTeacher.updateInitialGrade(gradeID, gradeFloat);
+					JOptionPane.showMessageDialog(frame,
+						    "Edit Successful",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(frame,
+						    "Edit Unsuccessful",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
 					e1.printStackTrace();
 				}
 				StudentInfoT studentInfoT = new StudentInfoT(id);
@@ -135,7 +118,6 @@ public class GradeUpdate extends JFrame {
 				dispose();
 			}
 		});
-		
 		btnCancel.setBounds(306, 227, 124, 28);
 		contentPane.add(btnCancel);
 	}
