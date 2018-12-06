@@ -63,6 +63,13 @@ public class DACAdmin extends DAC {
 		return;
 
 	}
+	
+	/**
+	 * removes a department. If the account does not exist already,
+	 * method will do nothing
+	 * @param depID
+	 * @throws SQLException
+	 */
 
 	public static void removeDepartment(String depID) throws SQLException {
 		openConnection();
@@ -74,7 +81,16 @@ public class DACAdmin extends DAC {
 		return;
 		
 	}
-		
+	
+	/**
+	 * adds new degree. To prevent adding degree with the same ID,
+	 * catch the exception in GUI and display "such degree already exists"
+	 * @param degID
+	 * @param name
+	 * @param level
+	 * @param depID
+	 * @throws SQLException
+	 */
 	public static void addDegree(String degID, String name, char level, String depID, boolean placement) throws SQLException {
 		openConnection();
 		String query = "INSERT INTO Degree SET degID = ?, name = ?, level= ?, depID = ?, placement = ?";
