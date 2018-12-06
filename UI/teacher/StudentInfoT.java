@@ -78,11 +78,13 @@ public class StudentInfoT extends JFrame {
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
 		Object[] row = new Object[4];
 		for(int i=0; i<grade.length; i++) {
+			if (grade[i].getGradeID() != 0) {
 			row[0]=grade[i].getGradeID();
 			row[1]=grade[i].getModID();
 			row[2]=grade[i].getInitialGrade();
 			row[3]=grade[i].getResitGrade();
 			model.addRow(row);
+			}
 		}
 		
 	}
@@ -158,12 +160,13 @@ public class StudentInfoT extends JFrame {
 				"Grade ID", "Module", "Initial Grade", "Resit Grade"
 			}
 		) {
-			boolean[] columnEditables = new boolean[] {
+			/*boolean[] columnEditables = new boolean[] {
 				false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
+			*/
 		});
 		table.setShowVerticalLines(true);
 		table.setShowHorizontalLines(true);
@@ -192,14 +195,14 @@ public class StudentInfoT extends JFrame {
 						
 
 						try {
+							model.removeRow(row);
 							DACTeacher.removeGrade(gradeID);
 							JOptionPane.showMessageDialog(frame,
 								    "Delete Successful",
 								    "Notice",
 								    JOptionPane.PLAIN_MESSAGE);
-							model.removeRow(row);
-							table.revalidate(); 
 							
+							table.revalidate(); 
 						}
 						catch (Exception w) {
 							JOptionPane.showInputDialog(this, "Connection Error!");
@@ -318,6 +321,7 @@ public class StudentInfoT extends JFrame {
 					gradeAdd = new GradeAdd(id);
 					gradeAdd.setLocationRelativeTo(null);
 					gradeAdd.setVisible(true);
+					dispose();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -347,6 +351,7 @@ public class StudentInfoT extends JFrame {
 							gradeUpdate = new GradeUpdate(id, modID, gradeID);
 							gradeUpdate.setLocationRelativeTo(null);
 							gradeUpdate.setVisible(true);
+							dispose();
 						} catch (SQLException e1) {
 							// TODO Auto-generated catch block
 							e1.printStackTrace();
@@ -374,6 +379,7 @@ public class StudentInfoT extends JFrame {
 					resitGradeUpdate = new ResitGradeUpdate(id, modID, gradeID);
 					resitGradeUpdate.setLocationRelativeTo(null);
 					resitGradeUpdate.setVisible(true);
+					dispose();
 				} catch (SQLException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -388,6 +394,14 @@ public class StudentInfoT extends JFrame {
 		JButton button_4 = new JButton("View all grades");
 		button_4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				try {
+					GradeSelect viewGrades = new GradeSelect(regNumber, userID);
+					viewGrades.setLocationRelativeTo(null);
+					viewGrades.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 		button_4.setBounds(395, 257, 135, 28);

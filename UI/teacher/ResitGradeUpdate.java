@@ -109,11 +109,12 @@ public class ResitGradeUpdate extends JFrame {
 		for (int i = 0; i <modules.length; i++) {
 			modulesID[i] = modules[i].getModuleId();
 		}
-		PeriodOfStudy[] periods = DAC.getAllStudentPeriods(regNumber);
+		/*PeriodOfStudy[] periods = DAC.getAllStudentPeriods(regNumber);
 		String[] periodsID = new String[periods.length];
 		for (int i = 0; i <periods.length; i++) {
 			periodsID[i] = periods[i].getPeriodID();
 		}
+		*/
 		
 		
 		
