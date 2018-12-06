@@ -128,10 +128,11 @@ public class GradeAdd extends JFrame {
 		PeriodOfStudy[] periods = DAC.getAllStudentPeriods(regNumber);
 		String[] periodsID = new String[periods.length];
 		for (int i = 0; i <periods.length; i++) {
+			if (periods[i] !=  null) {
 			periodsID[i] = periods[i].getPeriodID();
+			}
 		}
 		roleSelect.setModel(new DefaultComboBoxModel(periodsID));
-		roleSelect.setSelectedIndex(0);
 		roleSelect.setMaximumRowCount(3);
 		roleSelect.setBounds(303, 98, 82, 26);
 		contentPane.add(roleSelect);

@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.swing.AbstractListModel;
 import javax.swing.DefaultListModel;
@@ -20,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Database.DAC;
 import Database.DACRegistrar;
+import Database.DACTeacher;
 import Utility.*;
 import Utility.Module;
 import javax.swing.JTable;
@@ -34,47 +36,29 @@ public class GradeSelect extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	public JTextField regNumField;
-	public JTextField degIDField;
 	protected Component frame;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GradeSelect frame = new GradeSelect();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
-	public void display_table(int regNumber, String degID) throws SQLException {
-		Module[] mod = DAC.getAvailableModules(regNumber, degID);
+	public void display_table(int regNumber) throws SQLException {
+		List<List<String>> studentGrades = DACTeacher.getStudentStatus(regNumber);
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		Object[] row = new Object[3];
-		for(int i=0;i<mod.length;i++) {
-			row[0]=mod[i].getModuleId();
-			row[1]=mod[i].getName();
-			row[2]=mod[i].getCredits();
+		Object[] row = new Object[2];
+		for(int i=0;i<studentGrades.size();i++) {
+			row[0]=studentGrades.get(i).get(0);
+			row[1]=studentGrades.get(i).get(1);
 			model.addRow(row);
 		}
 	}
 	
 	/**
 	 * Create the frame.
+	 * @throws SQLException 
 	 */
-	public GradeSelect() {
-		setTitle("Available Modules");
+	public GradeSelect(int regNumber, String userID) throws SQLException {
+		setTitle("All grades");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -84,15 +68,17 @@ public class GradeSelect extends JFrame {
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBorder(null);
-		scrollPane.setBounds(18, 21, 192, 206);
+		scrollPane.setBounds(18, 21, 414, 206);
 		contentPane.add(scrollPane);
 		
 		table = new JTable();
+		table.setShowHorizontalLines(true);
+		table.setShowVerticalLines(true);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
 			},
 			new String[] {
-				"Mod ID", "Name", "Credits"
+				"Title", "Mark"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
@@ -112,63 +98,16 @@ public class GradeSelect extends JFrame {
 		contentPane.add(regNumField);
 		regNumField.setColumns(10);
 		
-		degIDField = new JTextField();
-		degIDField.setVisible(false);
-		degIDField.setEditable(false);
-		degIDField.setBounds(330, 231, 102, 28);
-		degIDField.setText("COMU01");
-		contentPane.add(degIDField);
-		degIDField.setColumns(10);
-		
-		JButton btnAdd_1 = new JButton("Add");
-		btnAdd_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int row = table.getSelectedRow();
-				DefaultTableModel model= (DefaultTableModel)table.getModel();
-
-				String selected = model.getValueAt(row, 0).toString();
-				String regNum = regNumField.getText();
-				int regNumber = Integer.parseInt(regNum);
-				
-					if (row >= 0) {
-
-						model.removeRow(row);
-
-						try {
-							DACRegistrar.addStudentModule(regNumber, selected);
-							JOptionPane.showMessageDialog(frame,
-								    "Add Successful",
-								    "Notice",
-								    JOptionPane.PLAIN_MESSAGE);
-							table.revalidate();
-						}
-						catch (Exception w) {
-							JOptionPane.showInputDialog(this, "Connection Error!");
-						}
-					}
-			}
-		});
-		btnAdd_1.setBounds(18, 229, 87, 28);
-		contentPane.add(btnAdd_1);
-		
 		JButton btnClose = new JButton("Close");
 		btnClose.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		btnClose.setBounds(117, 229, 87, 28);
+		btnClose.setBounds(170, 232, 87, 28);
 		contentPane.add(btnClose);
 		
-		String regNum = regNumField.getText();
-		int regNumber = Integer.parseInt(regNum);
-		String degID = degIDField.getText();
+		display_table(regNumber);
 		
-		try {
-			display_table(regNumber, degID);
-		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 	}
 }
