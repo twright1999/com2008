@@ -144,7 +144,7 @@ public class DACRegistrar extends DAC {
 			studentQuery.next();
 			String degID = studentQuery.getString("degID");
 			
-			ResultSet moduleQuery = stmt.executeQuery("SELECT modID FROM Module WHERE degID = '" + degID + "' AND level = " + level);
+			ResultSet moduleQuery = stmt.executeQuery("SELECT modID FROM Module WHERE degID = '" + degID + "' AND level = " + level + " AND obligatory = true");
 			
 			while(moduleQuery.next()) {
 				query = "INSERT INTO Student_Module SET regNumber = ?, modID = ?";
@@ -216,18 +216,20 @@ public class DACRegistrar extends DAC {
 			periodQuery.next();
 			String level = periodQuery.getString("level");
 			
-			ResultSet moduleQuery = stmt.executeQuery("SELECT Module.credits, Module.degID FROM Module INNER JOIN Student_Module "+
-					"ON Module.modID = Student_Module.modID WHERE Module.level = " + level + " && regNumber = " + regNumber);
+			ResultSet moduleQuery = stmt.executeQuery("SELECT Module.credits, Degree.name FROM Module INNER JOIN Student_Module "+
+					"ON Module.modID = Student_Module.modID " +
+					"INNER JOIN Degree ON Module.degID = Degree.degID " +
+					"WHERE Module.level = " + level + " && regNumber = " + regNumber);
 			
 			float creditsTotal = 0;
-			String degID = "    ";
+			String name = "    ";
 			while (moduleQuery.next()) {
 				creditsTotal += moduleQuery.getFloat("credits");
-				degID = moduleQuery.getString("degID");
+				name = moduleQuery.getString("name");
 			}
 			
 			closeConnection();
-			if (degID.charAt(3) == 'U' && creditsTotal == 120.0 || degID.charAt(3) == 'P' && creditsTotal == 180.0) {
+			if (name.charAt(0) == 'B' && creditsTotal == 120.0 || name.charAt(0) == 'M' && creditsTotal == 180.0) {
 				return true;
 			}
 			else {

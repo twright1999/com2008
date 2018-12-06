@@ -457,7 +457,7 @@ public class DACTeacher extends DAC {
 //		addInitialGrade(100,"COM2008","1A");
 //		updateInitialGrade(22,60);
 //		advanceStudent(1,"1A","2019-01-01", "2020-01-01");
-		System.out.println(advanceStudent(1,"1A","2018-01-01", "2019-01-01"));
+//		System.out.println(advanceStudent(1,"1A","2018-01-01", "2019-01-01"));
 		
 	}
 			
