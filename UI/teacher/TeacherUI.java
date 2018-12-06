@@ -68,7 +68,7 @@ public class TeacherUI extends JFrame {
 	 * Create the frame.
 	 */
 	public TeacherUI() {
-		setTitle("Registrar");
+		setTitle("Teacher");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -127,35 +127,6 @@ public class TeacherUI extends JFrame {
 				}
 			}
 		});
-		
-		JButton btnDelete = new JButton("Delete");
-		btnDelete.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				int row = table.getSelectedRow();
-				DefaultTableModel model= (DefaultTableModel)table.getModel();
-
-				int selected = (int) model.getValueAt(row, 0);
-				
-					if (row >= 0) {
-
-						model.removeRow(row);
-
-						try {
-							DACRegistrar.removeStudent(selected);
-							JOptionPane.showMessageDialog(frame,
-								    "Delete Successful",
-								    "Notice",
-								    JOptionPane.PLAIN_MESSAGE);
-							table.revalidate();
-						}
-						catch (Exception w) {
-							JOptionPane.showInputDialog(this, "Connection Error!");
-						}
-					}
-			}
-		});
-		btnDelete.setBounds(19, 229, 87, 28);
-		contentPane.add(btnDelete);
 		
 		JButton btnLogout = new JButton("Logout");
 		btnLogout.addActionListener(new ActionListener() {

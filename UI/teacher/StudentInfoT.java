@@ -1,9 +1,11 @@
 package teacher;
 
 import java.awt.Component;
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -19,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import Accounts.Student;
 import Database.DAC;
 import Database.DACRegistrar;
+import Database.DACTeacher;
 import Utility.PeriodOfStudy;
 import Utility.Grade;
 import Utility.Module;
@@ -26,6 +29,7 @@ import Utility.Module;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.JInternalFrame;
 
 public class StudentInfoT extends JFrame {
 
@@ -34,6 +38,7 @@ public class StudentInfoT extends JFrame {
 	static JTable table;
 	protected Component frame;
 	public JTextField userIDField;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -69,17 +74,32 @@ public class StudentInfoT extends JFrame {
 	}
 	
 	public void display_table_module(int regNumber) throws SQLException {
-		Module[] mod = DAC.getCurrentStudentModules(regNumber);
 		Grade[] grade = DAC.getStudentGrades(regNumber);
 		DefaultTableModel model = (DefaultTableModel)table.getModel();
-		Object[] row = new Object[3];
-		for(int i=0;i<mod.length;i++) {
-			row[0]=mod[i].getModuleId();
-			row[1]=mod[i].getName();
-			row[2]=mod[i].getCredits();
+		Object[] row = new Object[4];
+		for(int i=0; i<grade.length; i++) {
+			row[0]=grade[i].getGradeID();
+			row[1]=grade[i].getModID();
+			row[2]=grade[i].getInitialGrade();
+			row[3]=grade[i].getResitGrade();
 			model.addRow(row);
 		}
+		
 	}
+	
+	public void display_table_grade(int regNumber) throws SQLException {
+		Grade[] grade = DAC.getStudentGrades(regNumber);
+		//PeriodOfStudy period = DAC.getStudentPeriodOfStudy(regNumber, label);
+		DefaultTableModel model = (DefaultTableModel)table_1.getModel();
+		Object[] row = new Object[1];
+		for(int i=0;i<grade.length;i++) {
+			row[0]=grade[i].getGradeID();
+			model.addRow(row);
+		}
+		System.out.println(regNumber);
+	}
+	
+	
 	
 	/**
 	 * Create the frame.
@@ -92,24 +112,6 @@ public class StudentInfoT extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JButton btnAddModule = new JButton("Add Module");
-		btnAddModule.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				GradeSelect modPick = new GradeSelect();
-				
-				DefaultTableModel model= (DefaultTableModel)stdTable.getModel();
-				
-				String regNumber = model.getValueAt(0, 0).toString();
-				String degID = model.getValueAt(0, 4).toString();
-				
-				modPick.setVisible(true);
-				modPick.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-				modPick.regNumField.setText(regNumber);
-				modPick.degIDField.setText(degID);
-			}
-		});
 		
 		userIDField = new JTextField();
 		userIDField.setEditable(false);
@@ -153,7 +155,7 @@ public class StudentInfoT extends JFrame {
 			new Object[][] {
 			},
 			new String[] {
-				"Module", "Initial Grade", "Resit Grade"
+				"Grade ID", "Module", "Initial Grade", "Resit Grade"
 			}
 		) {
 			boolean[] columnEditables = new boolean[] {
@@ -165,8 +167,6 @@ public class StudentInfoT extends JFrame {
 		});
 		table.setShowVerticalLines(true);
 		table.setShowHorizontalLines(true);
-		btnAddModule.setBounds(22, 320, 109, 28);
-		contentPane.add(btnAddModule);
 		
 		JButton btnClose = new JButton("Close");
 		btnClose.addActionListener(new ActionListener() {
@@ -174,30 +174,32 @@ public class StudentInfoT extends JFrame {
 				dispose();
 			}
 		});
-		btnClose.setBounds(475, 320, 109, 28);
+		btnClose.setBounds(417, 337, 87, 28);
 		contentPane.add(btnClose);
 		
-		JButton btnDeleteModule = new JButton("Delete Module");
-		btnDeleteModule.addActionListener(new ActionListener() {
+		JButton btnDeleteGrade = new JButton("Delete Grade");
+		btnDeleteGrade.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int row = table.getSelectedRow();
 				DefaultTableModel model= (DefaultTableModel)table.getModel();
-				DefaultTableModel stdModel= (DefaultTableModel)stdTable.getModel();
+				DefaultTableModel gradeModel= (DefaultTableModel)table_1.getModel();
 
-				String selected = model.getValueAt(row, 0).toString();
-				int regID = (int)stdModel.getValueAt(0, 0);
+				int gradeID = (int)model.getValueAt(row, 0);
+				System.out.println(gradeID);
 				
 					if (row >= 0) {
 
-						model.removeRow(row);
+						
 
 						try {
-							DACRegistrar.dropModule(regID, selected);
+							DACTeacher.removeGrade(gradeID);
 							JOptionPane.showMessageDialog(frame,
 								    "Delete Successful",
 								    "Notice",
 								    JOptionPane.PLAIN_MESSAGE);
-							table.revalidate();
+							model.removeRow(row);
+							table.revalidate(); 
+							
 						}
 						catch (Exception w) {
 							JOptionPane.showInputDialog(this, "Connection Error!");
@@ -205,22 +207,80 @@ public class StudentInfoT extends JFrame {
 					}
 			}
 		});
-		btnDeleteModule.setBounds(159, 320, 109, 28);
-		contentPane.add(btnDeleteModule);
+		btnDeleteGrade.setBounds(22, 316, 109, 28);
+		contentPane.add(btnDeleteGrade);
 		
-		JButton btnRefresh = new JButton("Refresh");
-		btnRefresh.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				table.revalidate();
+		
+			
+		
+		
+		
+		
+		JButton button_2 = new JButton("Advance student");
+		button_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
+				int regNumber = (int) model.getValueAt(0,0);
+				PeriodOfStudy period = null;
+				try {
+					period = DAC.getStudentPeriodOfStudy(regNumber);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				String periodID = period.getPeriodID();
+				String startDate = period.getStartDate();
+				String endDate = period.getEndDate();
+				String endResult = null;
+				try {
+					endResult = DACTeacher.advanceStudent(regNumber, periodID, startDate, endDate);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (endResult.contains("Bachelors") || endResult.contains("Masters")) {
+					JOptionPane.showMessageDialog(frame, endResult);
+				}
+				else if (endResult == "Resit") {
+					JOptionPane.showMessageDialog(frame, "Student will have to resit");
+				}
+				else if (endResult == "Next level") {
+					JOptionPane.showMessageDialog(frame, "Student has advanced to next level");
+				}
+				else {
+					JOptionPane.showMessageDialog(frame, "Connection failed!");
+				}
+				
+				
 			}
 		});
-		btnRefresh.setBounds(376, 320, 87, 28);
-		contentPane.add(btnRefresh);
+		button_2.setBounds(395, 297, 135, 28);
+		contentPane.add(button_2);
+		
+		table_1 = new JTable();
+		table_1.setShowVerticalLines(true);
+		table_1.setShowHorizontalLines(true);
+		table_1.setModel(new DefaultTableModel(
+			new Object[][] {
+			},
+			new String[] {
+				"Grade ID"
+			}
+		) {
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false, false
+			};
+			public boolean isCellEditable(int row, int column) {
+				return columnEditables[column];
+			}
+		});
+		scrollPane.setViewportView(table_1);
 		
 		String id = userIDField.getText();
 		
 		int userId = Integer.parseInt(id);
 		DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
+		DefaultTableModel gradeModel = (DefaultTableModel)table_1.getModel();
 		//char label = (char)model.getValueAt(0, 2);
 		
 		try {
@@ -229,7 +289,7 @@ public class StudentInfoT extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+		int row = table_1.getSelectedRow();
 		int regNumber = (int)model.getValueAt(0, 0);
 		try {
 			display_table_module(regNumber);
@@ -237,6 +297,101 @@ public class StudentInfoT extends JFrame {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
+		
+		try {
+			display_table_grade(regNumber);
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		JButton button = new JButton("Add Grade");
+		button.addActionListener(new ActionListener() {
+			
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				//int userID = Integer.parseInt(userId);
+				GradeAdd gradeAdd;
+				try {
+					gradeAdd = new GradeAdd(id);
+					gradeAdd.setLocationRelativeTo(null);
+					gradeAdd.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+			
+				});
+		
+		button.setBounds(22, 257, 109, 28);
+		contentPane.add(button);
+		
+		JButton button_3 = new JButton("Edit Initial Grade");
+		button_3.addActionListener(new ActionListener() {
+				
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						//int userID = Integer.parseInt(userId);
+						GradeUpdate gradeUpdate;
+						try {
+							DefaultTableModel model = (DefaultTableModel)table.getModel();
+							int row = table.getSelectedRow();
+							String modID = (String) model.getValueAt(row, 1);
+							int gradeID = (int) model.getValueAt(row, 0);
+							gradeUpdate = new GradeUpdate(id, modID, gradeID);
+							gradeUpdate.setLocationRelativeTo(null);
+							gradeUpdate.setVisible(true);
+						} catch (SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						
+					}
+					
+						});
+		
+		button_3.setBounds(155, 257, 135, 28);
+		contentPane.add(button_3);
+		
+		JButton button_1 = new JButton("Edit Resit Grade");
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				//int userID = Integer.parseInt(userId);
+				ResitGradeUpdate resitGradeUpdate;
+				try {
+					DefaultTableModel model = (DefaultTableModel)table.getModel();
+					int row = table.getSelectedRow();
+					String modID = (String) model.getValueAt(row, 1);
+					int gradeID = (int) model.getValueAt(row, 0);
+					resitGradeUpdate = new ResitGradeUpdate(id, modID, gradeID);
+					resitGradeUpdate.setLocationRelativeTo(null);
+					resitGradeUpdate.setVisible(true);
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				
+				
+			}
+		});
+		button_1.setBounds(155, 316, 135, 28);
+		contentPane.add(button_1);
+		
+		JButton button_4 = new JButton("View all grades");
+		button_4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		button_4.setBounds(395, 257, 135, 28);
+		contentPane.add(button_4);
 		
 	}
 }
