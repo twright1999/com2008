@@ -74,6 +74,8 @@ public final class Setup{
 					   "periodID varchar (10) NOT NULL,"+
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade,"+
 					   "FOREIGN KEY (periodID) references PeriodOfStudy(periodID) on delete cascade)");
+			
+			stmt.executeUpdate("INSERT INTO Account VALUES(0,'Admin','"+DACAdmin.hashPassword("password")+"', 'A'");
 
 			stmt.close();
 		}
