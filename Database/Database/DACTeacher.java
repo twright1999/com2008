@@ -271,7 +271,7 @@ public class DACTeacher extends DAC {
 			else if (grades[3] >= 49.5 && grades[3] < 59.5) return "Masters pass";
 			else if (grades[3] >= 59.5 && grades[3] < 69.5) return "Masters merit";
 			else if (grades[3] >= 69.5) return "Masters disinction";
-		} else if (degreeName.contains("MComp") || degreeName.contains("MEng")) {
+		} else if (degreeName.contains("MComp") || degreeName.contains("MEng") || degreeName.contains("MPsy")) {
 			if (masters < 49.5) {
 				if (degreeLevel == periodQuery.getString("level")) failedMasters = true;
 				else return "fail";	
@@ -437,9 +437,9 @@ public class DACTeacher extends DAC {
 //		updateResitGrade(6,-1);
 //		addInitialGrade(25,"COM2008","A1");
 		
-		updateInitialGrade(23,40);
-		updateInitialGrade(22,60);
-		System.out.println(calcDegree(9));
+//		addInitialGrade(100,"COM2008","1A");
+//		updateInitialGrade(22,60);
+//		System.out.println(calcDegree(9));
 	}
 			
 }
