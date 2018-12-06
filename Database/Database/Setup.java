@@ -1,11 +1,29 @@
 package Database;
 import java.sql.*;
-import Accounts.*;
-public final class Setup{
+
+/**
+* Setup.java
+*
+* Class which creates the database and inserts default accounts
+*
+* @author Team 20
+*/
+
+public final class Setup {
 	public static void main(String[] arg) throws SQLException {
 		Statement stmt = null;
 		try (Connection con = DriverManager.getConnection("jdbc:mysql://stusql.dcs.shef.ac.uk/team020", "team020", "aa429b86")) {
 			stmt = con.createStatement();
+			
+			stmt.executeUpdate("DROP TABLE IF EXISTS Student_Module");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Grade");
+			stmt.executeUpdate("DROP TABLE IF EXISTS PeriodOfStudy");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Teacher");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Student");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Account");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Module");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Degree");
+			stmt.executeUpdate("DROP TABLE IF EXISTS Department");
 			
 			stmt.executeUpdate("CREATE TABLE IF NOT EXISTS Account("+
 					   "userID int (8) NOT NULL PRIMARY KEY AUTO_INCREMENT UNIQUE,"+
@@ -75,7 +93,10 @@ public final class Setup{
 					   "FOREIGN KEY (modID) references Module(modID) on delete cascade,"+
 					   "FOREIGN KEY (periodID) references PeriodOfStudy(periodID) on delete cascade)");
 			
-			stmt.executeUpdate("INSERT INTO Account VALUES(0,'Admin','"+DACAdmin.hashPassword("password")+"', 'A'");
+			stmt.executeUpdate("INSERT INTO Account VALUES(0,'Admin','" + DACAdmin.hashPassword("password") + "', 'A')");
+			stmt.executeUpdate("INSERT INTO Account VALUES(0,'Student','" + DACAdmin.hashPassword("password") + "', 'S')");
+			stmt.executeUpdate("INSERT INTO Account VALUES(0,'Teacher','" + DACAdmin.hashPassword("password") + "', 'T')");
+			stmt.executeUpdate("INSERT INTO Account VALUES(0,'Registrar','" + DACAdmin.hashPassword("password") + "', 'R')");
 
 			stmt.close();
 		}
