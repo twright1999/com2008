@@ -157,6 +157,17 @@ public class DACRegistrar extends DAC {
 			closeConnection();
 		}
 		
+		/**
+		* checkRegistered
+		* 
+		* takes a regNumber and checks if the student is registered for the most recent period
+		* check if the credits add up to the right amount and that all modules are the same level
+		* 
+		* @param regNumber unique identifier for a student
+		* 
+		* @return boolean true if the student is registered 
+		*/
+		
 		public static Boolean checkRegistered(int regNumber) throws SQLException {
 			openConnection();
 			Statement stmt = connection.createStatement();
@@ -184,6 +195,17 @@ public class DACRegistrar extends DAC {
 			else return false;
 	
 		}
+		
+		/**
+		* checkCredits
+		* 
+		* takes a regNumber and a periodID and checks if the student has the right amount of credits 
+		* 
+		* @param regNumber unique identifier for a student
+		* @param periodID unique identifier for a period of study
+		* 
+		* @return boolean true if the student has the correct amount of credits selected
+		*/
 		
 		public static boolean checkCredits(int regNumber, String periodID) throws SQLException {
 			openConnection();
@@ -228,7 +250,7 @@ public class DACRegistrar extends DAC {
 			//addStudentModule(1, "COM3005");
 			//addStudentModule(1, "COM555");
             
-            System.out.println(checkRegistered(10));
+//            System.out.println(checkRegistered(10));
             
 		}
 		
