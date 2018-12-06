@@ -48,7 +48,7 @@ public class RegisterStudent extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
-		JLabel lblLabel = new JLabel("Label");
+		JLabel lblLabel = new JLabel("Period Label");
 		lblLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLabel.setBounds(6, 18, 85, 21);
 		contentPane.add(lblLabel);
