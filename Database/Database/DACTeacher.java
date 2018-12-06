@@ -439,6 +439,7 @@ public class DACTeacher extends DAC {
 					"WHERE regNumber = " + regNumber +
 					" ORDER BY label DESC");
 			
+			periodQuery.next();
 			String nextLabel = Character.toString((char)(((int)(periodQuery.getString("label").charAt(0)))+1));
 			DACRegistrar.registerStudent(nextLabel, startDate, endDate, periodQuery.getString("level"), regNumber);
 			
@@ -456,7 +457,8 @@ public class DACTeacher extends DAC {
 //		addInitialGrade(100,"COM2008","1A");
 //		updateInitialGrade(22,60);
 //		advanceStudent(1,"1A","2019-01-01", "2020-01-01");
-		System.out.println(getStudentStatus(10));
+		System.out.println(advanceStudent(1,"1A","2018-01-01", "2019-01-01"));
+		
 	}
 			
 }
