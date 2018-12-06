@@ -401,32 +401,48 @@ public class DACTeacher extends DAC {
 		degreeQuery.next();
 		String degreeLevel = degreeQuery.getString("level");
 		
-		ResultSet periodQuery =  stmt.executeQuery("SELECT label, level FROM PeriodOfStudy " +
-				"ORDER BY label DESC " +
-				"WHERE regNumber = " + regNumber);
-		
 		if (calcPeriod(periodID)) {
+			openConnection();
+			stmt = connection.createStatement();
+			
 			PreparedStatement pstm = connection.prepareStatement("DELETE FROM Student_Module WHERE regNumber = ?");
 			pstm.setInt(1, regNumber);
 			pstm.executeUpdate();
 			
-			closeConnection();
+			ResultSet periodQuery =  stmt.executeQuery("SELECT label, level FROM PeriodOfStudy " +
+					"WHERE regNumber = " + regNumber +
+					" ORDER BY label DESC");
 			
 			periodQuery.next();
+			String result = "";
 			if (degreeLevel == periodQuery.getString("level")) {
-				return calcDegree(regNumber);
+				result = calcDegree(regNumber);
+			}
+			
+			if (result != "") {
+				closeConnection();
+				return result;
 			}
 			
 			String nextLabel = Character.toString((char)(((int)(periodQuery.getString("label").charAt(0)))+1));
 			String nextLevel = Integer.toString((Integer.parseInt(periodQuery.getString("level")))+1);
 			DACRegistrar.registerStudent(nextLabel, startDate, endDate, nextLevel, regNumber);
 			
+			closeConnection();
+			
 			return "Next Level";
 		} else {
-			closeConnection();
+			openConnection();
+			stmt = connection.createStatement();
+			
+			ResultSet periodQuery =  stmt.executeQuery("SELECT label, level FROM PeriodOfStudy " +
+					"WHERE regNumber = " + regNumber +
+					" ORDER BY label DESC");
 			
 			String nextLabel = Character.toString((char)(((int)(periodQuery.getString("label").charAt(0)))+1));
 			DACRegistrar.registerStudent(nextLabel, startDate, endDate, periodQuery.getString("level"), regNumber);
+			
+			closeConnection();
 			
 			return "Resit";
 		}
@@ -439,7 +455,8 @@ public class DACTeacher extends DAC {
 		
 //		addInitialGrade(100,"COM2008","1A");
 //		updateInitialGrade(22,60);
-//		System.out.println(calcDegree(9));
+//		advanceStudent(1,"1A","2019-01-01", "2020-01-01");
+		System.out.println(getStudentStatus(10));
 	}
 			
 }
