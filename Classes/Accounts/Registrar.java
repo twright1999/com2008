@@ -41,7 +41,7 @@ public class Registrar extends Account {
 		DACRegistrar.checkRegistered(regNumber);
 	}
 	
-	private void checkCredits(int regNumber, int periodID) throws SQLException {
+	private void checkCredits(int regNumber, String periodID) throws SQLException {
 		DACRegistrar.checkCredits(regNumber, periodID);
 	}
 	

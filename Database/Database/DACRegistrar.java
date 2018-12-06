@@ -161,12 +161,13 @@ public class DACRegistrar extends DAC {
 			openConnection();
 			Statement stmt = connection.createStatement();
 			
-			ResultSet periodQuery = stmt.executeQuery("SELECT level FROM PeriodOfStudy " +
+			ResultSet periodQuery = stmt.executeQuery("SELECT level, periodID FROM PeriodOfStudy " +
 					"WHERE regNumber = " + regNumber +
 					" ORDER BY startDate DESC");
 			
 			periodQuery.next();
 			int level = periodQuery.getInt("level");
+			String periodID = periodQuery.getString("periodID");
 			
 			ResultSet moduleQuery = stmt.executeQuery("SELECT Module.level FROM Module " +
 					"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
@@ -177,31 +178,18 @@ public class DACRegistrar extends DAC {
 				if (Integer.parseInt(moduleQuery.getString("level")) != level) levelMatch = false;
 			}
 			
-			moduleQuery = stmt.executeQuery("SELECT Module.credits FROM Module " +
-					"INNER JOIN Student_Module ON Module.modID = Student_Module.modID " +
-					"WHERE Student_Module.regNumber = " + regNumber);
-			
-			int creditsTotal = 0;
-			while(moduleQuery.next()) {
-				creditsTotal += moduleQuery.getInt("credits");
-			}
-			
 			closeConnection();
 			
-			if (level < 4) {
-				if (levelMatch && creditsTotal == 120) return true;
-				else return false;
-			} else {
-				if (levelMatch && creditsTotal == 180) return true;
-				else return false;
-			}			
+			if (levelMatch && checkCredits(regNumber, periodID)) return true;
+			else return false;
+	
 		}
 		
-		public static boolean checkCredits(int regNumber, int periodID) throws SQLException {
+		public static boolean checkCredits(int regNumber, String periodID) throws SQLException {
 			openConnection();
 			Statement stmt = connection.createStatement();
 			
-			ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = " + periodID);
+			ResultSet periodQuery = stmt.executeQuery("SELECT * FROM PeriodOfStudy WHERE periodID = '" + periodID + "'");
 			
 			periodQuery.next();
 			String level = periodQuery.getString("level");
@@ -217,8 +205,6 @@ public class DACRegistrar extends DAC {
 			}
 			
 			closeConnection();
-			System.out.println(degID.charAt(3));
-			System.out.println(creditsTotal);
 			if (degID.charAt(3) == 'U' && creditsTotal == 120.0 || degID.charAt(3) == 'P' && creditsTotal == 180.0) {
 				return true;
 			}
@@ -242,7 +228,7 @@ public class DACRegistrar extends DAC {
 			//addStudentModule(1, "COM3005");
 			//addStudentModule(1, "COM555");
             
-            System.out.println(checkRegistered(9));
+            System.out.println(checkRegistered(10));
             
 		}
 		
