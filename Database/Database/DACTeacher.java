@@ -414,8 +414,7 @@ public class DACTeacher extends DAC {
 			
 			periodQuery.next();
 			if (degreeLevel == periodQuery.getString("level")) {
-				if (degreeLevel == "4") return "Masters";
-				else return "Graduate";
+				return calcDegree(regNumber);
 			}
 			
 			String nextLabel = Character.toString((char)(((int)(periodQuery.getString("label").charAt(0)))+1));
