@@ -138,6 +138,29 @@ public final class QueryToObject {
 		
 	}
 	
+	public static PeriodOfStudy[] rowsToPeriods(ResultSet res, int count) throws SQLException {
+		PeriodOfStudy[] periods = new PeriodOfStudy[count];
+		try {
+			int index = 0;
+			while(res.next()) {
+				String periodID = res.getString("periodID");
+				char label = res.getString("label").charAt(0);
+				String startDate = res.getString("startDate");
+				String endDate = res.getString("endDate");
+				char level = res.getString("level").charAt(0);
+				int regNumber = res.getInt("regNumber");
+				PeriodOfStudy period = new PeriodOfStudy(periodID, label, startDate, endDate,
+								level, regNumber);
+				periods[index] = period;
+			}
+			return periods ;
+		}
+			catch (SQLException ex) {
+				System.out.println("rowsToPeriods: " + ex.toString());
+			}
+			return null;
+	}
+	
 	public static Grade[] rowsToGrades(ResultSet res, int count) throws SQLException {
 		Grade[] grades= new Grade[count];
 			try {

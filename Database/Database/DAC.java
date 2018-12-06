@@ -369,6 +369,24 @@ public class DAC {
 		closeConnection();
 		return period;
 	}
+	
+	public static PeriodOfStudy[] getAllStudentPeriods(int regNumber) throws SQLException {
+		try {
+			openConnection();
+			PreparedStatement pstmt = connection.prepareStatement(
+					"SELECT * FROM PeriodOfStudy WHERE regNumber = ?");
+			pstmt.setInt(1, regNumber);
+			ResultSet res = pstmt.executeQuery();
+			int count = getCountWhere("PeriodOfStudy", regNumber);
+			PeriodOfStudy[] allPeriods = QueryToObject.rowsToPeriods(res, count);
+			closeConnection();
+			return allPeriods;
+		}
+		catch (SQLException ex) {
+			System.out.println("getAllPeriods: " + ex.toString());
+		}
+		return null;
+	}
 	/**
 	 * Utility method for counting how many rows there are in particular table
 	 * @param table
@@ -475,8 +493,9 @@ public class DAC {
 		
 		System.out.println(getStudentLevel(1));*/
 		//Grade[] grades = DAC.getStudentGrades(1);
-		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1);
-		System.out.println(period.getEndDate());
-		getAccounts();
+		//PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1);
+		//System.out.println(period.getEndDate());
+		//getAccounts();
+		getAllStudentPeriods(1);
 	}
 }
