@@ -474,7 +474,9 @@ public class DAC {
 		Module[] modules = DAC.getCurrentStudentModules(1);
 		
 		System.out.println(getStudentLevel(1));*/
-		Grade[] grades = DAC.getStudentGrades(1);
+		//Grade[] grades = DAC.getStudentGrades(1);
+		PeriodOfStudy period = DAC.getStudentPeriodOfStudy(1);
+		System.out.println(period.getEndDate());
 		getAccounts();
 	}
 }

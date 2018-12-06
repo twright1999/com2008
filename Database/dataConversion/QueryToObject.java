@@ -47,12 +47,12 @@ public final class QueryToObject {
 			while (res.next()) {
 				int userID = res.getInt("userID");
 				String name = res.getString("name");
-				String password = "hidden"; //placeholder (no need to see hashed passwords)
+				String password = res.getString("password"); //placeholder (no need to see hashed passwords)
 				char permission = res.getString("permission").charAt(0);
 				Account account = new Account (userID, name, password, permission);
 				accounts[index] = account;
 				index++;
-				System.out.println(">>rowsToAccounts: " + account.toString());
+				//System.out.println(">>rowsToAccounts: " + account.toString());
 			}
 			return accounts;
 		}
@@ -120,8 +120,8 @@ public final class QueryToObject {
 			res.next();
 			String periodID = res.getString("periodID");
 			char label = res.getString("label").charAt(0);
-			Date startDate = res.getDate("startDate");
-			Date endDate = res.getDate("endDate");
+			String startDate = res.getString("startDate");
+			String endDate = res.getString("endDate");
 			char level = res.getString("level").charAt(0);
 			int regNumber = res.getInt("regNumber");
 			period = new PeriodOfStudy(periodID, label, startDate, endDate,
