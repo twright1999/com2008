@@ -40,31 +40,9 @@ public class StudentInfoT extends JFrame {
 	public JTextField userIDField;
 	private JTable table_1;
 
-	/**
-	 * Launch the application.
-	 */
-	/*public static void main(String[] args) {
-		try {
-			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		} catch (Throwable e) {
-			e.printStackTrace();
-		}
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					StudentInfo frame = new StudentInfo();
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}*/
 
 	public void display_table_student(int userID) throws SQLException {
 		Student student = DAC.getStudent(userID);
-		//PeriodOfStudy period = DAC.getStudentPeriodOfStudy(regNumber, label);
 		DefaultTableModel model = (DefaultTableModel)stdTable.getModel();
 		Object[] row = new Object[3];
 		row[0]=student.getRegNumber();
@@ -91,14 +69,12 @@ public class StudentInfoT extends JFrame {
 	
 	public void display_table_grade(int regNumber) throws SQLException {
 		Grade[] grade = DAC.getStudentGrades(regNumber);
-		//PeriodOfStudy period = DAC.getStudentPeriodOfStudy(regNumber, label);
 		DefaultTableModel model = (DefaultTableModel)table_1.getModel();
 		Object[] row = new Object[1];
 		for(int i=0;i<grade.length;i++) {
 			row[0]=grade[i].getGradeID();
 			model.addRow(row);
 		}
-		System.out.println(regNumber);
 	}
 	
 	
@@ -160,13 +136,13 @@ public class StudentInfoT extends JFrame {
 				"Grade ID", "Module", "Initial Grade", "Resit Grade"
 			}
 		) {
-			/*boolean[] columnEditables = new boolean[] {
-				false, false
+			boolean[] columnEditables = new boolean[] {
+				false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
 			}
-			*/
+			
 		});
 		table.setShowVerticalLines(true);
 		table.setShowHorizontalLines(true);
@@ -205,7 +181,10 @@ public class StudentInfoT extends JFrame {
 							table.revalidate(); 
 						}
 						catch (Exception w) {
-							JOptionPane.showInputDialog(this, "Connection Error!");
+							JOptionPane.showMessageDialog(frame,
+								    "Delete Unsuccessful",
+								    "Notice",
+								    JOptionPane.PLAIN_MESSAGE);
 						}
 					}
 			}
@@ -227,8 +206,15 @@ public class StudentInfoT extends JFrame {
 				PeriodOfStudy period = null;
 				try {
 					period = DAC.getStudentPeriodOfStudy(regNumber);
+					JOptionPane.showMessageDialog(frame,
+						    "Advance Successful",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
 				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(frame,
+						    "Advance Unsuccessful",
+						    "Notice",
+						    JOptionPane.PLAIN_MESSAGE);
 					e1.printStackTrace();
 				}
 				String periodID = period.getPeriodID();
@@ -406,6 +392,10 @@ public class StudentInfoT extends JFrame {
 		});
 		button_4.setBounds(395, 257, 135, 28);
 		contentPane.add(button_4);
+		
+		JLabel lblIsPlace = new JLabel("-1 is place holder for null");
+		lblIsPlace.setBounds(395, 12, 168, 22);
+		contentPane.add(lblIsPlace);
 		
 	}
 }

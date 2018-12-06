@@ -24,6 +24,7 @@ import registrar.StudentInfo;
 import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JLabel;
 
 public class TeacherUI extends JFrame {
 	protected int userIDGlobal;
@@ -31,6 +32,7 @@ public class TeacherUI extends JFrame {
 	private JPanel contentPane;
 	private JTable table;
 	protected Component frame;
+	private JLabel lblDoubleClickTo;
 
 	/**
 	 * Launch the application.
@@ -138,6 +140,10 @@ public class TeacherUI extends JFrame {
 		});
 		btnLogout.setBounds(307, 229, 102, 28);
 		contentPane.add(btnLogout);
+		
+		lblDoubleClickTo = new JLabel("Double Click to Edit Student Grades ");
+		lblDoubleClickTo.setBounds(19, 37, 227, 16);
+		contentPane.add(lblDoubleClickTo);
 		
 		try {
 			display_table();
